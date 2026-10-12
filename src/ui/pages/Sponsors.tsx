@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useGame, useStore, nav } from '../../store/game';
 import type { SponsorDeal, SponsorOffer, Team } from '../../engine/types';
 import { Panel, Stat, Empty, Pill, Bar, money, fmtDate, num } from '../components/kit';
-import { sponsorSlots, sponsorPool, sponsorOutlook } from '../../engine/management/sponsors';
+import { sponsorSlots, sponsorPool, sponsorOutlook, sponsorAppealParts, offerRange } from '../../engine/management/sponsors';
 import { LEAGUE_ECON } from '../../engine/setup';
 import { clamp } from '../../util/rng';
 import { activeSponsors, acceptSponsorOffer, declineSponsorOffer, bonusText, bonusProgress } from '../../engine/management/offerActions';
@@ -42,13 +42,8 @@ export default function Sponsors(_props: { id?: string; tab?: string; kind?: str
   const [confirmDecline, setConfirmDecline] = useState<string | null>(null);
   const outlook = sponsorOutlook(state, team);
 
-  // mirrors generateSponsorOffers() in the engine
-  const fanPart = (team.fans / econ.fans) * 0.5;
-  const prestigePart = team.prestige / 100;
-  const hypePart = team.hype / 200;
-  const studioPart = team.facilities.contentStudio * 0.06;
-  const appeal = clamp(fanPart + prestigePart + hypePart + studioPart, 0.2, 3);
-  const offerRange = (brandTier: number) => [econ.sponsor * brandTier * appeal * 0.25, econ.sponsor * brandTier * appeal * 0.5];
+  const parts = sponsorAppealParts(state, team);
+  const appeal = parts.total;
 
   const accept = (o: SponsorOffer) => {
     const r = acceptSponsorOffer(state, o.id);
@@ -169,10 +164,11 @@ export default function Sponsors(_props: { id?: string; tab?: string; kind?: str
               level, the brand&apos;s tier and your <span className="text-text font-semibold">sponsor appeal</span>:
             </p>
             <div className="space-y-2.5">
-              <Driver label="Fanbase" detail={`${num(team.fans)} fans vs ${num(econ.fans)} league benchmark`} part={fanPart} max={1.5} />
-              <Driver label="Prestige" detail={`${Math.round(team.prestige)}/100 long-term reputation`} part={prestigePart} max={1} />
-              <Driver label="Hype" detail={`${Math.round(team.hype)}/100 short-term buzz from results`} part={hypePart} max={0.5} />
-              <Driver label="Content Studio" detail={`Level ${team.facilities.contentStudio}/5 · also +1 slot per level`} part={studioPart} max={0.3} />
+              <Driver label="Audience" detail={`${num(team.fans)} fans (${num(team.diehard ?? 0)} die-hard, who count extra) vs ${num(econ.fans)} tier benchmark`} part={parts.fans} max={1.5} />
+              <Driver label="Prestige" detail={`${Math.round(team.prestige)}/100 long-term reputation`} part={parts.prestige} max={0.66} />
+              <Driver label="Hype" detail={`${Math.round(team.hype)}/100 short-term buzz from results`} part={parts.hype} max={0.4} />
+              <Driver label="Content Studio" detail={`Level ${team.facilities.contentStudio}/5 · also +1 slot per level`} part={parts.studio} max={0.25} />
+              <Driver label="Faces" detail="Media-savvy, charismatic players and Brand Ambassadors" part={Math.max(0, parts.faces)} max={0.25} />
             </div>
             <div className="flex items-center justify-between border-t hairline mt-3 pt-2.5">
               <span className="text-sm text-muted">Sponsor appeal</span>
@@ -186,7 +182,7 @@ export default function Sponsors(_props: { id?: string; tab?: string; kind?: str
               <thead><tr><th>Brand tier</th><th className="text-right">Typical offer / month</th></tr></thead>
               <tbody>
                 {[1, 2, 3].map((t) => {
-                  const [lo, hi] = offerRange(t);
+                  const [lo, hi] = offerRange(state, team, t);
                   return <tr key={t}><td><Stars n={t} /></td><td className="text-right font-display font-bold">{money(lo)} – {money(hi)}</td></tr>;
                 })}
               </tbody>

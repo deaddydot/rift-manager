@@ -3,7 +3,7 @@ import { useGame, useStore, nav } from '../../store/game';
 import type { GameState, Team, MerchProduct } from '../../engine/types';
 import { ROLE_LABEL } from '../../engine/types';
 import { Panel, Stat, Empty, Modal, Pill, Portrait, Bar, money, num } from '../components/kit';
-import { MERCH_TEMPLATES, produceMerch, addMerchLine } from '../../engine/management/merch';
+import { MERCH_TEMPLATES, produceMerch, addMerchLine, merchDemand, starPowerOf } from '../../engine/management/merch';
 import { addLedger } from '../../engine/management/finance';
 import { clamp } from '../../util/rng';
 
@@ -12,21 +12,13 @@ const tpl = (type: string): Template | undefined => MERCH_TEMPLATES.find((t) => 
 const PRESETS = [100, 500, 1000, 5000];
 const TYPE_GLYPH: Record<string, string> = { jersey: 'JR', hoodie: 'HD', tee: 'TS', cap: 'CP', mousepad: 'MP', figure: 'FG', signature: 'SG' };
 
-// ------------------------------------------------------------------ demand model (mirrors weeklyMerchSales, expected value)
-function starPower(state: GameState, team: Team) {
-  return team.roster.map((id) => state.players[id]).filter(Boolean).reduce((s, p) => s + Math.max(0, p.reputation - 50) / 50 + (p.traits.includes('fan_favorite') ? 2 : 0), 0);
-}
+// ------------------------------------------------------------------ demand model (the engine's, merch.ts)
+const starPower = starPowerOf;
 const priceFactor = (t: Template, price: number) => clamp(Math.pow(t.basePrice / Math.max(1, price), 1.6), 0.15, 2.5);
 
+/** Expected weekly units at `price`. */
 function weeklyDemand(state: GameState, team: Team, m: MerchProduct, price = m.price, sp = starPower(state, team)) {
-  const t = tpl(m.type);
-  if (!t) return 0;
-  let d = (team.fans / 10_000) * t.appeal * (0.6 + team.hype / 100) * (1 + sp * 0.08) * (0.7 + m.quality / 200) * priceFactor(t, price) * (0.8 + team.facilities.contentStudio * 0.06);
-  if (m.type === 'signature' && m.playerId) {
-    const p = state.players[m.playerId];
-    d *= p && p.teamId === team.id ? 0.5 + p.reputation / 60 : 0.05;
-  }
-  return Math.max(0, d);
+  return merchDemand(state, team, price === m.price ? m : { ...m, price }, sp);
 }
 const unitCostFor = (m: MerchProduct, qty: number) => m.unitCost * (qty >= 5000 ? 0.8 : qty >= 1000 ? 0.9 : 1) * (0.8 + m.quality / 250);
 const maxPrice = (t: Template) => t.basePrice * 3;

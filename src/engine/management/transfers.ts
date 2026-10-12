@@ -6,6 +6,7 @@ import { overall, salaryFor, marketValue, ageOn } from '../setup';
 import { addInbox, addNews } from './news';
 import { newIdentity, newChampionPool } from './freeAgents';
 import { addLedger, payrollYearly } from './finance';
+import { fansFollowPlayer } from './fanbase';
 import { bidStance, bidSalary, bidPull, newBid, bidTerms, bidSold, bidRejected } from './bidTalks';
 import { traitContractMod } from './traitEffects';
 import { noteDeparture, noteArrival, aiSquadDaily, aiSquadWeekly, teamLevel, aiNeeds, neededRoles } from './aiSquad';
@@ -77,6 +78,7 @@ export function movePlayer(state: GameState, p: Player, to: Team | null, salary:
   const from = p.teamId ? state.teams[p.teamId] : null;
   if (from) {
     noteDeparture(state, from, p, to); // an AI club that loses a starter starts looking for a replacement (aiSquad.ts)
+    fansFollowPlayer(state, from, to, p); // some die-hards follow a beloved player out (fanbase.ts)
     from.roster = from.roster.filter((id) => id !== p.id);
     for (const r of ROLES) if (from.lineup[r] === p.id) from.lineup[r] = null;
     if (fee) addLedger(state, from, 'Transfer income', fee, p.handle);
@@ -86,6 +88,7 @@ export function movePlayer(state: GameState, p: Player, to: Team | null, salary:
   p.teamId = to ? to.id : null;
   if (to) {
     to.roster.push(p.id);
+    p.joinedOn = state.date;
     if (fee) addLedger(state, to, 'Transfer fees', -fee, p.handle);
     p.contract = { salary, expires: `${new Date(state.date).getUTCFullYear() + years + (state.date.slice(5) > '11-18' ? 0 : -1)}-11-18`, buyout: Math.round(p.value * 1.6 / 10000) * 10000, signedOn: state.date };
     to.chemistry = clamp(to.chemistry - 5, 10, 100);

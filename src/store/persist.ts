@@ -2,6 +2,7 @@
 import { get, set, del, keys } from 'idb-keyval';
 import { ensureMasteryScale } from '../engine/mastery';
 import { ensureRatingScale } from '../engine/management/potential';
+import { ensureFanbase } from '../engine/management/fanbase';
 import type { GameState } from '../engine/types';
 
 export interface SaveMeta { id: string; name: string; team: string; teamId: string; date: string; savedAt: number; size: number; custom?: boolean }
@@ -36,6 +37,7 @@ export async function loadGame(id: string): Promise<GameState | null> {
   const state = JSON.parse(await gunzip(blob)) as GameState;
   ensureMasteryScale(state); // saves from before the 0..200 champion comfort scale
   ensureRatingScale(state); // …and before the 0..200 rating / potential scale
+  ensureFanbase(state); // …and before die-hard fans
   return state;
 }
 
@@ -66,6 +68,7 @@ export async function importSave(file: File): Promise<GameState> {
   const state = JSON.parse(text) as GameState;
   ensureMasteryScale(state);
   ensureRatingScale(state);
+  ensureFanbase(state);
   return state;
 }
 

@@ -23,6 +23,7 @@ import {
   MEETING_LINES, ACTIVITY_SCENES, FEEL_INFO, type LineSet,
 } from './peopleTemplates';
 import { clampRating } from '../ratings';
+import { boostFans } from './fanbase';
 
 export { ISSUE_INFO, peopleParts, peopleAdj, pairKey, synergy } from './peopleFx';
 export { FEEL_INFO } from './peopleTemplates';
@@ -841,7 +842,7 @@ const APPROACHES: Record<string, Approach> = {
     ],
     fallback: 'limit',
     resolve: (c, _r, opt) => {
-      if (opt === 'allow') { c.team.fans = Math.round(c.team.fans * 1.004); return { out: 'allow', fx: { hype: 3, morale: 4, trust: 2, fatigue: 4 } }; }
+      if (opt === 'allow') { boostFans(c.team, 0.004); return { out: 'allow', fx: { hype: 3, morale: 4, trust: 2, fatigue: 4 } }; }
       if (opt === 'limit') return { out: 'limit', fx: { morale: 1, trust: 1 } };
       return { out: 'refuse', fx: { morale: -3, trust: c.proZ > 0.4 ? -1 : -2 } };
     },

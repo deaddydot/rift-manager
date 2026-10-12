@@ -7,7 +7,8 @@ import { updateCompetitions, createSeason, compKey } from './season/season';
 import { simulateSeries } from './season/series';
 import { weeklyFinance, monthlyFinance } from './management/finance';
 import { ratingMilestones, weeklyTraining, yearlyAging } from './management/development';
-import { generateSponsorOffers, checkSponsorBonuses } from './management/sponsors';
+import { generateSponsorOffers, checkSponsorBonuses, aiSponsorRenewals } from './management/sponsors';
+import { fanbaseWeekly } from './management/fanbase';
 import { inTransferWindow, processExpiries, expiryReminders, aiTransfers, resolveOffers, incomingBids, generateProspects, movePlayer } from './management/transfers';
 import { generateWindowFreeAgents } from './management/freeAgents';
 import { addInbox, addNews } from './management/news';
@@ -72,6 +73,7 @@ export function endDay(state: GameState) {
       weeklyFinance(state, team, r);
       weeklyTraining(state, team, r, team.id === state.userTeamId && state.trainingPlan ? state.trainingPlan : undefined);
     }
+    fanbaseWeekly(state); // casual fans follow form, die-hards follow loyalty (management/fanbase.ts)
     ratingMilestones(state); // new rating bands reached (Elite 100+, Legendary 125+…)
     const user = state.teams[state.userTeamId];
     for (const o of generateSponsorOffers(state, user, r)) {
@@ -85,7 +87,13 @@ export function endDay(state: GameState) {
     patchShift(state, r);
   }
   // monthly
-  if (d.slice(8) === '01') { for (const team of Object.values(state.teams)) monthlyFinance(state, team); checkSponsorBonuses(state, state.teams[state.userTeamId], null); }
+  if (d.slice(8) === '01') {
+    for (const team of Object.values(state.teams)) {
+      if (team.id !== state.userTeamId) aiSponsorRenewals(state, team, r); // AI clubs replace expired partners
+      monthlyFinance(state, team);
+    }
+    checkSponsorBonuses(state, state.teams[state.userTeamId], null);
+  }
   // transfer window notices
   const wasOpen = inTransferWindow(prev), open = inTransferWindow(d);
   if (wasOpen !== open) {

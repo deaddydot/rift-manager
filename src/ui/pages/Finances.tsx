@@ -3,9 +3,8 @@ import { useGame, useStore, nav } from '../../store/game';
 import type { GameState, Team, FacilityKey } from '../../engine/types';
 import { FACILITY_INFO, ROLE_LABEL } from '../../engine/types';
 import { Panel, Stat, Portrait, Avatar, Empty, Sparkline, RoleIcon, money, fmtDate } from '../components/kit';
-import { payrollYearly, facilityUpkeepMonthly } from '../../engine/management/finance';
+import { payrollYearly, facilityUpkeep, facilityUpkeepMonthly, operationsMonthly, leagueIncomeMonthly } from '../../engine/management/finance';
 import { streamWeight } from '../../engine/management/traitEffects';
-import { LEAGUE_ECON } from '../../engine/setup';
 import { STAFF_ROLE_INFO } from '../../engine/management/staffMarket';
 import { activeSponsors } from '../../engine/management/offerActions';
 
@@ -38,7 +37,6 @@ const EXPENSE_SERIES: Series[] = [
 const INCOME_COLOR = '#3987e5';
 const EXPENSE_COLOR = '#e66767';
 const NET_COLOR = '#f0c674';
-const LEAGUE_SHARE: Record<string, number> = { LCK: 140_000, LPL: 170_000, LEC: 110_000, LCS: 120_000, LCP: 45_000, CBLOL: 35_000 }; // mirrors monthlyFinance()
 const isoAddDays = (d: string, n: number) => { const x = new Date(d + 'T00:00:00Z'); x.setUTCDate(x.getUTCDate() + n); return x.toISOString().slice(0, 10); };
 const isoAddMonths = (d: string, n: number) => { const x = new Date(d + 'T00:00:00Z'); x.setUTCMonth(x.getUTCMonth() + n); return x.toISOString().slice(0, 10); };
 const ONE_OFF = new Set(['Transfer fees', 'Transfer income', 'Facility upgrades', 'Prize money', 'Contract termination', 'Staff signing fees']);
@@ -264,8 +262,8 @@ export default function Finances(_props: { id?: string; tab?: string; kind?: str
   const seasonFrom = `${state.season - 1}-12`, seasonTo = `${state.season}-11`;
 
   const payroll = payrollYearly(state, team);
-  const upkeep = facilityUpkeepMonthly(team);
-  const ops = (LEAGUE_ECON[tier]?.budget ?? 0) * 0.012;
+  const upkeep = facilityUpkeepMonthly(state, team);
+  const ops = operationsMonthly(tier);
   const sponsors = activeSponsors(state, team);
   const sponsorMonthly = sponsors.reduce((a, s) => a + s.monthly, 0);
   const fixedMonthly = payroll / 12 + upkeep + ops;
@@ -281,7 +279,7 @@ export default function Finances(_props: { id?: string; tab?: string; kind?: str
   const histNet = complete.length ? complete.reduce((a, r) => a + opNet(r), 0) / complete.length : null;
 
   // forward projection from current commitments (sponsors expire on their end dates)
-  const leagueRevenue = tier === 1 ? (LEAGUE_SHARE[team.leagueId] ?? 40_000) * (team.franchise ? 1 : 0.7) : tier === 2 ? 6_000 : 0;
+  const leagueRevenue = leagueIncomeMonthly(state, team);
   const cutoff = isoAddDays(state.date, -56);
   const weeklyEntries = team.ledger.filter((e) => (e.category === 'Merchandise sales' || e.category === 'Streaming & content') && e.date > cutoff);
   const weeksSeen = new Set(weeklyEntries.map((e) => e.date)).size;
@@ -473,7 +471,7 @@ export default function Finances(_props: { id?: string; tab?: string; kind?: str
                   <tr key={k}>
                     <td>{FACILITY_INFO[k].name}</td>
                     <td className="text-center font-display font-bold">{team.facilities[k]}</td>
-                    <td className="text-right text-muted">{team.facilities[k] ? money(FACILITY_INFO[k].upkeep * team.facilities[k]) : '—'}</td>
+                    <td className="text-right text-muted">{team.facilities[k] ? money(facilityUpkeep(k, team.facilities[k], tier)) : '—'}</td>
                   </tr>
                 ))}
                 <tr><td className="font-semibold">Total</td><td /><td className="text-right font-display font-bold text-gold2">{money(upkeep)}</td></tr>

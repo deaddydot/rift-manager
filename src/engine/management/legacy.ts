@@ -16,6 +16,7 @@ import { ageOn } from '../setup';
 import { ord } from './fixtureinfo';
 import { REAL_FINALS, REAL_EDITIONS, REAL_COMPLETE, REAL_DOMESTIC, REAL_PLAYER_TITLES, PLAYER_TITLE_CLUB, type RealEv } from './legacyData';
 import { LEG_META, LEG_TEMPLATES, LEG_OWNER_T, LEG_QUIRK_T, LEG_NEWS } from './legacyTemplates';
+import { boostFans } from './fanbase';
 
 /** First in-save season: real data covers everything before it. */
 const FIRST_SEASON = 2026;
@@ -369,7 +370,7 @@ function userSeries(state: GameState, L: LegacyState, f: MatchFixture, comp: Com
       const count = hs.filter((h) => (intl ? h.ev === ev : h.key === key || (h.ev === 'dom' && h.league === comp.leagueId))).length + 1;
       if (n >= 3) {
         add('leg_win_npeat', 10, { npeat: peat(n), ...W(n) }, 5);
-        fm.mood = clamp(fm.mood + 12, -100, 100); team.hype = clamp(team.hype + 8, 0, 100); team.fans = Math.round(team.fans * 1.03);
+        fm.mood = clamp(fm.mood + 12, -100, 100); team.hype = clamp(team.hype + 8, 0, 100); boostFans(team, 0.03);
         ownerKey = 'leg_owner_npeat'; ownerCtx = { npeat: peat(n), ...W(n) }; newsKey = 'npeat'; newsCtx = { npeat: peat(n), ...W(n) };
       } else if (n === 2) {
         add('leg_win_b2b', 8, {}, 3);

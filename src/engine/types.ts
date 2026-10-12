@@ -203,6 +203,8 @@ export interface Player {
   trainingFocus?: keyof PlayerAttributes | 'champion' | null;
   learningChampion?: string | null;
   lastPlayed?: string;
+  /** date he joined his current club (fan bonds grow with tenure, management/fanbase.ts) */
+  joinedOn?: string;
   /** personal profile (looks, humor, height…), filled lazily by management/persona.ts so old saves load */
   persona?: PlayerPersona;
 }
@@ -273,7 +275,9 @@ export interface Team {
   balance: number;
   ledger: LedgerEntry[];
   monthly: { month: string; income: Record<string, number>; expense: Record<string, number> }[];
-  fans: number;
+  fans: number;               // total following (die-hards included)
+  diehard?: number;           // loyal core inside `fans` (management/fanbase.ts; seeded lazily for old saves)
+  reach?: number;             // casual fans the club draws at average form (fanbase.ts)
   hype: number;               // short-term buzz 0..100
   prestige: number;           // long-term reputation 0..100
   facilities: Record<FacilityKey, number>; // levels 0..5

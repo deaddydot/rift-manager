@@ -52,7 +52,9 @@ Saves are stored in your browser (IndexedDB, gzip-compressed) and can be exporte
   player development & aging, contracts/renewals/releases, transfer windows with AI teams buying and selling,
   scouting that reveals hidden attributes, solo-queue prospects each offseason, a batch of fictional free agents
   (rookies, journeymen, ex-pro veterans, rare gems) in every region whenever a transfer window opens, franchise slot sales, board
-  objectives, fans/hype/prestige, inbox & news.
+  objectives, fans/hype/prestige (a die-hard core that sticks around win or lose — built by club history, long-serving,
+  charismatic or streaming players and local heroes — and casual fans who follow results), AI clubs that renew sponsors,
+  restock merch and reinvest surpluses in facilities, inbox & news.
 - **Editor**: create custom players, teams and staff (portraits/logos uploaded from your computer), edit anyone
   (including coaches, analysts and other staff), and keep a reusable custom library.
 
