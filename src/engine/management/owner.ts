@@ -15,6 +15,7 @@ import { headCoach } from '../season/prep';
 import { placementLabel } from '../season/season';
 import { addDays, weekday } from '../season/formats';
 import { fanMood, fanEvent, fill, moodLabel, expectationPhrase, rivalry, type SeriesInfo, type ClubEvent, type Ctx } from './fans';
+import { boostFans } from './fanbase';
 import {
   OWNER_NAMES, OWNER_TITLES, OWNER_BACKGROUNDS, GREETINGS, SIGNOFFS, PS_LINES, OWNER_T, QUIRK_T, NEPHEW_NAMES, NEPHEW_RANKS, STREAMERS,
   DESIGNS, TWEETS, RENAMES, RITUALS, MASCOTS, PETS, WAGER_STAKES, UPBEAT, type OwnerTemplate,
@@ -146,7 +147,7 @@ function applyFx(state: GameState, o: OwnerState, fx: Fx, label = 'Owner'): stri
   if (fx.moraleEgo) { for (const p of roster) if (p.hidden.ego > 60) p.morale = clamp(p.morale + fx.moraleEgo, 5, 100); out.push(`Big egos’ morale ${signed(fx.moraleEgo)}`); }
   if (fx.chem) { team.chemistry = clamp(team.chemistry + fx.chem, 10, 100); out.push(`Chemistry ${signed(fx.chem)}`); }
   if (fx.hype) { team.hype = clamp(team.hype + fx.hype, 0, 100); out.push(`Hype ${signed(fx.hype)}`); }
-  if (fx.fans) { team.fans = Math.max(100, Math.round(team.fans * (1 + fx.fans / 100))); out.push(`Fans ${signed(fx.fans)}%`); }
+  if (fx.fans) { boostFans(team, fx.fans / 100); out.push(`Fans ${signed(fx.fans)}%`); }
   if (fx.fanMood) { const fm = fanMood(state, team.id); fm.mood = clamp(fm.mood + fx.fanMood, -100, 100); out.push(`Fan mood ${signed(fx.fanMood)}`); }
   if (fx.fatigue) { for (const p of roster) p.fatigue = clamp(p.fatigue + fx.fatigue, 0, 100); out.push(`Fatigue ${signed(fx.fatigue)}`); }
   return out.join(' · ');

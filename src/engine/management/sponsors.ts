@@ -1,11 +1,13 @@
 // Sponsorships: a pool of parody brands. Brands approach the club every few weeks (more often after big
-// results, fan growth or with few partners); offer size scales with fans, prestige, hype and the league.
+// results, fan growth or with few partners); offer size scales with the audience (die-hards count extra), prestige,
+// hype and the league, and bonus clauses pay for results.
 import type { GameState, Team, SponsorOffer, SponsorDeal, Competition, RegionId } from '../types';
 import { addLedger } from './finance';
 import { addInbox } from './news';
-import { RNG, clamp } from '../../util/rng';
+import { RNG, clamp, hashString } from '../../util/rng';
 import { LEAGUE_ECON } from '../setup';
 import { sponsorAppeal } from './traitEffects';
+import { sponsorAudience, audienceBenchmark } from './fanbase';
 
 export interface SponsorBrand { id: string; name: string; category: string; tier: 1 | 2 | 3; color: string; pitch: string; home?: RegionId[] }
 
@@ -105,13 +107,55 @@ const TIER_FIT: Record<number, [number, number, number]> = { 1: [0.6, 1, 1.3], 2
 
 function pickBrand(state: GameState, team: Team, rng: RNG, recent: string[]): SponsorBrand | null {
   const live = team.sponsors.filter((s) => s.endDate >= state.date);
-  const pending = state.sponsorOffers.filter((o) => o.expires >= state.date);
+  const pending = team.id === state.userTeamId ? state.sponsorOffers.filter((o) => o.expires >= state.date) : []; // offers on the table are the user's
   const taken = new Set([...live.map((s) => s.sponsorId), ...pending.map((o) => o.sponsorId), ...recent]);
   const cats = new Set([...live.map((s) => s.category), ...pending.map((o) => o.category)]);
   const cands = BRANDS.filter((b) => !taken.has(b.id) && !cats.has(b.category));
   if (!cands.length) return null;
   const fit = TIER_FIT[state.leagues[team.leagueId]?.tier ?? 3] ?? TIER_FIT[3];
   return rng.weighted(cands, (b) => fit[b.tier - 1] * (b.home ? (b.home.includes(team.region) ? 2 : 0.6) : 1));
+}
+
+/**
+ * Sponsor appeal 0.2..3 and its parts: the audience is the big one (absolute size vs the tier's benchmark — brands
+ * pay for eyeballs, die-hards count half again), then prestige, hype, the content studio and the faces on the roster.
+ */
+export function sponsorAppealParts(state: GameState, team: Team) {
+  const fans = (sponsorAudience(team) / audienceBenchmark(state, team)) * 0.6;
+  const prestige = team.prestige / 150, hype = team.hype / 250, studio = team.facilities.contentStudio * 0.05, faces = sponsorAppeal(state, team);
+  return { fans, prestige, hype, studio, faces, total: clamp(fans + prestige + hype + studio + faces, 0.2, 3) };
+}
+const DEAL_RATE: [number, number] = [0.08, 0.18]; // × league sponsor level × brand tier × appeal, per month
+/** Typical monthly fee range from a brand of this tier (Sponsors page). */
+export function offerRange(state: GameState, team: Team, brandTier: number): [number, number] {
+  const base = LEAGUE_ECON[state.leagues[team.leagueId]?.tier ?? 3].sponsor * brandTier * sponsorAppealParts(state, team).total;
+  return [base * DEAL_RATE[0], base * DEAL_RATE[1]];
+}
+/** Monthly fee a brand pays this club (offers to the user and AI renewals alike). */
+function dealMonthly(state: GameState, team: Team, brand: SponsorBrand, rng: RNG) {
+  const [lo, hi] = offerRange(state, team, brand.tier);
+  return Math.max(500, Math.round((lo + (hi - lo) * rng.next()) / 500) * 500);
+}
+
+/** Partners an AI club usually carries (setup.ts hands out the same numbers): tier 1 three to five, tier 2 one or two, tier 3 none or one. */
+const aiSponsorTarget = (state: GameState, team: Team) => {
+  const tier = state.leagues[team.leagueId]?.tier ?? 3, h = hashString(team.id);
+  return Math.min(sponsorSlots(team), tier === 1 ? 3 + (h % 3) : tier === 2 ? 1 + (h % 2) : h % 2);
+};
+
+/**
+ * Monthly (1st) for AI clubs below their usual number of partners: half the time a brand signs on at the going rate
+ * (same pricing as offers to the user, no bonus clause). About two months to replace an expired deal.
+ */
+export function aiSponsorRenewals(state: GameState, team: Team, rng: RNG) {
+  const live = team.sponsors.filter((s) => s.endDate >= state.date).length;
+  if (live >= aiSponsorTarget(state, team) || !rng.chance(0.5)) return;
+  const brand = pickBrand(state, team, rng, []);
+  if (!brand) return;
+  team.sponsors.push({
+    id: `${team.id}-sp${state.seq++}`, sponsorId: brand.id, name: brand.name, category: brand.category, tier: brand.tier,
+    monthly: dealMonthly(state, team, brand, rng), startDate: state.date, endDate: addDaysIso(state.date, rng.pick([12, 12, 24]) * 30), logoColor: brand.color,
+  });
 }
 
 /**
@@ -127,17 +171,14 @@ export function generateSponsorOffers(state: GameState, team: Team, rng: RNG): S
   if (!brand) return [];
   pace.lastOffer = state.date;
   pace.recent = [...(pace.recent ?? []), brand.id].slice(-6); // the last few brands don't come straight back
-  const league = state.leagues[team.leagueId];
-  const econ = LEAGUE_ECON[league?.tier ?? 3];
-  const appeal = clamp((team.fans / econ.fans) * 0.5 + team.prestige / 100 + team.hype / 200 + team.facilities.contentStudio * 0.06 + sponsorAppeal(state, team), 0.2, 3);
-  // in line with existing deals (setup.ts): a strong, popular club gets ~1-1.5x what its current partners pay
-  const monthly = Math.max(500, Math.round(econ.sponsor * brand.tier * appeal * (0.08 + rng.next() * 0.1) / 500) * 500);
+  const monthly = dealMonthly(state, team, brand, rng);
   const bonusType = rng.pick(['win_league', 'playoffs', 'qualify_international', 'fans'] as const);
   return [{
     id: `so_${state.seq++}`, sponsorId: brand.id, name: brand.name, category: brand.category, tier: brand.tier,
     monthly, months: rng.pick([6, 12, 12, 24]), logoColor: brand.color, pitch: brand.pitch,
     expires: addDaysIso(state.date, 14),
-    bonus: { type: bonusType, amount: Math.round(monthly * (bonusType === 'fans' ? 3 : bonusType === 'qualify_international' ? 6 : bonusType === 'win_league' ? 8 : 3) / 1000) * 1000, target: bonusType === 'fans' ? Math.round(team.fans * 1.25) : undefined },
+    // results pay: a clause is worth ~5–13 months of the base fee
+    bonus: { type: bonusType, amount: Math.round(monthly * (bonusType === 'fans' ? 5 : bonusType === 'qualify_international' ? 10 : bonusType === 'win_league' ? 13 : 5) / 1000) * 1000, target: bonusType === 'fans' ? Math.round(team.fans * 1.25) : undefined },
   }];
 }
 

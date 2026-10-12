@@ -3,7 +3,7 @@ import { useGame, useStore, nav } from '../../store/game';
 import type { FacilityKey } from '../../engine/types';
 import { FACILITY_INFO } from '../../engine/types';
 import { Panel, Stat, money } from '../components/kit';
-import { addLedger, facilityUpkeepMonthly, upgradeCost } from '../../engine/management/finance';
+import { addLedger, facilityUpkeep, facilityUpkeepMonthly, upgradeCost, UPGRADE_TIER_MULT } from '../../engine/management/finance';
 import { sponsorSlots } from '../../engine/management/sponsors';
 
 const MAX_LEVEL = 5;
@@ -53,13 +53,15 @@ export default function Facilities(_props: { id?: string; tab?: string; kind?: s
   const notify = useStore((s) => s.notify);
   const team = state.teams[state.userTeamId];
   const [confirm, setConfirm] = useState<FacilityKey | null>(null);
-  const upkeep = facilityUpkeepMonthly(team);
+  const upkeep = facilityUpkeepMonthly(state, team);
+  const tier = state.leagues[team.leagueId]?.tier ?? 3;
+  const perLevel = (k: FacilityKey) => facilityUpkeep(k, 1, tier); // running costs follow the league's scale
   const totalLevels = KEYS.reduce((a, k) => a + team.facilities[k], 0);
   const upgradable = KEYS.filter((k) => team.facilities[k] < MAX_LEVEL);
-  const cheapest = upgradable.sort((a, b) => upgradeCost(team, a) - upgradeCost(team, b))[0];
+  const cheapest = upgradable.sort((a, b) => upgradeCost(state, team, a) - upgradeCost(state, team, b))[0];
   const totalToMax = KEYS.reduce((a, k) => {
     let s = 0;
-    for (let l = team.facilities[k]; l < MAX_LEVEL; l++) s += Math.round(FACILITY_INFO[k].baseCost * Math.pow(1.75, l));
+    for (let l = team.facilities[k]; l < MAX_LEVEL; l++) s += Math.round(FACILITY_INFO[k].baseCost * Math.pow(1.75, l) * (UPGRADE_TIER_MULT[tier] ?? 1));
     return a + s;
   }, 0);
   const upgradesThisSeason = team.ledger.filter((e) => e.category === 'Facility upgrades' && e.date.slice(0, 4) === state.date.slice(0, 4)).reduce((a, e) => a - e.amount, 0);
@@ -67,7 +69,7 @@ export default function Facilities(_props: { id?: string; tab?: string; kind?: s
   const upgrade = (k: FacilityKey) => {
     const lvl = team.facilities[k];
     if (lvl >= MAX_LEVEL) return;
-    const cost = upgradeCost(team, k);
+    const cost = upgradeCost(state, team, k);
     if (team.balance < cost) { notify('Not enough money for this upgrade.'); return; }
     addLedger(state, team, 'Facility upgrades', -cost, `${FACILITY_INFO[k].name} → Lv ${lvl + 1}`);
     team.facilities[k] = lvl + 1;
@@ -90,7 +92,7 @@ export default function Facilities(_props: { id?: string; tab?: string; kind?: s
         <Stat label="Balance" value={money(team.balance)} color={team.balance < 0 ? '#f87171' : '#f0e6d2'} />
         <Stat label="Monthly upkeep" value={money(upkeep)} sub={`${money(upkeep * 12)} per year`} />
         <Stat label="Facility levels" value={`${totalLevels} / ${KEYS.length * MAX_LEVEL}`} sub={`${Math.round((totalLevels / (KEYS.length * MAX_LEVEL)) * 100)}% developed`} />
-        <Stat label="Cheapest upgrade" value={cheapest ? money(upgradeCost(team, cheapest)) : '—'} sub={cheapest ? FACILITY_INFO[cheapest].name : 'All facilities maxed'} />
+        <Stat label="Cheapest upgrade" value={cheapest ? money(upgradeCost(state, team, cheapest)) : '—'} sub={cheapest ? FACILITY_INFO[cheapest].name : 'All facilities maxed'} />
         <Stat label="Cost to max out" value={money(totalToMax)} sub="all remaining levels" />
         <Stat label="Invested this year" value={money(upgradesThisSeason)} sub="facility upgrades" />
       </div>
@@ -100,7 +102,7 @@ export default function Facilities(_props: { id?: string; tab?: string; kind?: s
           const info = FACILITY_INFO[k];
           const lvl = team.facilities[k];
           const maxed = lvl >= MAX_LEVEL;
-          const cost = maxed ? 0 : upgradeCost(team, k);
+          const cost = maxed ? 0 : upgradeCost(state, team, k);
           const affordable = team.balance >= cost;
           const cur = EFFECTS[k](lvl);
           const next = maxed ? null : EFFECTS[k](lvl + 1);
@@ -135,8 +137,8 @@ export default function Facilities(_props: { id?: string; tab?: string; kind?: s
                   ))}
                   <tr>
                     <td className="text-muted">Upkeep / month</td>
-                    <td className="text-right font-display font-bold">{lvl ? money(info.upkeep * lvl) : '$0'}</td>
-                    <td className="text-right font-display font-bold text-red-400">{maxed ? '' : money(info.upkeep * (lvl + 1))}</td>
+                    <td className="text-right font-display font-bold">{lvl ? money(perLevel(k) * lvl) : '$0'}</td>
+                    <td className="text-right font-display font-bold text-red-400">{maxed ? '' : money(perLevel(k) * (lvl + 1))}</td>
                   </tr>
                 </tbody>
               </table>
@@ -150,7 +152,7 @@ export default function Facilities(_props: { id?: string; tab?: string; kind?: s
                     <div className="flex-1">
                       <div className="text-[11px] uppercase tracking-wider text-muted font-semibold">Upgrade cost</div>
                       <div className={`font-display text-xl font-bold leading-none ${affordable ? '' : 'text-red-400'}`}>{money(cost)}</div>
-                      <div className="text-[11px] text-dim">+{money(info.upkeep)}/month upkeep</div>
+                      <div className="text-[11px] text-dim">+{money(perLevel(k))}/month upkeep</div>
                     </div>
                     {confirm === k ? (
                       <div className="flex gap-1.5">
@@ -180,10 +182,10 @@ export default function Facilities(_props: { id?: string; tab?: string; kind?: s
                 <tr key={k}>
                   <td className="font-semibold">{FACILITY_INFO[k].name}</td>
                   <td className="text-center font-display font-bold">{lvl}</td>
-                  <td className="text-right text-muted">{money(FACILITY_INFO[k].upkeep)}</td>
-                  <td className="text-right font-display font-bold">{money(FACILITY_INFO[k].upkeep * lvl)}</td>
-                  <td className="text-right text-muted">{money(FACILITY_INFO[k].upkeep * lvl * 12)}</td>
-                  <td className="text-right">{lvl >= MAX_LEVEL ? <span className="text-dim">max</span> : money(upgradeCost(team, k))}</td>
+                  <td className="text-right text-muted">{money(perLevel(k))}</td>
+                  <td className="text-right font-display font-bold">{money(perLevel(k) * lvl)}</td>
+                  <td className="text-right text-muted">{money(perLevel(k) * lvl * 12)}</td>
+                  <td className="text-right">{lvl >= MAX_LEVEL ? <span className="text-dim">max</span> : money(upgradeCost(state, team, k))}</td>
                 </tr>
               );
             })}

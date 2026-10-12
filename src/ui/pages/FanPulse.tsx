@@ -5,6 +5,7 @@ import { Panel, Empty, TeamLogo, Bar, Stat, Sparkline, Portrait, num } from '../
 import { MoodGauge, PostCard, SENTIMENT_COLOR, compact } from '../components/FanPulseWidget';
 import { PERSONA_INFO, SCENARIO_META } from '../../engine/management/fanTemplates';
 import { moodLabel, expectationLabel, rivalry } from '../../engine/management/fans';
+import { loyalty, diehardShare } from '../../engine/management/fanbase';
 
 type Scope = 'mine' | 'world' | 'all';
 type Tone = 'all' | 'pos' | 'neg';
@@ -57,6 +58,8 @@ export default function FanPulse(_props: { id?: string }) {
   const fanbases = useMemo(() => Object.entries(fp?.teams ?? {}).map(([id, m]) => ({ t: state.teams[id], m }))
     .filter((x) => x.t && (x.t.leagueId === team.leagueId || x.t.id === team.id || rivalry(state, team.id, x.t.id)))
     .sort((a, b) => b.m.mood - a.m.mood), [fp, v]);
+  const loyal = useMemo(() => loyalty(state, team), [state, team, v]);
+  const diehards = team.diehard ?? 0;
   const sentiment = mine.slice(0, 40);
   const pos = sentiment.filter((p) => p.sentiment > 0).length, neg = sentiment.filter((p) => p.sentiment < 0).length;
 
@@ -65,7 +68,7 @@ export default function FanPulse(_props: { id?: string }) {
       <div className="flex items-end justify-between gap-4 flex-wrap">
         <div>
           <h1 className="font-display text-3xl font-bold gold-text leading-none">Fan Pulse</h1>
-          <div className="text-sm text-muted mt-1">What the {team.short} faithful (and everyone else) are saying · {num(team.fans)} fans</div>
+          <div className="text-sm text-muted mt-1">What the {team.short} faithful (and everyone else) are saying · {num(team.fans)} fans, {num(diehards)} die-hard</div>
         </div>
         <input className="input w-64" placeholder="Search posts or users…" value={q} onChange={(e) => { setQ(e.target.value); setLimit(PAGE); }} />
       </div>
@@ -104,6 +107,33 @@ export default function FanPulse(_props: { id?: string }) {
         </div>
 
         <div className="space-y-4">
+          <Panel title="Fan base">
+            <div className="grid grid-cols-2 gap-2">
+              <Stat label="Die-hard" value={num(diehards)} sub={`${Math.round(diehardShare(team) * 100)}% · stay win or lose`} color="#f0c674" />
+              <Stat label="Casual" value={num(team.fans - diehards)} sub="come and go with results" />
+            </div>
+            <div className="text-[11px] uppercase tracking-wider text-muted font-semibold mt-3 mb-1">What keeps them loyal · {loyal.total.toFixed(2)}</div>
+            <div className="space-y-1">
+              <Bar label="Club history & honours" value={loyal.history} max={0.35} color="#c8aa6e" showValue={false} height={5} />
+              <Bar label="Players they love" value={loyal.players} max={0.3} color="#38bdf8" showValue={false} height={5} />
+              <Bar label="Community (content studio)" value={loyal.community} max={0.075} color="#a78bfa" showValue={false} height={5} />
+            </div>
+            <div className="mt-3 space-y-1.5">
+              {loyal.bonds.filter((b) => b.bond > 0.004).slice(0, 5).map((b) => {
+                const p = state.players[b.id];
+                return (
+                  <button key={b.id} className="w-full flex items-center gap-2 text-left hover:bg-[#111a2e] rounded px-1 py-0.5" onClick={() => nav('player', b.id)}>
+                    <Portrait player={p} team={team} size={24} />
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm font-semibold truncate">{p.handle} <span className="text-[11px] text-dim font-normal">~{num(Math.round(diehards * b.bond / loyal.total))} follow him</span></div>
+                      <div className="text-[11px] text-dim truncate">{b.reasons.join(' · ')}</div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+            <div className="text-[11px] text-dim mt-2 leading-relaxed">Years at the club, personality, streaming, starting every week and local roots turn casual fans into die-hards over months. Sell a favourite and some of his followers leave with him.</div>
+          </Panel>
           {fm?.trend && fm.trend.length > 1 && (
             <Panel title="Mood over time">
               <Sparkline data={fm.trend} width={300} height={60} color={moodLabel(fm.mood).color} zero />

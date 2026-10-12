@@ -82,7 +82,7 @@ function TeamView({ state, team }: { state: GameState; team: Team }) {
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-8 gap-2 p-3 border-t hairline">
           <Stat label="Prestige" value={Math.round(team.prestige)} sub={prestigeLabel(team.prestige)} color={prestigeColor(team.prestige)} />
-          <Stat label="Fans" value={num(team.fans)} sub="followers" />
+          <Stat label="Fans" value={num(team.fans)} sub={team.diehard ? `${num(team.diehard)} die-hard` : 'followers'} />
           <Stat label="Hype" value={Math.round(team.hype)} sub={team.hype >= 70 ? 'buzzing' : team.hype >= 45 ? 'steady' : 'quiet'} color={team.hype >= 70 ? '#f97316' : undefined} />
           <Stat label="Chemistry" value={Math.round(team.chemistry)} sub={team.chemistry >= 75 ? 'excellent' : team.chemistry >= 60 ? 'good' : 'needs work'} color={team.chemistry >= 75 ? '#22c55e' : team.chemistry < 50 ? '#ef4444' : undefined} />
           <Stat label={`${state.season} record`} value={`${rec.w}-${rec.l}`} sub={`games ${rec.gw}-${rec.gl}`} />

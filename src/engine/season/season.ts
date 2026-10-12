@@ -9,6 +9,7 @@ import { competitionAwards } from '../management/awards';
 import { addLedger } from '../management/finance';
 import { checkSponsorBonuses } from '../management/sponsors';
 import { breakthrough } from '../management/potential';
+import { boostFans } from '../management/fanbase';
 
 type CompExt = Competition & { specs?: StageSpec[]; qualifiesTo?: CompTemplate['qualifies']; direct?: Record<string, string[]>; template?: string; countsPoints?: boolean };
 
@@ -171,7 +172,7 @@ export function finishCompetition(state: GameState, comp: CompExt) {
   if (champion && comp.kind !== 'league') {
     champion.titles.push({ season: comp.season, competition: comp.name });
     champion.hype = Math.min(100, champion.hype + (comp.tier === 0 ? 30 : 15));
-    champion.fans = Math.round(champion.fans * (comp.tier === 0 ? (comp.tags?.includes('worlds') ? 1.35 : 1.15) : 1.06));
+    boostFans(champion, comp.tier === 0 ? (comp.tags?.includes('worlds') ? 0.35 : 0.15) : 0.06); // casual fans flock in (fanbase.ts)
     for (const pid of champion.roster) {
       const p = state.players[pid];
       if (!p) continue;

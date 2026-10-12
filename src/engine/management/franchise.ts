@@ -73,7 +73,8 @@ export function applyFranchiseMoves(state: GameState, rng: RNG) {
     const buyerLeague = buyer.leagueId;
     buyer.leagueId = sale.league; buyer.franchise = true;
     seller.leagueId = buyerLeague; seller.franchise = false;
-    seller.balance += sale.price;
+    // the slot belongs to the ownership group, which pockets the proceeds (club cash isn't touched); an AI buyer's
+    // investors fund its purchase. Crediting the seller here created $12–22M out of nothing whenever an AI club bought.
     addNews(state, { headline: `${buyer.name} officially join the ${sale.league}`, body: `${seller.name} move to the ${state.leagues[buyerLeague]?.name ?? buyerLeague}.`, tags: ['franchise'], teamIds: [buyer.id, seller.id] });
     sale.status = 'expired';
   }

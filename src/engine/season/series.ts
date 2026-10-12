@@ -18,6 +18,7 @@ import { feedResult } from './formats';
 import { onSeriesFinished } from '../management/reactions';
 import { peopleAfterSeries } from '../management/people';
 import { traitPower } from '../management/traitEffects';
+import { boostFans } from '../management/fanbase';
 
 // ------------------------------------------------------------------ quick draft (background matches)
 export function quickDraft(blue: DraftTeam, red: DraftTeam, locked: Set<string>, rng: RNG, patch: Record<string, number>): DraftState {
@@ -227,7 +228,7 @@ export function finishSeries(state: GameState, s: SeriesContext) {
   feedResult(f, state.fixtures);
   // team-level effects
   const w = state.teams[winner], l = state.teams[loser];
-  if (w) { w.hype = clamp(w.hype + 2, 0, 100); w.fans = Math.round(w.fans * 1.002); }
+  if (w) { w.hype = clamp(w.hype + 2, 0, 100); boostFans(w, 0.002); }
   if (l) { l.hype = clamp(l.hype - 1.5, 0, 100); }
   for (const [team, won] of [[w, true], [l, false]] as [Team, boolean][]) {
     if (!team) continue;

@@ -15,6 +15,7 @@ import { emit, baseCtx, fanMood, fill, type Ctx } from './fans';
 import { addNews } from './news';
 import { regionOfCountry } from './transfers';
 import { registerPersonaTemplates, PERSONA_NEWS } from './personaTemplates';
+import { boostFans, addFans } from './fanbase';
 
 const z = (v: number) => (v - 50) / 50;
 const T = (p: Player) => fxTotal(p.traits).num;
@@ -81,7 +82,7 @@ export function personaWeekly(state: GameState, rng: RNG) {
       p.fatigue = clamp(p.fatigue + fatigue, 0, 100);
       p.morale = clamp(p.morale + morale, 5, 100);
     }
-    team.fans = Math.max(100, team.fans + fanGain);
+    addFans(team, fanGain);
     if (userClub) {
       team.hype = clamp(team.hype + Math.min(1.5, hype), 0, 100);
       peace(state, roster);
@@ -137,7 +138,7 @@ function streamMoment(state: GameState, rng: RNG, team: Team, roster: Player[]) 
   post(state, rng, team, kind, { player: p.handle, viewers: fmtCount(viewers), hours: rng.int(10, 30) }, rng.int(1, 3), p.id);
   const score = streamScore(p);
   team.hype = clamp(team.hype + 0.6 + 0.4 * score, 0, 100);
-  team.fans += Math.round(team.fans * 0.0004 * score);
+  boostFans(team, 0.0004 * score);
   p.persona!.followers = Math.round((p.persona!.followers ?? 0) * 1.02);
   fm.mood = clamp(fm.mood + 0.8, -100, 100);
 }

@@ -8,6 +8,7 @@ import { MAX_STAFF, staffRating, staffSalaryDemand, adoptPoolStaff } from './sta
 import { RNG, clamp, hashString } from '../../util/rng';
 import { noteEdit } from './buzzCore';
 import { RATING_MAX, marketDrift } from '../ratings';
+import { setFans } from './fanbase';
 
 export const slugify = (s: string) =>
   s.toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 32) || 'x';
@@ -280,7 +281,7 @@ export function applyTeamDraft(state: GameState, t: Team, d: TeamDraft) {
   t.country = d.country || t.country;
   if (d.leagueId !== t.leagueId && state.leagues[d.leagueId]) { t.leagueId = d.leagueId; t.region = state.leagues[d.leagueId].region; }
   t.balance = Math.round(d.balance);
-  t.fans = Math.max(0, Math.round(d.fans));
+  setFans(t, d.fans);
   t.prestige = clamp(Math.round(d.prestige), 1, 99);
   t.hype = clamp(Math.round(d.hype), 0, 100);
   t.facilities = { ...d.facilities };

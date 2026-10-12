@@ -11,6 +11,7 @@ import { defaultMerch } from './management/merch';
 import { initReactions } from './management/reactions';
 import { ensurePersonas } from './management/persona';
 import { traitSalaryMult } from './management/traitEffects';
+import { ensureFanbase } from './management/fanbase';
 
 export interface DbPlayer {
   id: string; link: string; handle: string; name: string; nativeName?: string; country: string; birthdate?: string;
@@ -32,11 +33,16 @@ export const SEASON_YEAR = 2026;
 export { overall } from './ratings';
 
 export const LEAGUE_ECON: Record<number, { salary: number; budget: number; fans: number; sponsor: number }> = {
-  1: { salary: 3.2, budget: 9_000_000, fans: 1_200_000, sponsor: 260_000 },
-  2: { salary: 0.55, budget: 1_200_000, fans: 120_000, sponsor: 30_000 },
+  1: { salary: 3.2, budget: 9_000_000, fans: 1_200_000, sponsor: 160_000 },
+  2: { salary: 0.55, budget: 1_200_000, fans: 120_000, sponsor: 36_000 },
   3: { salary: 0.18, budget: 250_000, fans: 15_000, sponsor: 6_000 },
 };
 const LEAGUE_MULT: Record<string, number> = { LCK: 1.1, LPL: 1.25, LEC: 0.7, LCS: 0.75, LCP: 0.35, CBLOL: 0.32 };
+/** Size of a league's fan market (the tier's benchmark, scaled by region for tier 1). */
+export function leagueMarket(state: GameState, team: Team): number {
+  const tier = state.leagues[team.leagueId]?.tier ?? 3;
+  return (LEAGUE_ECON[tier]?.fans ?? LEAGUE_ECON[3].fans) * (tier === 1 ? LEAGUE_MULT[team.leagueId] ?? 0.5 : 1);
+}
 
 /** `drift`: marketDrift(state) for players (wages follow standing, not the raw number); 0 for staff. */
 export function salaryFor(ovr: number, tier: number, leagueId: string, traits: string[], drift = 0): number {
@@ -185,6 +191,7 @@ export function createNewGame(db: Database, userTeamId: string, managerName: str
   ensureRatingScale(state); // potentials onto the 0..200 rating scale (management/potential.ts)
   ensurePersonas(state); // personal profiles + extended traits (management/persona.ts)
   createSeason(state, SEASON_YEAR);
+  ensureFanbase(state); // die-hard core vs casual fans (management/fanbase.ts)
   initReactions(state); // fan pulse + owner persona
   return state;
 }

@@ -16,6 +16,7 @@ import { MERCH_TEMPLATES } from './merch';
 import { inTransferWindow } from './transfers';
 import { FAN_TEMPLATES, SCENARIO_META, USERNAMES, REPLIES } from './fanTemplates';
 import { archivePost, buzzSeriesScenes } from './buzzCore';
+import { boostFans, diehardShare } from './fanbase';
 
 export type Ctx = Record<string, string | number | undefined>;
 const MAX_POSTS = 150;
@@ -492,7 +493,7 @@ function userSeriesPosts(state: GameState, info: SeriesInfo) {
   if (info.comp && info.comp.tier > 0) {
     const tier = tierOf(state, team);
     const cap = (tier === 1 ? 600 : tier === 2 ? 200 : 60) * (info.final ? 4 : info.comp.kind === 'playoffs' ? 1.8 : 1);
-    const fillRate = clamp(0.3 + (fm.mood + 100) / 400 + team.hype / 300 + (info.rival ? 0.08 : 0), 0.08, 1);
+    const fillRate = clamp(0.3 + (fm.mood + 100) / 400 + team.hype / 300 + (info.rival ? 0.08 : 0) + (diehardShare(team) - 0.3) * 0.3, 0.08, 1); // die-hards turn up win or lose
     fm.attendance = Math.round(fillRate * 100);
     addLedger(state, team, 'Ticketing & matchday', Math.round(cap * fillRate * (team.ticketPrice ?? 20) * 0.22), `vs ${opp.short} (${fm.attendance}% full)`);
   }
@@ -688,7 +689,7 @@ function weekly(state: GameState, rng: RNG, team: Team, fm: FanMood, ctx: Ctx) {
   // light feedback: buzz follows the mood, the fanbase slowly grows or shrinks, egos feel the noise
   const target = clamp(50 + fm.mood * 0.35, 5, 100);
   team.hype = clamp(team.hype + (target - team.hype) * 0.15, 0, 100);
-  team.fans = Math.max(100, Math.round(team.fans * (1 + fm.mood * 0.00003)));
+  boostFans(team, fm.mood * 0.00003);
   if (Math.abs(fm.mood) > 40) for (const r of ROLES) {
     const p = team.lineup[r] ? state.players[team.lineup[r]!] : undefined;
     if (p) p.morale = clamp(p.morale + Math.sign(fm.mood) * (fm.mood > 0 ? 0.4 : 0.7) * sensitivity(state, team, p), 5, 100);
