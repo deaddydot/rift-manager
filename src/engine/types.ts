@@ -104,7 +104,7 @@ export const ATTRIBUTE_LABEL: Record<keyof PlayerAttributes, string> = {
 
 /** Hidden attributes: never shown directly; scouting reveals estimates. */
 export interface HiddenAttributes {
-  potential: number;      // ceiling of overall rating
+  potential: number;      // ceiling of overall rating (1..200, engine/ratings.ts)
   farsight: number;       // reads end-game openings → surprise macro, backdoors, baron sneaks
   mistakes: number;       // tendency for punishable mistakes (higher = worse)
   composure: number;      // tilt resistance
@@ -178,6 +178,10 @@ export interface Player {
   champions: Record<string, number>; // champion id -> comfort 0..200 (see engine/mastery.ts)
   /** 200 once the champion pool is on the 0..200 comfort scale (older saves are converted on load) */
   masteryScale?: number;
+  /** 200 once the potential is on the 0..200 rating scale (engine/ratings.ts; older saves are converted on load) */
+  ratingScale?: number;
+  /** lowest rating of the highest band reached so far (development milestones, management/development.ts) */
+  topBand?: number;
   playstyle: string[];
   morale: number;             // 0..100
   form: number;               // -10..+10

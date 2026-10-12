@@ -6,6 +6,7 @@ import type { SimPlayerInput, SimTeamInput } from '../sim/simtypes';
 import type { DraftTeam, DraftPlayer } from '../draft/draft';
 import { comfort } from '../draft/draft';
 import { overall } from '../setup';
+import { clampRating, simRating } from '../ratings';
 import { peopleAdj } from '../management/peopleFx';
 import { offRoleMult, prepTraitInput } from '../management/traitEffects';
 
@@ -75,13 +76,13 @@ export function effective(state: GameState, p: Player, team: Team, role: Role): 
     if (k === 'aggression') continue;
     let v = a[k] + adj;
     if (offRole && (k === 'mechanics' || k === 'laning' || k === 'farming' || k === 'macro' || k === 'pathing')) v -= offRole;
-    a[k] = clamp(Math.round(v), 1, 99);
+    a[k] = clampRating(Math.round(v));
   }
   if (coach) {
-    a.macro = clamp(a.macro + Math.round((coach.attributes.tactics - 60) * 0.05), 1, 99);
-    a.teamfight = clamp(a.teamfight + Math.round((coach.attributes.tactics - 60) * 0.03), 1, 99);
+    a.macro = clampRating(a.macro + Math.round((coach.attributes.tactics - 60) * 0.05));
+    a.teamfight = clampRating(a.teamfight + Math.round((coach.attributes.tactics - 60) * 0.03));
   }
-  a.macro = clamp(a.macro + team.facilities.analyticsLab * 0.5, 1, 99);
+  a.macro = clampRating(a.macro + team.facilities.analyticsLab * 0.5);
   return a;
 }
 
@@ -91,7 +92,7 @@ export function draftTeam(state: GameState, team: Team): DraftTeam {
   const players: DraftPlayer[] = ROLES.map((r) => {
     const p = lp[r];
     const e = effective(state, p, team, r);
-    return { id: p.id, name: p.handle, role: r, champions: p.champions, adaptability: e.adaptability, rating: overall(e, r), traits: p.traits };
+    return { id: p.id, name: p.handle, role: r, champions: p.champions, adaptability: simRating(e.adaptability), rating: simRating(overall(e, r)), traits: p.traits };
   });
   const sb = staffBonus(state, team);
   return { teamId: team.id, name: team.name, players, drafting: clamp(Math.max(coach?.attributes.drafting ?? 50, sb.drafting) + team.facilities.analyticsLab * 3, 1, 99), style: team.tactics.playstyle };
@@ -107,8 +108,9 @@ export function simTeam(state: GameState, team: Team, picks: Record<Role, string
     const mastery = Math.round(comfort(dp, picks[r], r) * 200); // 0..200 comfort scale
     return prepTraitInput(state, p, { // + comms clarity, Contract-Year Player (management/traitEffects.ts)
       playerId: p.id, name: p.handle, role: r, championId: picks[r], image: p.imageUrl,
-      mech: e.mechanics, lane: e.laning, farm: e.farming, tf: e.teamfight, macro: e.macro, vision: e.vision, pathing: e.pathing, obj: e.objectives,
-      aggression: clamp(e.aggression + (team.tactics.aggression - 50) * 0.3, 1, 99), consistency: e.consistency, clutch: e.clutch, shotcalling: e.shotcalling,
+      // skills enter the engine on the simRating scale: unchanged to 100, then slowly flattening (engine/ratings.ts)
+      mech: simRating(e.mechanics), lane: simRating(e.laning), farm: simRating(e.farming), tf: simRating(e.teamfight), macro: simRating(e.macro), vision: simRating(e.vision), pathing: simRating(e.pathing), obj: simRating(e.objectives),
+      aggression: clamp(e.aggression + (team.tactics.aggression - 50) * 0.3, 1, 99), consistency: simRating(e.consistency), clutch: simRating(e.clutch), shotcalling: simRating(e.shotcalling),
       mastery, farsight: p.hidden.farsight, mistakes: p.hidden.mistakes, composure: clamp(p.hidden.composure + (staffBonus(state, team).motivation - 50) * 0.15 + team.facilities.wellness, 1, 99), snowball: p.hidden.snowball, resilience: p.hidden.resilience, traits: p.traits,
     });
   });

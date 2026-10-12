@@ -10,6 +10,7 @@ import type { SimPlayerInput } from '../sim/simtypes';
 import { contextPerf, profileOf } from '../sim/traitSim';
 import type { DraftState } from '../draft/draft';
 import { personaOf, languageOf } from './persona';
+import { clampSimStat } from '../ratings';
 
 const T = (p: { traits: readonly string[] }) => fxTotal(p.traits).num;
 const z = (v: number) => (v - 50) / 50; // profile stat → -1..+1
@@ -142,9 +143,9 @@ export const offRoleMult = (p: Player) => T(p).offRole;
 
 /** State-aware sim-input tweaks: voice-comms clarity → shotcalling (±3), Contract-Year Player in their final year. */
 export function prepTraitInput(state: GameState, p: Player, input: SimPlayerInput): SimPlayerInput {
-  input.shotcalling = clamp(Math.round(input.shotcalling + z(personaOf(p).comms) * 3), 1, 99);
+  input.shotcalling = clampSimStat('shotcalling', input.shotcalling + z(personaOf(p).comms) * 3);
   const cy = T(p).contractYear;
-  if (cy && finalContractYear(state, p)) for (const k of ['mech', 'lane', 'farm', 'tf', 'macro', 'obj'] as const) input[k] = clamp(input[k] + cy, 1, 99);
+  if (cy && finalContractYear(state, p)) for (const k of ['mech', 'lane', 'farm', 'tf', 'macro', 'obj'] as const) input[k] = clampSimStat(k, input[k] + cy);
   return input;
 }
 

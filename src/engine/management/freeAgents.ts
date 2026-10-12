@@ -10,12 +10,28 @@ import { NAMES } from './staffMarket';
 import { gd, hasGameData } from '../../data/gamedata';
 import { metaScore } from '../draft/draft';
 import { ensurePersona } from './persona';
+import { rollPotential } from './potential';
+import { RATING_MAX, marketDrift } from '../ratings';
 
 type Archetype = 'rookie' | 'gem' | 'journeyman' | 'veteran';
 type WithFA = GameState & { freeAgentWindow?: string }; // key of the last window that got a batch
 
-// median overall of real tier-1 / tier-2 starters per region (2026 data)
+// median overall of real tier-1 / tier-2 starters per region (2026 data); the live medians take over once the
+// save's world has moved on (players develop on the 0..200 scale, so the market keeps pace)
 const LEVEL: Record<RegionId, [number, number]> = { KR: [72, 55], CN: [72, 57], EMEA: [61, 43], NA: [59, 44], APAC: [59, 45], BR: [52, 43] };
+function regionLevels(state: GameState): Record<RegionId, [number, number]> {
+  const xs: Record<string, [number[], number[]]> = {};
+  for (const t of Object.values(state.teams)) {
+    const tier = state.leagues[t.leagueId]?.tier;
+    if (tier !== 1 && tier !== 2) continue;
+    const b = (xs[t.region] ??= [[], []])[tier - 1];
+    for (const [r, id] of Object.entries(t.lineup)) { const p = id ? state.players[id] : null; if (p) b.push(overall(p.attributes, r as Role)); }
+  }
+  const med = (a: number[], dflt: number) => (a.length >= 10 ? [...a].sort((x, y) => x - y)[a.length >> 1] : dflt);
+  const out = {} as Record<RegionId, [number, number]>;
+  for (const r of Object.keys(LEVEL) as RegionId[]) out[r] = [med(xs[r]?.[0] ?? [], LEVEL[r][0]), med(xs[r]?.[1] ?? [], LEVEL[r][1])];
+  return out;
+}
 const COUNTRY_MIX: Record<RegionId, [string, number][]> = {
   KR: [['KR', 1]],
   CN: [['CN', 90], ['TW', 5], ['KR', 5]],
@@ -117,28 +133,27 @@ function championPool(rng: RNG, role: Role, ovr: number, size: number): Record<s
   return out;
 }
 
-function makePlayer(state: GameState, rng: RNG, region: RegionId, role: Role, key: string, idx: number, used: Set<string>): Player {
+function makePlayer(state: GameState, rng: RNG, region: RegionId, role: Role, key: string, idx: number, used: Set<string>, level: [number, number]): Player {
   const arch = pickArchetype(rng);
-  const [t1, t2] = LEVEL[region];
+  const [t1, t2] = level;
   const code = rng.weighted(COUNTRY_MIX[region], (c) => c[1])[0];
   const ns = NAMES[code] ?? NAMES.US;
   const handle = uniqueHandle(rng, code, used);
   const name = ns.order === 'family-first' ? `${rng.pick(ns.last)} ${rng.pick(ns.first)}` : `${rng.pick(ns.first)} ${rng.pick(ns.last)}`;
   const age = arch === 'veteran' ? rng.int(26, 31) : arch === 'journeyman' ? rng.int(20, 26) : rng.int(arch === 'gem' ? 17 : 16, 19);
   const target = Math.round(arch === 'rookie' ? t2 - 8 + rng.normal(0, 4) : arch === 'gem' ? t1 - 9 + rng.normal(0, 3) : arch === 'journeyman' ? t2 + 1 + rng.normal(0, 4) : (t1 + t2) / 2 + rng.normal(0, 4));
-  const ovr = clamp(target, 20, 85);
-  const potential = clamp(Math.round(
-    arch === 'rookie' ? Math.max(ovr + 8, t1 - 6 + Math.abs(rng.normal(0, 9)))
-      : arch === 'gem' ? Math.max(ovr + 12, t1 + 8 + Math.abs(rng.normal(0, 6)))
-        : ovr + (arch === 'journeyman' ? rng.int(0, 4) : rng.int(0, 2))), 25, arch === 'gem' ? 96 : 94);
+  const ovr = clamp(target, 20, 150);
+  // ceiling on the 0..200 scale (management/potential.ts): gems roll higher, journeymen and ex-pros lower
+  const potential = rollPotential(ovr, age, rng, arch === 'gem' ? 0.35 : arch === 'journeyman' ? -0.25 : arch === 'veteran' ? -0.4 : 0);
 
   // attributes around the target overall (archetype + role shape), then shifted so overall() hits the target
   const a = {} as PlayerAttributes;
-  for (const k of ATTRIBUTE_KEYS) a[k] = clamp(Math.round(ovr + (ARCH_BIAS[arch][k] ?? 0) + (ROLE_BIAS[role][k] ?? 0) + rng.normal(0, 5)), 10, 95);
+  const top = Math.max(95, ovr + 12);
+  for (const k of ATTRIBUTE_KEYS) a[k] = clamp(Math.round(ovr + (ARCH_BIAS[arch][k] ?? 0) + (ROLE_BIAS[role][k] ?? 0) + rng.normal(0, 5)), 10, top);
   for (let pass = 0; pass < 3; pass++) {
     const diff = ovr - overall(a, role);
     if (!diff) break;
-    for (const k of ATTRIBUTE_KEYS) if (k !== 'aggression') a[k] = clamp(a[k] + diff, 10, 95);
+    for (const k of ATTRIBUTE_KEYS) if (k !== 'aggression') a[k] = clamp(a[k] + diff, 10, top);
   }
   a.aggression = clamp(Math.round(rng.normal(arch === 'veteran' ? 45 : arch === 'journeyman' ? 52 : 59, 14)), 10, 95);
 
@@ -174,9 +189,9 @@ function makePlayer(state: GameState, rng: RNG, region: RegionId, role: Role, ke
     morale: rng.int(62, 74), form: 0, fatigue: 0, contract: null, reputation: rep, value: 0,
     season: emptySeasonStats(), history: [], career: [],
     personality: { professionalism: hidden.professionalism, ambition: clamp(hidden.ego + 10, 1, 99), loyalty: hidden.loyalty, temperament: clamp(100 - hidden.composure, 1, 99) },
-    generated: state.date, trainingFocus: null, learningChampion: null,
+    generated: state.date, trainingFocus: null, learningChampion: null, ratingScale: RATING_MAX,
   };
-  p.value = marketValue(p, state.date);
+  p.value = marketValue(p, state.date, marketDrift(state));
   ensurePersona(p, state.date); // personal profile + extended traits
   return p;
 }
@@ -217,13 +232,14 @@ export function generateWindowFreeAgents(state: GameState): number {
   const teamsIn: Record<string, number> = {};
   for (const t of Object.values(state.teams)) teamsIn[t.region] = (teamsIn[t.region] ?? 0) + 1;
   const mid = key.endsWith('-mid');
+  const levels = regionLevels(state);
   let total = 0;
   for (const region of Object.keys(LEVEL) as RegionId[]) {
     if (!teamsIn[region]) continue;
     const count = clamp(Math.round((6 + Math.sqrt(teamsIn[region]) * 1.3) * (mid ? 0.7 : 1)), 8, 20);
     const offset = rng.int(0, 4);
     for (let i = 0; i < count; i++) {
-      const p = makePlayer(state, rng, region, ROLES[(i + offset) % 5], key, i, used);
+      const p = makePlayer(state, rng, region, ROLES[(i + offset) % 5], key, i, used, levels[region]);
       if (state.players[p.id]) continue;
       state.players[p.id] = p;
       total++;

@@ -27,6 +27,15 @@ Saves are stored in your browser (IndexedDB, gzip-compressed) and can be exporte
   (end-game far-sight, mistake-proneness, composure, snowball/resilience, potential, work ethic, ego, loyalty…)
   and **traits** (Game Ender, Ice Veins, Throw Merchant, Coinflip, Lane Kingdom, Objective Thief, Weakside Hero…)
   that change how they play in matches.
+- **Ratings run 0–200** (`src/engine/ratings.ts`): the best players of 2026 sit around 90, tier-2 regulars around 45–60,
+  and 100+ (Elite, Legendary 125+, Mythic 150+, Immortal 180+) is beyond anyone playing today. Potentials are on the
+  same scale — young tier-1 stars typically have ceilings of 130–170, the rare prodigy 200, and lower-league kids
+  enough room to climb leagues (`src/engine/management/potential.ts`). Growth comes from training (room to the
+  ceiling, age, work ethic, and a club's coaching × training facility, which roughly doubles from a bare-bones club
+  to an elite one) and from official games — wins on big stages most — and winners who reach their ceiling can push
+  it higher (`src/engine/management/development.ts`). The match engine is tuned on 1–100: above that, each point is
+  worth a little less (`simRating`: 120 → 116.5, 150 → 132, 200 → 143), and wages follow a player's standing in the
+  market rather than the raw number.
 - **Top-down match simulator** (`src/engine/sim`): a tick-based Summoner's Rift with real tower/camp/pit
   positions, A* pathing on the real walkability map, minion waves with wave management (push / slow push / freeze),
   lane priority and roams, jungle pathing and ganks, vision & wards (map control after towers fall), trades and

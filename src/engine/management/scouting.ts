@@ -6,6 +6,7 @@ import { RNG, clamp, hashString } from '../../util/rng';
 import { addLedger } from './finance';
 import { addInbox } from './news';
 import { playerOvr } from './transfers';
+import { RATING_MAX } from '../ratings';
 
 export const HIDDEN_KEYS: (keyof HiddenAttributes)[] = ['potential', 'farsight', 'mistakes', 'composure', 'snowball', 'resilience', 'workEthic', 'professionalism', 'ego', 'loyalty', 'injuryProne'];
 
@@ -28,8 +29,8 @@ export function knowledgeLabel(k: number) {
 }
 
 /** A [min,max] estimate around `value`. Width shrinks linearly with knowledge; the true value's position inside the range is stable per seed. */
-export function estimateRange(value: number, knowledge: number, seed: string, lo = 1, hi = 100): [number, number] {
-  const width = Math.round((100 - clamp(knowledge, 0, 100)) * 0.5);
+export function estimateRange(value: number, knowledge: number, seed: string, lo = 1, hi = 100, scale = 1): [number, number] {
+  const width = Math.round((100 - clamp(knowledge, 0, 100)) * 0.5 * scale);
   if (width <= 0) return [Math.round(value), Math.round(value)];
   const offset = (hashString(seed) % 1000) / 1000;
   let a = Math.round(value - width * offset);
@@ -57,7 +58,9 @@ export interface ScoutedView {
 export function scoutedView(state: GameState, p: Player): ScoutedView {
   const k = knowledgeOf(state, p);
   const hidden = {} as Record<keyof HiddenAttributes, [number, number]>;
-  for (const key of HIDDEN_KEYS) hidden[key] = estimateRange(p.hidden[key], k, `${p.id}|${key}`);
+  for (const key of HIDDEN_KEYS) hidden[key] = key === 'potential'
+    ? estimateRange(p.hidden.potential, k, `${p.id}|${key}`, 1, RATING_MAX, 1.5) // the 0..200 ceiling: wider guesses
+    : estimateRange(p.hidden[key], k, `${p.id}|${key}`);
   const ovr = playerOvr(p);
   let [pl, ph] = hidden.potential;
   pl = Math.max(pl, ovr);

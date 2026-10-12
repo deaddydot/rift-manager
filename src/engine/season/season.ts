@@ -8,6 +8,7 @@ import { addNews, addInbox } from '../management/news';
 import { competitionAwards } from '../management/awards';
 import { addLedger } from '../management/finance';
 import { checkSponsorBonuses } from '../management/sponsors';
+import { breakthrough } from '../management/potential';
 
 type CompExt = Competition & { specs?: StageSpec[]; qualifiesTo?: CompTemplate['qualifies']; direct?: Record<string, string[]>; template?: string; countsPoints?: boolean };
 
@@ -176,6 +177,7 @@ export function finishCompetition(state: GameState, comp: CompExt) {
       if (!p) continue;
       p.morale = Math.min(100, p.morale + 10);
       p.reputation = Math.min(100, p.reputation + (comp.tier === 0 ? 6 : 2));
+      breakthrough(p, comp.tier === 0 ? 4 : comp.tier === 1 ? 2.5 : 1.5); // champions who were at their ceiling find a bit more
       const car = p.career.find((c) => c.season === comp.season && c.teamId === champion.id);
       if (car) car.titles.push(comp.name);
     }

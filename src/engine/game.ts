@@ -1,11 +1,12 @@
 // Main game loop: advance one day at a time.
 import type { GameState, MatchFixture, Team } from './types';
 import { ensureMasteryScale } from './mastery';
+import { ensureRatingScale } from './management/potential';
 import { RNG, clamp } from '../util/rng';
 import { updateCompetitions, createSeason, compKey } from './season/season';
 import { simulateSeries } from './season/series';
 import { weeklyFinance, monthlyFinance } from './management/finance';
-import { weeklyTraining, yearlyAging } from './management/development';
+import { ratingMilestones, weeklyTraining, yearlyAging } from './management/development';
 import { generateSponsorOffers, checkSponsorBonuses } from './management/sponsors';
 import { inTransferWindow, processExpiries, expiryReminders, aiTransfers, resolveOffers, incomingBids, generateProspects, movePlayer } from './management/transfers';
 import { generateWindowFreeAgents } from './management/freeAgents';
@@ -71,6 +72,7 @@ export function endDay(state: GameState) {
       weeklyFinance(state, team, r);
       weeklyTraining(state, team, r, team.id === state.userTeamId && state.trainingPlan ? state.trainingPlan : undefined);
     }
+    ratingMilestones(state); // new rating bands reached (Elite 100+, Legendary 125+…)
     const user = state.teams[state.userTeamId];
     for (const o of generateSponsorOffers(state, user, r)) {
       state.sponsorOffers.push(o);
@@ -104,6 +106,7 @@ export function endDay(state: GameState) {
     if (p && p.lastPlayed !== prev) p.fatigue = clamp(p.fatigue - 1.2, 0, 100);
   }
   ensureMasteryScale(state); // free agents / prospects generated today
+  ensureRatingScale(state);
   reactionsDaily(state); // fan pulse & owner
   peopleDaily(state, r); // locker room: player approaches, relationships
   personaDaily(state); // off the Rift: profiles & extended traits (lazy init), streaming, media, stamina

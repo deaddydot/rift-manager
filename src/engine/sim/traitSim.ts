@@ -9,6 +9,7 @@ import { TRAIT_SPECS, fxTotal, type FxTotal, type SimStat } from '../traitsMore'
 import type { Role } from '../types';
 import type { MatchSim } from './engine';
 import type { SimChamp, SimPlayerInput } from './simtypes';
+import { clampSimStat } from '../ratings';
 
 export interface SimTraitProfile {
   any: boolean;
@@ -58,7 +59,7 @@ export function applyMoreTraitInputs(q: SimPlayerInput): SimPlayerInput {
   for (const id of q.traits) {
     const d = TRAIT_SPECS[id]?.fx.in;
     if (!d) continue;
-    for (const [k, v] of Object.entries(d) as [SimStat, number][]) q[k] = clamp(q[k] + v, 1, 99);
+    for (const [k, v] of Object.entries(d) as [SimStat, number][]) q[k] = clampSimStat(k, q[k] + v);
   }
   return q;
 }

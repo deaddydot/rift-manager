@@ -17,6 +17,7 @@ import { teamMacro, champDecide, champActions } from './ai';
 import { updateSummons } from './summons';
 import { pickMvp, type MvpLine } from './mvp';
 import { applyTraitInputs, rollPerf, updateForm, onDeathTilt } from './hidden';
+import { clampSimStat, SIM_RATING_MAX } from '../ratings';
 
 const ROLE_ORDER: Role[] = ['top', 'jungle', 'mid', 'adc', 'support'];
 const SUPER_DPS = 90; // one super minion's damage per second (vs minions; 60% of it against structures)
@@ -87,17 +88,17 @@ export class MatchSim {
     this.destiny = opts.destiny ?? null;
     if (this.destiny !== null) {
       // lore: the destined side plays out of its mind; the other side feels the weight of history
-      const up = (v: number, d: number) => clamp(v + d, 1, 99);
+      const up = (k: string, v: number, d: number) => clampSimStat(k, v + d);
       const lift = (input: SimTeamInput, d: number): SimTeamInput => ({ ...input, players: input.players.map((p) => ({ ...p,
-        mech: up(p.mech, d), lane: up(p.lane, d), farm: up(p.farm, d), tf: up(p.tf, d), macro: up(p.macro, d), obj: up(p.obj, d), clutch: up(p.clutch, d),
-        composure: up(p.composure, d * 1.2), mistakes: up(p.mistakes, -d), mastery: clamp(p.mastery + d * 1.6, 1, 200) })) });
+        mech: up('mech', p.mech, d), lane: up('lane', p.lane, d), farm: up('farm', p.farm, d), tf: up('tf', p.tf, d), macro: up('macro', p.macro, d), obj: up('obj', p.obj, d), clutch: up('clutch', p.clutch, d),
+        composure: up('composure', p.composure, d * 1.2), mistakes: up('mistakes', p.mistakes, -d), mastery: up('mastery', p.mastery, d * 1.6) })) });
       if (this.destiny === 0) { blue = lift(blue, 14); red = lift(red, -5); } else { red = lift(red, 14); blue = lift(blue, -5); }
     }
     const mkTeam = (side: Side, input: SimTeamInput): TeamRuntime => {
       const ps = input.players;
       const avgMacro = ps.reduce((s, p) => s + p.macro, 0) / ps.length;
       const caller = Math.max(...ps.map((p) => p.shotcalling));
-      const macro = clamp(avgMacro * 0.6 + caller * 0.3 + (input.chemistry ?? 60) * 0.1, 0, 100);
+      const macro = clamp(avgMacro * 0.6 + caller * 0.3 + (input.chemistry ?? 60) * 0.1, 0, SIM_RATING_MAX);
       return {
         side, input, kills: 0, towers: 0, inhibs: 0, dragons: [], soul: null, elders: 0, barons: 0, heralds: 0, grubs: 0, plates: 0,
         baronUntil: 0, elderUntil: 0, herald: false, macro, aggression: input.tactics.aggression,
@@ -475,7 +476,7 @@ export class MatchSim {
       c.wardCharges++;
       const sup = c.role === 'support' ? 0.5 : c.role === 'jungle' ? 0.8 : 1;
       // good vision players keep wards cycling (buying, swapping trinkets, using charges on time)
-      c.wardRechargeAt = this.t + (210 - c.level * 7) * sup * (1.35 - c.input.vision / 100 * 0.6);
+      c.wardRechargeAt = this.t + (210 - c.level * 7) * sup * Math.max(0.5, 1.35 - c.input.vision / 100 * 0.6);
     }
   }
 

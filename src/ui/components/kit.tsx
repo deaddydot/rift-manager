@@ -3,6 +3,7 @@ import { useState, type ReactNode, type CSSProperties } from 'react';
 import type { Player, Team, Role } from '../../engine/types';
 import { gd } from '../../data/gamedata';
 import { hashString } from '../../util/rng';
+import { RATING_MAX, ratingBand } from '../../engine/ratings';
 
 const base = import.meta.env.BASE_URL ?? './';
 export const asset = (p: string) => (p.startsWith('http') || p.startsWith('data:') ? p : base + p);
@@ -20,6 +21,7 @@ export const mmss = (sec: number) => `${Math.floor(sec / 60)}:${String(Math.floo
 
 // ------------------------------------------------------------------ colors
 export function ratingColor(v: number) {
+  if (v >= 100) return ratingBand(v).color; // Elite / Legendary / Mythic / Immortal (engine/ratings.ts)
   if (v >= 88) return '#f0c674';
   if (v >= 80) return '#22c55e';
   if (v >= 70) return '#84cc16';
@@ -133,20 +135,34 @@ export function RoleIcon({ role, size = 16 }: { role: Role; size?: number }) {
 // ------------------------------------------------------------------ small widgets
 export function Rating({ v, size = 'md' }: { v: number; size?: 'sm' | 'md' | 'lg' }) {
   const cls = size === 'lg' ? 'text-3xl w-14 h-14' : size === 'sm' ? 'text-xs w-7 h-6' : 'text-sm w-9 h-8';
-  return <div className={`font-display font-bold rounded-md flex items-center justify-center ${cls}`} style={{ color: ratingColor(v), background: `${ratingColor(v)}1a`, border: `1px solid ${ratingColor(v)}55` }}>{Math.round(v)}</div>;
+  const c = ratingColor(v);
+  return <div className={`font-display font-bold rounded-md flex items-center justify-center ${cls}`} title={`${ratingBand(v).label}: ${ratingBand(v).blurb}`}
+    style={{ color: c, background: `${c}1a`, border: `1px solid ${c}55`, boxShadow: v >= 100 ? `0 0 ${v >= 150 ? 12 : 7}px ${c}66` : undefined }}>{Math.round(v)}</div>;
 }
 
-export function Bar({ value, max = 100, label, color, showValue = true, height = 6 }: { value: number; max?: number; label?: ReactNode; color?: string; showValue?: boolean; height?: number }) {
+export function Bar({ value, max = 100, label, color, showValue = true, height = 6, mark }: { value: number; max?: number; label?: ReactNode; color?: string; showValue?: boolean; height?: number; mark?: number }) {
   const c = color ?? ratingColor(value);
   return (
     <div className="flex items-center gap-2 text-xs">
       {label !== undefined && <div className="w-36 text-muted truncate">{label}</div>}
-      <div className="flex-1 rounded-full bg-[#0a1120] overflow-hidden" style={{ height }}>
+      <div className="relative flex-1 rounded-full bg-[#0a1120] overflow-hidden" style={{ height }}>
         <div className="h-full rounded-full transition-all" style={{ width: `${Math.max(0, Math.min(100, (value / max) * 100))}%`, background: `linear-gradient(90deg, ${c}88, ${c})` }} />
+        {mark !== undefined && <div className="absolute top-0 bottom-0 w-px bg-white/25" style={{ left: `${(mark / max) * 100}%` }} />}
       </div>
-      {showValue && <div className="w-7 text-right font-display font-bold" style={{ color: c }}>{Math.round(value)}</div>}
+      {showValue && <div className={`${max > 100 ? 'w-8' : 'w-7'} text-right font-display font-bold`} style={{ color: c }}>{Math.round(value)}</div>}
     </div>
   );
+}
+
+/** A player skill on the 0..200 rating scale; the tick marks 100 (the best players of 2026 sit just below it). */
+export function RatingBar({ value, label, height }: { value: number; label?: ReactNode; height?: number }) {
+  return <Bar value={value} max={RATING_MAX} mark={100} label={label} height={height} />;
+}
+
+/** "World-class", "Elite"… for an overall or potential (engine/ratings.ts). */
+export function RatingBandTag({ v, prefix = '' }: { v: number; prefix?: string }) {
+  const b = ratingBand(v);
+  return <span className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: b.color }} title={b.blurb}>{prefix}{b.label}</span>;
 }
 
 export function Panel({ title, right, children, className = '', bodyClass = '' }: { title?: ReactNode; right?: ReactNode; children: ReactNode; className?: string; bodyClass?: string }) {

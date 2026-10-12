@@ -7,6 +7,7 @@ import { MatchSim } from '../src/engine/sim/engine';
 import type { SimTeamInput, SimPlayerInput } from '../src/engine/sim/simtypes';
 import type { Role } from '../src/engine/types';
 import { RNG } from '../src/util/rng';
+import { simRating } from '../src/engine/ratings';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const load = (f: string) => JSON.parse(fs.readFileSync(path.join(ROOT, 'public/data', f), 'utf8'));
@@ -24,12 +25,15 @@ function mkTeam(rng: RNG, id: string, skill: number, used: Set<string>): SimTeam
     const pool = gd().championsByRole[role].filter((c) => !used.has(c.id));
     const ch = rng.pick(pool);
     used.add(ch.id);
-    const r = () => Math.max(20, Math.min(99, skill + rng.normal(0, 6)));
+    // `skill` is a player rating (0..200); skills enter the engine through simRating like in season/prep.ts
+    const raw = () => Math.max(20, Math.min(200, skill + rng.normal(0, 6)));
+    const r = () => simRating(raw());
+    const h = () => Math.min(99, raw()); // hidden personality stats stay 1..99
     return {
       playerId: `${id}_${role}`, name: `${id}${role[0].toUpperCase()}`, role, championId: ch.id,
       mech: r(), lane: r(), farm: r(), tf: r(), macro: r(), vision: r(), pathing: r(), obj: r(),
       aggression: 50 + rng.normal(0, 15), consistency: r(), clutch: r(), shotcalling: r(), mastery: 140,
-      farsight: r() - 5, mistakes: Math.max(5, 75 - skill * 0.6 + rng.normal(0, 8)), composure: r(), snowball: 50, resilience: 50, traits: [],
+      farsight: h() - 5, mistakes: Math.max(5, 75 - Math.min(99, skill) * 0.6 + rng.normal(0, 8)), composure: h(), snowball: 50, resilience: 50, traits: [],
     };
   });
   return {

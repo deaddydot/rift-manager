@@ -10,6 +10,7 @@ import { scoutedView, scoutCost, scoutPlayer, scoutingPower, knowledgeOf, knowle
 import { TRAITS } from '../../engine/traits';
 import { Panel, Stat, Tabs, Modal, Rating, Portrait, TeamLogo, RoleIcon, Pill, Empty, money, fmtDate, flag, ratingColor } from '../components/kit';
 import { InterestDots, RangeTag, RangeBar, KnowledgeTag, SortTh, Pager, MultiSelect, RoleChips, NumField, FilterLabel, leagueOptions, isRealPlayer, playerAge, windowBoundary, windowNote, monthsUntil, TierDot } from './worldKit';
+import { RATING_MAX } from '../../engine/ratings';
 
 type TabId = 'search' | 'shortlist' | 'offers' | 'contracts' | 'scouting';
 type WithShortlist = GameState & { shortlist?: string[] };
@@ -798,7 +799,7 @@ function ScoutReport({ state, row, onScout, onOffer }: { state: GameState; row: 
         </div>
       </div>
       <div className="mt-3 flex flex-col gap-1.5">
-        {HIDDEN_KEYS.map((key) => <RangeBar key={key} label={HIDDEN_LABEL[key]} range={v.hidden[key]} negative={!!HIDDEN_NEGATIVE[key]} />)}
+        {HIDDEN_KEYS.map((key) => <RangeBar key={key} label={HIDDEN_LABEL[key]} range={v.hidden[key]} negative={!!HIDDEN_NEGATIVE[key]} max={key === 'potential' ? RATING_MAX : 100} />)}
       </div>
       <div className="mt-3 text-[11px] uppercase tracking-wider text-muted font-semibold">Traits</div>
       <div className="flex flex-wrap gap-1 mt-1">

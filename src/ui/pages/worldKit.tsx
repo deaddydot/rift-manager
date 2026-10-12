@@ -76,8 +76,8 @@ export function RangeTag({ range, negative }: { range: [number, number]; negativ
   return <span className="font-display font-bold tabular-nums" style={{ color: c }}>{exact ? range[0] : `${range[0]}–${range[1]}`}</span>;
 }
 
-/** A 0..100 track showing an estimated [min,max] band. */
-export function RangeBar({ range, negative, label }: { range: [number, number]; negative?: boolean; label?: ReactNode }) {
+/** A 0..max track (100 by default; potential runs to 200) showing an estimated [min,max] band. */
+export function RangeBar({ range, negative, label, max = 100 }: { range: [number, number]; negative?: boolean; label?: ReactNode; max?: number }) {
   const [a, b] = range;
   const mid = (a + b) / 2;
   const c = ratingColor(negative ? 100 - mid : mid);
@@ -85,7 +85,8 @@ export function RangeBar({ range, negative, label }: { range: [number, number]; 
     <div className="flex items-center gap-2 text-xs">
       {label !== undefined && <div className="w-36 text-muted truncate">{label}</div>}
       <div className="flex-1 relative h-[6px] rounded-full bg-[#0a1120]">
-        <div className="absolute top-0 h-full rounded-full" style={{ left: `${a}%`, width: `${Math.max(1.5, b - a)}%`, background: a === b ? c : `linear-gradient(90deg, ${c}55, ${c})` }} />
+        <div className="absolute top-0 h-full rounded-full" style={{ left: `${(a / max) * 100}%`, width: `${Math.max(1.5, ((b - a) / max) * 100)}%`, background: a === b ? c : `linear-gradient(90deg, ${c}55, ${c})` }} />
+        {max > 100 && <div className="absolute top-0 bottom-0 w-px bg-white/25" style={{ left: `${(100 / max) * 100}%` }} />}
       </div>
       <div className="w-12 text-right"><RangeTag range={range} negative={negative} /></div>
     </div>

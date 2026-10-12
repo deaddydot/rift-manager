@@ -91,7 +91,7 @@ export function personaOf(p: Player): PlayerPersona {
 const NEG_WEIGHT = 0.4, NEU_WEIGHT = 0.8;
 // database averages / spreads of the hidden attributes: assignment weights read them on a common 50 ± 15 scale
 const H_NORM: Record<keyof HiddenAttributes, [number, number]> = {
-  potential: [50, 12], farsight: [46, 14], mistakes: [49, 11], composure: [55, 14], snowball: [51, 14], resilience: [50, 13],
+  potential: [90, 25], farsight: [46, 14], mistakes: [49, 11], composure: [55, 14], snowball: [51, 14], resilience: [50, 13],
   workEthic: [62, 14], professionalism: [67, 13.5], ego: [31, 16], loyalty: [55, 16], injuryProne: [22, 11],
 };
 

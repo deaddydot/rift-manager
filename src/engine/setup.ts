@@ -1,6 +1,8 @@
 // New game creation: converts the static database (real 2026 rosters) into a GameState.
 import type { GameState, Player, Team, Staff, LeagueDef, Role, PlayerAttributes, HiddenAttributes, FacilityKey, TeamTactics, SponsorDeal, MerchProduct, RealStats } from './types';
 import { ensureMasteryScale } from './mastery';
+import { overall, econRating } from './ratings';
+import { ensureRatingScale, upgradePotential } from './management/potential';
 import { ROLES } from './types';
 import { RNG, clamp, hashString } from '../util/rng';
 import { createSeason } from './season/season';
@@ -27,18 +29,7 @@ export interface Database { leagues: (LeagueDef & { source?: string })[]; teams:
 export const START_DATE = '2026-01-02';
 export const SEASON_YEAR = 2026;
 
-export function overall(a: PlayerAttributes, role: Role): number {
-  const w: Record<Role, Partial<Record<keyof PlayerAttributes, number>>> = {
-    top: { mechanics: 0.22, laning: 0.22, teamfight: 0.16, farming: 0.12, macro: 0.12, consistency: 0.08, vision: 0.04, objectives: 0.04 },
-    jungle: { pathing: 0.2, objectives: 0.15, macro: 0.17, mechanics: 0.15, teamfight: 0.13, vision: 0.1, farming: 0.05, consistency: 0.05 },
-    mid: { mechanics: 0.24, laning: 0.2, teamfight: 0.15, macro: 0.14, farming: 0.1, consistency: 0.07, pathing: 0.05, vision: 0.05 },
-    adc: { mechanics: 0.24, teamfight: 0.22, farming: 0.16, laning: 0.16, consistency: 0.1, macro: 0.08, vision: 0.04 },
-    support: { vision: 0.18, teamfight: 0.18, macro: 0.16, laning: 0.12, mechanics: 0.12, pathing: 0.1, shotcalling: 0.08, consistency: 0.06 },
-  };
-  let s = 0, t = 0;
-  for (const [k, v] of Object.entries(w[role])) { s += a[k as keyof PlayerAttributes] * v!; t += v!; }
-  return Math.round(s / t);
-}
+export { overall } from './ratings';
 
 export const LEAGUE_ECON: Record<number, { salary: number; budget: number; fans: number; sponsor: number }> = {
   1: { salary: 3.2, budget: 9_000_000, fans: 1_200_000, sponsor: 260_000 },
@@ -47,8 +38,9 @@ export const LEAGUE_ECON: Record<number, { salary: number; budget: number; fans:
 };
 const LEAGUE_MULT: Record<string, number> = { LCK: 1.1, LPL: 1.25, LEC: 0.7, LCS: 0.75, LCP: 0.35, CBLOL: 0.32 };
 
-export function salaryFor(ovr: number, tier: number, leagueId: string, traits: string[]): number {
-  const base = 16_000 * Math.pow(1.068, ovr - 40);
+/** `drift`: marketDrift(state) for players (wages follow standing, not the raw number); 0 for staff. */
+export function salaryFor(ovr: number, tier: number, leagueId: string, traits: string[], drift = 0): number {
+  const base = 16_000 * Math.pow(1.068, econRating(ovr - drift) - 40); // ratings past 90 cost less extra per point (engine/ratings.ts)
   const mult = tier === 1 ? LEAGUE_ECON[1].salary * (LEAGUE_MULT[leagueId] ?? 0.5) : LEAGUE_ECON[tier]?.salary ?? 0.2;
   let s = base * mult;
   if (traits.includes('fan_favorite')) s *= 2.2;
@@ -56,13 +48,14 @@ export function salaryFor(ovr: number, tier: number, leagueId: string, traits: s
   return Math.round(s / 1000) * 1000;
 }
 
-export function marketValue(p: Pick<Player, 'attributes' | 'role' | 'hidden' | 'birthdate' | 'reputation'>, date: string): number {
-  const ovr = overall(p.attributes, p.role);
+export function marketValue(p: Pick<Player, 'attributes' | 'role' | 'hidden' | 'birthdate' | 'reputation'>, date: string, drift = 0): number {
+  const raw = overall(p.attributes, p.role);
+  const ovr = raw - drift; // standing in today's market (marketDrift)
   const age = ageOn(p.birthdate, date) ?? 22;
   const pot = p.hidden.potential;
-  const youth = age < 22 ? (pot - ovr) * 0.04 : 0;
+  const youth = age < 23 ? clamp(pot - raw, 0, 70) * (age < 21 ? 0.02 : 0.012) : 0; // ceilings run to 200: room is worth less per point
   const ageMult = age < 19 ? 1.1 : age < 25 ? 1 : age < 28 ? 0.85 : 0.6;
-  return Math.round((60_000 * Math.pow(1.075, ovr - 40) * (1 + youth) * ageMult * (1 + p.reputation / 200)) / 5000) * 5000;
+  return Math.round((60_000 * Math.pow(1.075, econRating(ovr) - 40) * (1 + youth) * ageMult * (1 + p.reputation / 200)) / 5000) * 5000;
 }
 
 export function ageOn(birth: string | undefined, date: string): number | null {
@@ -109,6 +102,7 @@ export function createNewGame(db: Database, userTeamId: string, managerName: str
       career: [], personality: { professionalism: p.hidden.professionalism, ambition: clamp(p.hidden.ego + 10, 1, 99), loyalty: p.hidden.loyalty, temperament: clamp(100 - p.hidden.composure, 1, 99) },
       isSub: p.isSub, streamer: p.streamer, trainingFocus: null, learningChampion: null,
     };
+    upgradePotential(pl, date); // ceilings on the 0..200 scale (management/potential.ts)
     pl.value = marketValue(pl, date);
     pl.contract!.buyout = Math.round(pl.value * (1.2 + rng.next() * 0.8) / 10000) * 10000;
     players[pl.id] = pl;
@@ -188,6 +182,7 @@ export function createNewGame(db: Database, userTeamId: string, managerName: str
     transferWindowOpen: true, log: [], qualified: {}, seq: 1,
   };
   ensureMasteryScale(state); // champion comfort onto the 0..200 scale (engine/mastery.ts)
+  ensureRatingScale(state); // potentials onto the 0..200 rating scale (management/potential.ts)
   ensurePersonas(state); // personal profiles + extended traits (management/persona.ts)
   createSeason(state, SEASON_YEAR);
   initReactions(state); // fan pulse + owner persona

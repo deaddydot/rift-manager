@@ -22,6 +22,7 @@ import {
   TALK_LINES, APPROACH_T, IGNORED, RELATIVES, LOST_RELATIVES, PARTNERS, CELEBRATIONS, INCIDENTS, FOLLOW_T, MOMENTS, KIND_NOTE, NEWS_T,
   MEETING_LINES, ACTIVITY_SCENES, FEEL_INFO, type LineSet,
 } from './peopleTemplates';
+import { clampRating } from '../ratings';
 
 export { ISSUE_INFO, peopleParts, peopleAdj, pairKey, synergy } from './peopleFx';
 export { FEEL_INFO } from './peopleTemplates';
@@ -1059,7 +1060,7 @@ const APPROACHES: Record<string, Approach> = {
     fallback: 'share',
     resolve: (c, _r, opt) => {
       if (opt === 'yes') {
-        c.p.attributes.shotcalling = clamp(c.p.attributes.shotcalling + 1, 1, 99);
+        c.p.attributes.shotcalling = clampRating(c.p.attributes.shotcalling + 1);
         for (const q of rosterOf(c.state, c.team)) if (q.id !== c.p.id && has(q, 'shotcaller')) q.morale = clamp(q.morale - 3, 5, 100);
         return { out: 'yes', fx: { trust: 5, morale: 5, feel: 'fired' } };
       }
@@ -1494,7 +1495,7 @@ function weeklyPairs(state: GameState, ps: PeopleState, team: Team, rng: RNG, sb
     if (pr.mentor) {
       // mentees pick up the habits of their mentor (small, only where the mentor is better)
       const [mentor, mentee] = pr.mentor === a.id ? [a, b] : [b, a];
-      for (const k of ['macro', 'laning', 'consistency'] as (keyof PlayerAttributes)[]) if (mentor.attributes[k] > mentee.attributes[k] + 3) mentee.attributes[k] = clamp(mentee.attributes[k] + 0.05, 1, 99);
+      for (const k of ['macro', 'laning', 'consistency'] as (keyof PlayerAttributes)[]) if (mentor.attributes[k] > mentee.attributes[k] + 3) mentee.attributes[k] = clampRating(mentee.attributes[k] + 0.05);
       mentee.morale = clamp(mentee.morale + 0.3, 5, 100);
     }
     // moments

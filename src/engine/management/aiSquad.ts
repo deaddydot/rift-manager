@@ -29,6 +29,7 @@ import type { GameState, Player, Team, Role } from '../types';
 import { ROLES } from '../types';
 import { RNG, clamp, hashString } from '../../util/rng';
 import { overall, ageOn } from '../setup';
+import { worldLevels } from '../ratings';
 import { addNews } from './news';
 import { addLedger, payrollYearly } from './finance';
 import { salaryDemand, askingFee, interest, movePlayer, autoFillLineup, inTransferWindow, windowKey, regionOfCountry, fmtK } from './transfers';
@@ -168,7 +169,8 @@ function quickPull(state: GameState, p: Player, owner: Team, buyer: Team, starte
  * higher league, wants a bigger stage (a released LCK starter doesn't join a tier-2 side the next morning).
  */
 function faInterest(state: GameState, p: Player, team: Team, ovr: number): number {
-  const expects = ovr >= 66 ? 1 : ovr >= 52 ? 2 : 3;
+  const lv = worldLevels(state);
+  const expects = ovr >= lv.t1 + 2 ? 1 : ovr >= lv.t2 + 8 ? 2 : 3;
   return interest(state, p, team) - Math.max(0, tierOf(state, team) - expects) * 0.25 - Math.max(0, ovr - teamLevel(state, team) - 4) * 0.04;
 }
 /** Utility malus for a player from another region / language (LCK clubs field Koreans, LPL a few Korean imports…). */
@@ -290,7 +292,7 @@ type Kind = 'fa' | 'sub' | 'academy' | 'buy';
 interface Cand { p: Player; ovr: number; q: number; u: number; kind: Kind; owner?: Team; fee: number }
 interface FillOpts { mode: 'replace' | 'fill' | 'upgrade' | 'depth'; target: number; tol: number; forced?: boolean; minGain?: number; need?: AiNeed }
 const MIN_ROOM: Record<number, number> = { 1: 150_000, 2: 25_000, 3: 8_000 };
-const contractYears = (age: number, pot: number, ovr: number) => (age <= 22 && pot - ovr >= 6 ? 3 : age >= 28 ? 1 : 2);
+const contractYears = (age: number, pot: number, ovr: number) => (age <= 22 && pot - ovr >= 20 ? 3 : age >= 28 ? 1 : 2);
 
 /** Find and sign the best realistic player for `role`. Returns true when someone was signed / promoted. */
 function fillRole(state: GameState, rng: RNG, mk: Market, team: Team, role: Role, o: FillOpts): boolean {
@@ -322,7 +324,7 @@ function fillRole(state: GameState, rng: RNG, mk: Market, team: Team, role: Role
     if (q < curOvr + minGain || q - fit < floor) return;
     const age = ageOf(state, mk, p);
     let u = q - fit;
-    if (age < 22) u += clamp((p.hidden.potential - e.ovr) * 0.12, 0, 3) * (urgent ? 0.5 : o.mode === 'depth' ? 2 : 1);
+    if (age < 22) u += clamp((p.hidden.potential - e.ovr) * 0.05, 0, 3) * (urgent ? 0.5 : o.mode === 'depth' ? 2 : 1);
     if (age >= 28) u -= (age - 27) * 0.5;
     if (kind === 'sub') u += 1; else if (kind === 'academy') u += 1.5;
     if (kind === 'buy') u -= 1.5 + depth * 1.5 + (lateral ? 3 : 0) + (5 * fee) / Math.max(1, wallet); // a transfer is hassle; deeper in a domino, more so
@@ -440,7 +442,7 @@ function sign(state: GameState, mk: Market, team: Team, c: Cand, role: Role, sal
 function newsFor(state: GameState, team: Team, p: Player, role: Role, kind: Kind, from: Team | undefined, fee: number, o: FillOpts, prev?: Player, clause = false) {
   const tier = tierOf(state, team);
   const ovr = overall(p.attributes, role);
-  const notable = tier === 1 || (from && tierOf(state, from) === 1) || fee >= 150_000 || ovr >= 70;
+  const notable = tier === 1 || (from && tierOf(state, from) === 1) || fee >= 150_000 || ovr >= worldLevels(state).t1 + 6;
   if (!notable || (o.mode === 'depth' && tier > 1)) return;
   const n = o.need;
   const lost = n?.lostHandle;
@@ -488,7 +490,7 @@ function letGo(state: GameState, mk: Market, team: Team, p: Player, depth: numbe
   addLedger(state, team, 'Contract termination', -Math.round(remaining * 0.3), p.handle);
   movePlayer(state, p, null, 0, 0);
   logMove({ date: state.date, team: team.id, player: p.id, handle: p.handle, ovr, role: p.role, kind: 'release', source: 'out', fee: 0 });
-  if (tierOf(state, team) === 1 && ovr >= 70) addNews(state, { headline: `${team.short} release ${p.handle}`, body: `${team.name} part ways with ${ROLE_NOUN[p.role]} ${p.handle}, who becomes a free agent.`, tags: ['transfer'], teamIds: [team.id], playerIds: [p.id] });
+  if (tierOf(state, team) === 1 && ovr >= worldLevels(state).t1 + 6) addNews(state, { headline: `${team.short} release ${p.handle}`, body: `${team.name} part ways with ${ROLE_NOUN[p.role]} ${p.handle}, who becomes a free agent.`, tags: ['transfer'], teamIds: [team.id], playerIds: [p.id] });
 }
 /** No 3rd player at a role, roster capped (8 in tier 1, 7 below); the weakest substitute goes. */
 function tidy(state: GameState, mk: Market, team: Team, depth = 0) {
@@ -546,7 +548,7 @@ function freeAgentMarket(state: GameState, rng: RNG, mk: Market, teams: Team[]) 
   for (const r of ROLES) {
     let k = 0;
     for (const e of roleList(mk, r)) {
-      if (e.ovr < 52 || k >= 6) break;
+      if (e.ovr < worldLevels(state).t2 + 8 || k >= 6) break;
       const p = e.p;
       if (p.teamId || p.role !== r || mk.taken.has(p.id) || mk.pending.has(p.id) || (unknown(p) && freshGen(state, p))) continue;
       fas.push(e); k++;

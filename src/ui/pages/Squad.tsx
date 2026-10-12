@@ -84,7 +84,7 @@ export default function Squad() {
                   <td><span className="flex items-center gap-1"><RoleIcon role={p.role} />{ROLE_LABEL[p.role]}</span></td>
                   <td>{ageOf(p.birthdate, state.date) ?? '-'}</td>
                   <td><Rating v={ovr} size="sm" /></td>
-                  <td className="font-display font-bold" style={{ color: ratingColor(p.hidden.potential) }}>{p.hidden.potential}</td>
+                  <td className="font-display font-bold" style={{ color: ratingColor(p.hidden.potential) }}>{Math.round(p.hidden.potential)}</td>
                   <td>{Math.round(p.morale)}</td>
                   <td className={p.form >= 0 ? 'text-win' : 'text-loss'}>{p.form >= 0 ? '+' : ''}{p.form.toFixed(1)}</td>
                   <td className={p.fatigue > 70 ? 'text-orange-400' : ''}>{Math.round(p.fatigue)}</td>

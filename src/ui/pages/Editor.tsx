@@ -22,6 +22,7 @@ import { getCustomLibrary, setCustomLibrary } from '../../store/persist';
 import { Panel, Stat, Tabs, Modal, Rating, Portrait, Avatar, Pill, TeamLogo, ChampIcon, RoleIcon, Empty, money, num, flag, ratingColor } from '../components/kit';
 import { playerAge, teamRating } from './worldKit';
 import { PersonaEditor } from '../components/PlayerProfile';
+import { RATING_MAX, ratingBand, marketDrift } from '../../engine/ratings';
 
 type Kind = 'overview' | 'player' | 'team' | 'staff';
 interface Library { players: LibraryPlayer[]; teams: LibraryTeam[] }
@@ -129,8 +130,8 @@ function Slider({ label, value, onChange, min = 1, max = 99, negative, neutral, 
   return (
     <div className="flex items-center gap-2 text-xs" title={hint}>
       <div className="w-40 text-muted truncate">{label}</div>
-      <input type="range" min={min} max={max} value={value} onChange={(e) => onChange(Number(e.target.value))} className="flex-1 h-1.5 cursor-pointer" style={{ accentColor: c }} />
-      <input type="number" min={min} max={max} value={value} onChange={(e) => onChange(Math.max(min, Math.min(max, Number(e.target.value) || min)))} className="input w-14 py-0.5 text-center font-display font-bold" style={{ color: c }} />
+      <input type="range" min={min} max={max} value={Math.round(value)} onChange={(e) => onChange(Number(e.target.value))} className="flex-1 h-1.5 cursor-pointer" style={{ accentColor: c }} />
+      <input type="number" min={min} max={max} value={Math.round(value)} onChange={(e) => onChange(Math.max(min, Math.min(max, Number(e.target.value) || min)))} className="input w-14 py-0.5 text-center font-display font-bold" style={{ color: c }} />
     </div>
   );
 }
@@ -181,7 +182,7 @@ function ImageUpload({ label, onImage, onClear, size, mode, has }: { label: stri
 }
 
 // ------------------------------------------------------------------ player editor
-const TEMPLATES: { label: string; level: number }[] = [{ label: 'Amateur', level: 42 }, { label: 'Prospect', level: 55 }, { label: 'Pro', level: 68 }, { label: 'Star', level: 80 }, { label: 'World class', level: 90 }];
+const TEMPLATES: { label: string; level: number }[] = [{ label: 'Amateur', level: 42 }, { label: 'Prospect', level: 55 }, { label: 'Pro', level: 68 }, { label: 'Star', level: 80 }, { label: 'World class', level: 90 }, { label: 'Elite', level: 110 }, { label: 'Legend', level: 140 }];
 const ROLE_FOCUS: Record<Role, (keyof PlayerAttributes)[]> = {
   top: ['mechanics', 'laning', 'teamfight'], jungle: ['pathing', 'objectives', 'macro'], mid: ['mechanics', 'laning', 'teamfight'],
   adc: ['mechanics', 'teamfight', 'farming'], support: ['vision', 'teamfight', 'macro'],
@@ -199,7 +200,7 @@ function PlayerEditor({ state, target }: { state: GameState; target?: Player }) 
   const ovr = overall(d.attributes, d.role);
   const autoRep = autoReputation(state, d.attributes, d.role, d.teamId, d.traits);
   const rep = d.reputation ?? autoRep;
-  const value = marketValue({ attributes: d.attributes, role: d.role, hidden: d.hidden, birthdate: d.birthdate || undefined, reputation: rep }, state.date);
+  const value = marketValue({ attributes: d.attributes, role: d.role, hidden: d.hidden, birthdate: d.birthdate || undefined, reputation: rep }, state.date, marketDrift(state));
   const sugSalary = suggestedSalary(state, d.attributes, d.role, d.teamId, d.traits);
   const team = d.teamId ? state.teams[d.teamId] : null;
   const age = d.birthdate ? playerAge({ birthdate: d.birthdate } as Player, state.date) : null;
@@ -210,12 +211,12 @@ function PlayerEditor({ state, target }: { state: GameState; target?: Player }) 
 
   const applyTemplate = (level: number) => {
     const a = { ...d.attributes };
-    for (const k of ATTRIBUTE_KEYS) if (k !== 'aggression') a[k] = Math.max(1, Math.min(99, level + (ROLE_FOCUS[d.role].includes(k) ? 4 : k === 'shotcalling' ? -6 : 0)));
-    setD({ ...d, attributes: a, hidden: { ...d.hidden, potential: Math.max(d.hidden.potential, Math.min(99, level + 6)) } });
+    for (const k of ATTRIBUTE_KEYS) if (k !== 'aggression') a[k] = Math.max(1, Math.min(RATING_MAX, level + (ROLE_FOCUS[d.role].includes(k) ? 4 : k === 'shotcalling' ? -6 : 0)));
+    setD({ ...d, attributes: a, hidden: { ...d.hidden, potential: Math.max(d.hidden.potential, Math.min(RATING_MAX, level + 6)) } });
   };
   const jitter = () => {
     const a = { ...d.attributes };
-    for (const k of ATTRIBUTE_KEYS) a[k] = Math.max(1, Math.min(99, a[k] + Math.round((Math.random() - 0.5) * 12)));
+    for (const k of ATTRIBUTE_KEYS) a[k] = Math.max(1, Math.min(k === 'aggression' ? 99 : RATING_MAX, a[k] + Math.round((Math.random() - 0.5) * 12)));
     set({ attributes: a });
   };
   const suggestPool = () => {
@@ -310,7 +311,7 @@ function PlayerEditor({ state, target }: { state: GameState; target?: Player }) 
 
           <Panel title="Summary">
             <div className="grid grid-cols-2 gap-2">
-              <Stat label={`Overall (${ROLE_LABEL[d.role]})`} value={<span style={{ color: ratingColor(ovr) }}>{ovr}</span>} sub={`Potential ${d.hidden.potential}`} />
+              <Stat label={`Overall (${ROLE_LABEL[d.role]})`} value={<span style={{ color: ratingColor(ovr) }}>{ovr}</span>} sub={`Potential ${Math.round(d.hidden.potential)} · ${ratingBand(ovr).label}`} />
               <Stat label="Market value" value={money(value)} sub={age !== null ? `${age} y/o` : 'age unknown'} />
             </div>
             <div className="mt-3">
@@ -328,12 +329,12 @@ function PlayerEditor({ state, target }: { state: GameState; target?: Player }) 
         <div className="flex flex-col gap-4">
           <Panel title="Visible attributes" right={<div className="flex gap-1">{TEMPLATES.map((t) => <button key={t.label} className="btn btn-ghost px-1.5 py-0.5 text-[11px]" title={`Set all attributes around ${t.level}`} onClick={() => applyTemplate(t.level)}>{t.label}</button>)}<button className="btn btn-ghost px-1.5 py-0.5 text-[11px]" onClick={jitter} title="Randomize ±6">±</button></div>}>
             <div className="flex flex-col gap-1.5">
-              {ATTRIBUTE_KEYS.map((k) => <Slider key={k} label={ATTRIBUTE_LABEL[k]} value={d.attributes[k]} onChange={(v) => setAttr(k, v)} neutral={k === 'aggression'} hint={k === 'aggression' ? 'Play style: 0 = passive, 100 = very aggressive (not a quality stat)' : undefined} />)}
+              {ATTRIBUTE_KEYS.map((k) => <Slider key={k} label={ATTRIBUTE_LABEL[k]} value={d.attributes[k]} onChange={(v) => setAttr(k, v)} max={k === 'aggression' ? 99 : RATING_MAX} neutral={k === 'aggression'} hint={k === 'aggression' ? 'Play style: 0 = passive, 100 = very aggressive (not a quality stat)' : 'Rating 1–200: the best players of 2026 sit around 90, 100+ is beyond anyone today'} />)}
             </div>
           </Panel>
           <Panel title="Hidden attributes" right={<span className="text-[11px] text-dim">Revealed to other clubs only via scouting</span>}>
             <div className="flex flex-col gap-1.5">
-              {HIDDEN_KEYS.map((k) => <Slider key={k} label={HIDDEN_LABEL[k]} value={d.hidden[k]} onChange={(v) => setHidden(k, v)} negative={!!HIDDEN_NEGATIVE[k]} hint={HIDDEN_NEGATIVE[k] ? 'Higher is worse' : undefined} />)}
+              {HIDDEN_KEYS.map((k) => <Slider key={k} label={HIDDEN_LABEL[k]} value={d.hidden[k]} onChange={(v) => setHidden(k, v)} max={k === 'potential' ? RATING_MAX : 99} negative={!!HIDDEN_NEGATIVE[k]} hint={HIDDEN_NEGATIVE[k] ? 'Higher is worse' : k === 'potential' ? 'Ceiling of the overall rating (1–200)' : undefined} />)}
             </div>
             {d.hidden.potential < ovr && <div className="text-[11px] text-amber-400 mt-2">Potential is below the current overall ({ovr}) — the player has no room to grow.</div>}
           </Panel>
@@ -459,7 +460,7 @@ function TeamEditor({ state, target }: { state: GameState; target?: Team }) {
 
   const addPlayer = (p: Player) => {
     if (d.roster.some((r) => r.playerId === p.id)) return;
-    set({ roster: [...d.roster, { playerId: p.id, salary: salaryFor(playerOvr(p), tier, d.leagueId, p.traits), years: 2, dirty: true }] });
+    set({ roster: [...d.roster, { playerId: p.id, salary: salaryFor(playerOvr(p), tier, d.leagueId, p.traits, marketDrift(state)), years: 2, dirty: true }] });
   };
   const updRoster = (id: string, patch: Partial<TeamDraft['roster'][number]>) => set({ roster: d.roster.map((r) => (r.playerId === id ? { ...r, ...patch, dirty: true } : r)) });
 
@@ -1018,7 +1019,7 @@ function Overview({ state }: { state: GameState }) {
                         <td><RoleIcon role={p.role} size={14} /></td>
                         <td className="text-right font-display">{playerAge(p, state.date) ?? '—'}</td>
                         <td className="text-center"><div className="flex justify-center"><Rating v={playerOvr(p)} size="sm" /></div></td>
-                        <td className="text-center font-display" style={{ color: ratingColor(p.hidden.potential) }}>{p.hidden.potential}</td>
+                        <td className="text-center font-display" style={{ color: ratingColor(p.hidden.potential) }}>{Math.round(p.hidden.potential)}</td>
                         <td className="text-xs">{t ? <span className="flex items-center gap-1"><TeamLogo team={t} size={16} />{t.short}</span> : <span className="text-accent">Free agent</span>}</td>
                         <td className="text-right font-display">{money(p.value)}</td>
                         <td className="text-right whitespace-nowrap" onClick={(e) => e.stopPropagation()}>

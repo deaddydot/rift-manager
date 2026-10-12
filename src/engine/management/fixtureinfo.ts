@@ -9,6 +9,7 @@ import { placementLabel, type CompExt } from '../season/season';
 import { lineupPlayers } from '../season/prep';
 import { overall } from '../setup';
 import { inTransferWindow } from './transfers';
+import { simRating } from '../ratings';
 
 export { inTransferWindow };
 
@@ -278,8 +279,8 @@ export function lineupRating(state: GameState, team: Team): number {
   const lp = lineupPlayers(state, team);
   return ROLES.reduce((s, r) => s + overall(lp[r].attributes, r), 0) / ROLES.length;
 }
-/** Per-game win probability from lineup ratings (quick-sim logistic, softened for draft/form noise). */
-export const gameWinProb = (ratingA: number, ratingB: number) => Math.min(0.95, Math.max(0.05, 1 / (1 + Math.exp(-(ratingA - ratingB) / 6.5))));
+/** Per-game win probability from lineup ratings (quick-sim logistic on match values, softened for draft/form noise). */
+export const gameWinProb = (ratingA: number, ratingB: number) => Math.min(0.95, Math.max(0.05, 1 / (1 + Math.exp(-(simRating(ratingA) - simRating(ratingB)) / 6.5))));
 /** Probability of winning a best-of-n series given a per-game win probability. */
 export function seriesWinProb(p: number, bestOf: number): number {
   const need = Math.ceil(bestOf / 2);

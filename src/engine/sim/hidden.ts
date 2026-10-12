@@ -1,6 +1,7 @@
 // Hidden attributes & traits inside a match: tilt, snowball / comeback form,
 // punishable mistakes, and big-stage effects. Far-sight macro lives in ai.ts (endgame calls).
 import { clamp } from '../../util/rng';
+import { clampSimStat, lack } from '../ratings';
 import { ascension } from '../mastery';
 import { dist, FOUNTAIN, lanePoint, type Side } from './map';
 import type { MatchSim } from './engine';
@@ -13,14 +14,14 @@ export const has = (c: SimChamp | SimPlayerInput, trait: string) => ('input' in 
 export function applyTraitInputs(p: SimPlayerInput): SimPlayerInput {
   const q = { ...p };
   const t = new Set(p.traits);
-  if (t.has('lane_kingdom')) q.lane = Math.min(99, q.lane + 6);
-  if (t.has('farming_machine')) q.farm = Math.min(99, q.farm + 5);
-  if (t.has('vision_wizard')) q.vision = Math.min(99, q.vision + 8);
-  if (t.has('teamfight_maestro')) q.tf = Math.min(99, q.tf + 5);
-  if (t.has('shotcaller')) q.shotcalling = Math.min(99, q.shotcalling + 5);
-  if (t.has('veteran')) q.macro = Math.min(99, q.macro + 2);
+  if (t.has('lane_kingdom')) q.lane = clampSimStat('lane', q.lane + 6);
+  if (t.has('farming_machine')) q.farm = clampSimStat('farm', q.farm + 5);
+  if (t.has('vision_wizard')) q.vision = clampSimStat('vision', q.vision + 8);
+  if (t.has('teamfight_maestro')) q.tf = clampSimStat('tf', q.tf + 5);
+  if (t.has('shotcaller')) q.shotcalling = clampSimStat('shotcalling', q.shotcalling + 5);
+  if (t.has('veteran')) q.macro = clampSimStat('macro', q.macro + 2);
   if (t.has('coinflip')) q.aggression = Math.min(99, q.aggression + 10);
-  if (t.has('baron_thief')) q.obj = Math.min(99, q.obj + 8);
+  if (t.has('baron_thief')) q.obj = clampSimStat('obj', q.obj + 8);
   if (t.has('game_ender')) q.farsight = Math.max(q.farsight, 86);
   if (t.has('throw_merchant')) q.mistakes = Math.max(q.mistakes, 62);
   if (t.has('comeback_king')) q.resilience = Math.max(q.resilience, 82);
@@ -31,12 +32,12 @@ export function applyTraitInputs(p: SimPlayerInput): SimPlayerInput {
 
 /** Base performance multiplier for this game (consistency variance, big-stage traits). */
 export function rollPerf(sim: MatchSim, p: SimPlayerInput): number {
-  let sd = (100 - p.consistency) / 100 * 0.09;
+  let sd = lack(p.consistency) / 100 * 0.09;
   if (has(p, 'coinflip')) sd *= 2;
   sd *= traitSd(p);
   let perf = 1 + sim.rng.normal(0, sd);
   if (sim.bigMatch) {
-    perf += (p.clutch - 60) / 100 * 0.05;
+    perf += (Math.min(p.clutch, 120) - 60) / 100 * 0.05;
     if (has(p, 'ice_veins')) perf += 0.035;
     if (has(p, 'big_stage_nerves')) perf -= 0.045;
     if (has(p, 'rookie')) perf -= 0.015;

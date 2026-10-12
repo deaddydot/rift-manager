@@ -14,6 +14,7 @@ import { dpsEstimate, burstEstimate, dealDamage } from './combat';
 import { gd, matchupEdge } from '../../data/gamedata';
 import { maybeMistake, has } from './hidden';
 import { mapPlays, joinUlt, JOIN_ULT_CHAMPS } from './globals';
+import { lack } from '../ratings';
 
 // ------------------------------------------------------------------ evaluation helpers
 export function champPower(c: SimChamp): number {
@@ -228,7 +229,7 @@ function objectiveStance(sim: MatchSim, side: Side) {
   // fight value: power with the setup / position edge, and whether they know we're here
   const hold = ((tm.setup[o.kind] ?? 0) - (sim.teams[enemy].setup[o.kind] ?? 0)) / 60;
   const edge = 1 + clamp(hold * 0.06 + (tm.macro - sim.teams[enemy].macro) / 400, -0.12, 0.12);
-  const ratio = groupPower(ours) * edge / Math.max(1, groupPower(theirs)) * Math.exp(sim.rng.normal(0, 0.05 + (100 - tm.macro) / 400));
+  const ratio = groupPower(ours) * edge / Math.max(1, groupPower(theirs)) * Math.exp(sim.rng.normal(0, 0.05 + lack(tm.macro) / 400));
   const spotted = ours.some((c) => sim.isVisibleTo(enemy, c.idx));
   const dps = ours.reduce((s2, c) => s2 + sim.monsterDps(c) * (o.kind === 'baron' ? 0.55 : 0.7), 0);
   const ttk = o.hp / Math.max(1, dps);
@@ -266,7 +267,7 @@ function lookForPicks(sim: MatchSim, side: Side) {
     const hunters = mine.filter((c) => c.recallUntil <= t && c.combatTarget === null && c.hp > c.stats.maxHp * 0.5 && dist(c.pos, v.pos) < 4500 && free(c))
       .sort((a, b) => dist(a.pos, v.pos) - dist(b.pos, v.pos)).slice(0, 3);
     if (hunters.length < 2 || hunters.every((c) => sim.isVisibleTo(enemy, c.idx))) continue; // they'd see it coming
-    const ratio = groupPower(hunters) / Math.max(1, champPower(v)) * Math.exp(sim.rng.normal(0, 0.15 + (100 - tm.macro) / 250));
+    const ratio = groupPower(hunters) / Math.max(1, champPower(v)) * Math.exp(sim.rng.normal(0, 0.15 + lack(tm.macro) / 250));
     if (ratio < 1.8 || !sim.rng.chance(0.35 + tm.aggression / 200)) continue;
     for (const c of hunters) c.task = { kind: 'gank', lane, targetIdx: v.idx, until: t + 12, reason: `collapse: ${v.input.name} alone on our half (${hunters.length}v1, power ×${ratio.toFixed(1)})` };
     if (sim.rng.chance(0.5)) sim.event('gank', `${tm.input.short} collapse on ${v.input.name} in the ${lane} lane`, side);
@@ -392,7 +393,7 @@ function catchSideWaves(sim: MatchSim, side: Side) {
       else if (k === 'objective') {
         const o = sim.objectives.find((x) => x.kind === c.task.objective);
         if (!o || o.alive) continue;
-        const slack = o.spawnAt - t - (travel + clearTime + dist(wp, o.pos) / ms) - timingNoise(c, o.spawnAt + 7) * (1 + (100 - c.input.macro) / 10);
+        const slack = o.spawnAt - t - (travel + clearTime + dist(wp, o.pos) / ms) - timingNoise(c, o.spawnAt + 7) * (1 + lack(c.input.macro) / 10);
         if (slack < 4) continue;
         cost += 3;
       } else continue;
@@ -419,7 +420,7 @@ function teamPlan(sim: MatchSim, side: Side) {
   const enemy = (1 - side) as Side;
   const mine = sim.living(side);
   const theirs = sim.living(enemy);
-  const macroNoise = (100 - tm.macro) / 100;
+  const macroNoise = lack(tm.macro) / 100;
   const laningPhaseV = t < 840 && sim.towers.filter((x) => !x.alive && x.def.tier === 'outer').length < 2;
   const laningPhase = () => laningPhaseV;
 
@@ -586,7 +587,7 @@ function teamPlan(sim: MatchSim, side: Side) {
       if (c.hp < c.stats.maxHp * 0.35 && dist(c.pos, pit) > 3000) continue;
       const o = sim.objectives.find((x) => x.kind === best!.kind)!;
       const travel = dist(c.pos, pit) / Math.max(300, c.stats.ms);
-      const misread = timingNoise(c, o.spawnAt) * (1 + (100 - c.input.macro) / 8);
+      const misread = timingNoise(c, o.spawnAt) * (1 + lack(c.input.macro) / 8);
       if (!o.alive && o.spawnAt - t > travel + (laningPhase() ? 4 : 6) + misread && c.role !== 'jungle' && c.role !== 'support') continue;
       // better macro teams take the zone earlier (jungle/support move up sooner)
       if (!o.alive && o.spawnAt - t > travel + 12 + tm.macro / 4) continue;
@@ -714,7 +715,7 @@ function baseDefense(sim: MatchSim, side: Side, mine: SimChamp[], theirs: SimCha
     // racing: already on their nexus with their base open → keep hitting it
     if (enemyNexusOpen && dist(c.pos, NEXUS[enemy]) < 1400 && attackers.length < 5) { sim.dbg(c, 'base', 'racing: staying on their Nexus'); continue; }
     // tunnel vision: aggressive, low-macro side laners sometimes keep pushing
-    if (c.task.kind === 'push' && c.role === 'top' && dist(c.pos, threat.pos) > 7000 && timingUniform(c, Math.floor(t / 30) + 911) < (100 - c.input.macro) / 400 + (c.input.aggression - 50) / 500) {
+    if (c.task.kind === 'push' && c.role === 'top' && dist(c.pos, threat.pos) > 7000 && timingUniform(c, Math.floor(t / 30) + 911) < lack(c.input.macro) / 400 + (c.input.aggression - 50) / 500) {
       sim.dbg(c, 'base', `ignores the base call and keeps pushing ${c.task.lane} (tunnel vision)`);
       continue;
     }
@@ -777,7 +778,7 @@ function assign(sim: MatchSim, c: SimChamp, task: Task) {
   // they were doing first (and arrive late / staggered)
   const key = `${task.kind}:${task.objective ?? task.lane ?? ''}`;
   if (`${c.task.kind}:${c.task.objective ?? c.task.lane ?? ''}` !== key) {
-    if (c.rotateKey !== key) { c.rotateKey = key; c.rotateAt = sim.t + Math.abs(sim.rng.normal(0, 1)) * (100 - c.input.macro) / 100 * 9; }
+    if (c.rotateKey !== key) { c.rotateKey = key; c.rotateAt = sim.t + Math.abs(sim.rng.normal(0, 1)) * lack(c.input.macro) / 100 * 9; }
     if (sim.t < (c.rotateAt ?? 0)) return;
   }
   if (c.combatTarget !== null && c.task.kind !== 'lane') return; // don't yank someone out of a fight
@@ -810,7 +811,7 @@ export function champDecide(sim: MatchSim, c: SimChamp) {
   }
   // ---------- combat awareness (someone who just stepped out of the fog takes a moment to react to —
   // that moment is what makes ganks land; wards spot them earlier)
-  const react = 0.25 + (100 - c.input.macro) / 180 + (c.task.kind === 'lane' ? 0.25 : 0);
+  const react = 0.25 + lack(c.input.macro) / 180 + (c.task.kind === 'lane' ? 0.25 : 0);
   const seenSince = sim.teams[c.side].seenSince;
   let threats = enemiesWithin(sim, c.side, c.pos, 1350, true).filter((e) =>
     c.combatTarget !== null || e.combatTarget === c.idx || dist(e.pos, c.pos) < 450 || t - (seenSince.get(e.idx) ?? -99) >= react);
@@ -929,7 +930,7 @@ function chooseFarmLane(sim: MatchSim, c: SimChamp): Lane {
     const safety = myTower ? 0 : -0.6;
     let s = minions / (8 + travel * 0.9) - mates * 0.9 - danger * 0.6 + safety + (lane === pref[c.role] ? 0.5 : 0) + (c.task.lane === lane ? 0.4 : 0);
     if (c.role === 'adc' && lane === 'mid') s += 0.25; // adc likes the safer mid wave later on
-    s += timingNoise(c, Math.floor(sim.t / 40) * 7 + LANES.indexOf(lane)) * (100 - c.input.macro) / 70; // poor macro: wrong wave
+    s += timingNoise(c, Math.floor(sim.t / 40) * 7 + LANES.indexOf(lane)) * lack(c.input.macro) / 70; // poor macro: wrong wave
     if (s > bs) { bs = s; best = lane; }
   }
   return best;
@@ -1025,7 +1026,7 @@ function shouldRecall(sim: MatchSim, c: SimChamp): string | null {
   if (dead >= 2) { cost += 0.5; stay.push(`${dead} enemies dead — push it`); } else if (dead === 1 && t > 840) cost += 0.15;
   if ((tm.plan.kind === 'siege' || tm.plan.kind === 'endcall') && c.task.kind === 'push') { cost += 0.55; stay.push('the team is sieging'); }
   // the read: good macro players weigh it right
-  const score = gain - cost + sim.rng.normal(0, 0.06 + (100 - c.input.macro) / 250);
+  const score = gain - cost + sim.rng.normal(0, 0.06 + lack(c.input.macro) / 250);
   if (score < 0.7) {
     if (stay.length && gain >= 0.7 && sim.rng.chance(0.08)) sim.dbg(c, 'recall', `holds the back: ${stay.join(', ')} > ${why.join(', ')}`);
     return null;
@@ -1541,7 +1542,7 @@ function midWaveIntent(sim: MatchSim, c: SimChamp, lane: Lane) {
   const front = theirs.reduce((a, b) => (depthOf(c, lane, lanePoint(lane, a.p)) <= depthOf(c, lane, lanePoint(lane, b.p)) ? a : b));
   if (front.supers > 0 && depthOf(c, lane, lanePoint(lane, front.p)) < 0.5) { c.waveIntent = 'push'; c.alert = 0; c.waveReason = 'clearing super minions'; return; }
   const risk = ambushRisk(sim, c, lane, lanePoint(lane, front.p));
-  const read = clamp(risk + sim.rng.normal(0, 0.03 + (100 - c.input.macro) / 300), 0, 1);
+  const read = clamp(risk + sim.rng.normal(0, 0.03 + lack(c.input.macro) / 300), 0, 1);
   const urgency = rotationUrgency(sim, c);
   const tolerance = 0.38 + (c.input.aggression - 50) / 300 + (has(c, 'coinflip') ? 0.08 : 0) - (has(c, 'survivor') ? 0.05 : 0)
     + (has(c, 'overextender') ? 0.05 : 0) - (has(c, 'calculated') || has(c, 'patient_hunter') ? 0.04 : 0);
@@ -1591,7 +1592,7 @@ function waveBeforeObjective(sim: MatchSim, c: SimChamp, o: { kind: ObjectiveKin
     const clearTime = w.hp / Math.max(60, sim.waveClearDps(c, w.count));
     const detour = d / ms + clearTime + dist(wp, o.pos) / ms - dist(c.pos, o.pos) / ms;
     // timing read: good macro players get this right, poor ones misjudge by several seconds
-    const err = timingNoise(c, o.spawnAt + w.p * 1000 + Math.floor(t / 20)) * (2 + (100 - c.input.macro) / 6);
+    const err = timingNoise(c, o.spawnAt + w.p * 1000 + Math.floor(t / 20)) * (2 + lack(c.input.macro) / 6);
     if (detour + err > budget) continue;
     const score = w.count * w.goldEach - detour * 10;
     if (!best || score > best.score) best = { lane: w.lane, pos: wp, score };

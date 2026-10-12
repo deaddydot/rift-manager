@@ -374,7 +374,7 @@ const LIST: TraitSpec[] = [
   neg({ id: 'fading_reflexes', name: 'Fading Reflexes', group: 'career', hidden: true, desc: 'The hands are slowing down: slightly weaker mechanics, worse in very long games.',
     fx: { in: { mech: -3 }, long: -0.01 }, w: (x) => (x.age >= 26 ? 0.8 : 0) }),
   pos({ id: 'prodigy', name: 'Prodigy', group: 'career', hidden: true, desc: 'A generational talent: +15% training gains until 22 and sharper mechanics.',
-    fx: { trainAge: [0, 22, 0.15], in: { mech: 2 } }, w: (x) => (x.age < 21 && x.p.hidden.potential >= 80 ? 3 : 0), excl: ['coasting'] }),
+    fx: { trainAge: [0, 22, 0.15], in: { mech: 2 } }, w: (x) => (x.age < 21 && x.p.hidden.potential >= 135 ? 3 : 0), excl: ['coasting'] }),
 ];
 
 export const TRAIT_SPECS: Record<string, TraitSpec> = Object.fromEntries(LIST.map((t) => [t.id, t]));

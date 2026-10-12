@@ -5,13 +5,15 @@ import { masteryGain, MASTERY_UNKNOWN } from '../mastery';
 import { destinySide } from './lore';
 import { ROLES } from '../types';
 import { pickMvp } from '../sim/mvp';
-import { RNG, clamp, sigmoid } from '../../util/rng';
+import { RNG, clamp, sigmoid, hashString } from '../../util/rng';
 import { gd, matchupEdge } from '../../data/gamedata';
 import { newDraft, runAIDraft, picksOf, bansOf, comfort, metaScore, type DraftState, type DraftTeam } from '../draft/draft';
 import { draftTeam, simTeam, lineupPlayers, effective } from './prep';
 import { MatchSim } from '../sim/engine';
 import type { MatchResult } from '../sim/simtypes';
 import { overall } from '../setup';
+import { simRating } from '../ratings';
+import { gameExperience, stageWeight } from '../management/development';
 import { feedResult } from './formats';
 import { onSeriesFinished } from '../management/reactions';
 import { peopleAfterSeries } from '../management/people';
@@ -82,8 +84,8 @@ export function teamPowerFor(state: GameState, team: Team, picks: Record<Role, s
   for (const r of ROLES) {
     const p = lp[r];
     const e = effective(state, p, team, r);
-    let ovr = overall(e, r);
-    if (big) ovr += (e.clutch - 60) * 0.06 + (p.traits.includes('ice_veins') ? 2 : 0) - (p.traits.includes('big_stage_nerves') ? 3 : 0);
+    let ovr = simRating(overall(e, r)); // ratings past 100 are worth a little less per point (engine/ratings.ts)
+    if (big) ovr += (simRating(e.clutch) - 60) * 0.06 + (p.traits.includes('ice_veins') ? 2 : 0) - (p.traits.includes('big_stage_nerves') ? 3 : 0);
     const dp = dt.players.find((x) => x.role === r)!;
     const m = comfort(dp, picks[r], r);
     const opp = d.teams[1 - side] ? picksOf(d, (1 - side) as 0 | 1).find((a) => a.role === r)?.champion : undefined;
@@ -124,14 +126,14 @@ export function quickSim(state: GameState, blue: Team, red: Team, d: DraftState,
       const pl = lp[r];
       const e = effective(state, pl, team, r);
       const sh = ROLE_SHARE[r];
-      const perf = clamp(1 + (overall(e, r) - 70) / 120 + rng.normal(0, 0.18), 0.4, 1.8);
+      const perf = clamp(1 + (simRating(overall(e, r)) - 70) / 120 + rng.normal(0, 0.18), 0.4, 1.8);
       const k = Math.max(0, Math.round(kills * sh.k * perf + rng.normal(0, 1)));
       const dd = Math.max(0, Math.round(enemyKills * sh.d / perf + rng.normal(0, 1)));
       const a = Math.max(0, Math.round(kills * sh.a * 1.6 * (0.7 + perf * 0.3) + rng.normal(0, 1.5)));
-      const cs = Math.max(0, Math.round(sh.csm * mins * (0.82 + e.farming / 100 * 0.25) * (isWinner ? 1.04 : 0.96)));
+      const cs = Math.max(0, Math.round(sh.csm * mins * (0.82 + Math.min(1.15, simRating(e.farming) / 100) * 0.25) * (isWinner ? 1.04 : 0.96)));
       const gold = Math.round(teamGold * sh.gold * (0.9 + perf * 0.1));
       const dmg = Math.round(mins * 620 * sh.dmg * 5 * (0.85 + perf * 0.15));
-      const vision = Math.round(mins * sh.vs * (0.8 + e.vision / 250));
+      const vision = Math.round(mins * sh.vs * (0.8 + simRating(e.vision) / 250));
       lines.push({ playerId: pl.id, teamId: team.id, role: r, champion: picks[r], k, d: dd, a: Math.min(a, kills), cs, gold, damage: dmg, vision });
     }
   }
@@ -252,6 +254,12 @@ export function recordGame(state: GameState, f: MatchFixture, g: SeriesGame) {
   if (!g.players) return;
   const comp = state.competitions[f.competitionId];
   const mins = g.duration / 60;
+  // stage experience: lineup strength on both sides (opponent edge) and how big the stage is
+  const lineAvg: Record<string, number> = {}, lineN: Record<string, number> = {};
+  for (const line of g.players) { const p = state.players[line.playerId]; if (!p) continue; lineAvg[line.teamId] = (lineAvg[line.teamId] ?? 0) + overall(p.attributes, line.role); lineN[line.teamId] = (lineN[line.teamId] ?? 0) + 1; }
+  for (const t of Object.keys(lineAvg)) lineAvg[t] /= lineN[t];
+  const stage = stageWeight(state, f);
+  const xrng = new RNG(hashString(`${f.id}|${g.duration}|${g.winner}|${g.kills.join('-')}`));
   for (const line of g.players) {
     const p: Player | undefined = state.players[line.playerId];
     if (!p) continue;
@@ -276,5 +284,7 @@ export function recordGame(state: GameState, f: MatchFixture, g: SeriesGame) {
     let car = p.career.find((c) => c.season === state.season && c.teamId === line.teamId);
     if (!car) { car = { season: state.season, teamId: line.teamId, teamName: state.teams[line.teamId]?.name ?? '', games: 0, wins: 0, titles: [] }; p.career.push(car); }
     car.games++; if (won) car.wins++;
+    const vs = line.teamId === g.blue ? g.red : g.blue;
+    gameExperience(state, p, won, stage, (lineAvg[vs] ?? 0) - (lineAvg[line.teamId] ?? 0), g.mvp === p.id, () => xrng.next());
   }
 }

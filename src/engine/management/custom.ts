@@ -7,6 +7,7 @@ import { movePlayer, autoFillLineup } from './transfers';
 import { MAX_STAFF, staffRating, staffSalaryDemand, adoptPoolStaff } from './staffMarket';
 import { RNG, clamp, hashString } from '../../util/rng';
 import { noteEdit } from './buzzCore';
+import { RATING_MAX, marketDrift } from '../ratings';
 
 export const slugify = (s: string) =>
   s.toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 32) || 'x';
@@ -41,7 +42,7 @@ export function autoReputation(state: GameState, attributes: PlayerAttributes, r
 export function suggestedSalary(state: GameState, attributes: PlayerAttributes, role: Role, teamId: string | null, traits: string[]) {
   if (!teamId || !state.teams[teamId]) return 0;
   const t = state.teams[teamId];
-  return salaryFor(overall(attributes, role), state.leagues[t.leagueId]?.tier ?? 3, t.leagueId, traits);
+  return salaryFor(overall(attributes, role), state.leagues[t.leagueId]?.tier ?? 3, t.leagueId, traits, marketDrift(state));
 }
 
 // ------------------------------------------------------------------ players
@@ -90,9 +91,9 @@ export function createCustomPlayer(state: GameState, d: PlayerDraft): Player {
     playstyle: [], morale: 70, form: 0, fatigue: 0, contract: null,
     reputation: d.reputation ?? autoReputation(state, d.attributes, d.role, d.teamId, d.traits), value: 0,
     season: emptySeasonStats(), history: [], career: [], personality: personalityOf(d.hidden),
-    isCustom: true, streamer: d.streamer || undefined, trainingFocus: null, learningChampion: null, masteryScale: 200,
+    isCustom: true, streamer: d.streamer || undefined, trainingFocus: null, learningChampion: null, masteryScale: 200, ratingScale: RATING_MAX,
   };
-  p.value = marketValue(p, state.date);
+  p.value = marketValue(p, state.date, marketDrift(state));
   if (d.persona) p.persona = { ...d.persona };
   state.players[id] = p;
   const team = d.teamId ? state.teams[d.teamId] : null;
@@ -118,6 +119,7 @@ export function applyPlayerDraft(state: GameState, p: Player, d: PlayerDraft) {
   p.traits = [...d.traits];
   p.champions = { ...d.champions };
   p.masteryScale = 200;
+  p.ratingScale = RATING_MAX; // the potential set in the editor is already on the 0..200 scale
   p.streamer = d.streamer || undefined;
   if (d.persona) p.persona = { ...d.persona };
   if (!d.image) { p.image = undefined; p.imageUrl = undefined; } // portrait removed
@@ -132,7 +134,7 @@ export function applyPlayerDraft(state: GameState, p: Player, d: PlayerDraft) {
     const expires = contractExpiry(state.date, clamp(d.years, 1, 3));
     p.contract = { salary, expires, buyout: p.contract?.buyout || Math.round((p.value * 1.6) / 10000) * 10000, signedOn: p.contract?.signedOn ?? state.date };
   }
-  p.value = marketValue(p, state.date);
+  p.value = marketValue(p, state.date, marketDrift(state));
 }
 
 /** Remove a custom player. Players with match records are retired instead, so history stays consistent. */
@@ -434,7 +436,7 @@ export function importLibraryPlayer(state: GameState, lp: LibraryPlayer): Player
   const id = uniquePlayerId(state, lp.handle || 'player');
   const p: Player = { ...(JSON.parse(JSON.stringify(lp)) as Player), id, teamId: null, contract: null, season: emptySeasonStats(), history: [], career: [], isCustom: true, retired: undefined };
   delete (p as LibraryPlayer).savedAt;
-  p.value = marketValue(p, state.date);
+  p.value = marketValue(p, state.date, marketDrift(state));
   state.players[id] = p;
   state.scoutedPlayers[id] = 100;
   return p;
@@ -450,7 +452,7 @@ export function draftFromLibraryTeam(state: GameState, lt: LibraryTeam): TeamDra
   }
   for (const id of lt.realPlayerIds ?? []) {
     const p = state.players[id];
-    if (p && !p.retired) roster.push({ playerId: id, salary: salaryFor(overall(p.attributes, p.role), state.leagues[lt.leagueId]?.tier ?? 2, lt.leagueId, p.traits), years: 2 });
+    if (p && !p.retired) roster.push({ playerId: id, salary: salaryFor(overall(p.attributes, p.role), state.leagues[lt.leagueId]?.tier ?? 2, lt.leagueId, p.traits, marketDrift(state)), years: 2 });
   }
   return {
     ...base, name: lt.name, short: lt.short, colors: lt.colors, logo: lt.logo, country: lt.country ?? base.country,

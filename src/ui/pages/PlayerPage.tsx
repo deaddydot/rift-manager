@@ -2,7 +2,9 @@ import { useEffect, useMemo, useState } from 'react';
 import { HOSTED } from '../../hosted';
 import { MASTERY_MAX, masteryTier } from '../../engine/mastery';
 import { useGame, useStore, nav } from '../../store/game';
-import { Panel, Portrait, TeamLogo, Rating, Bar, ChampIcon, Pill, Tabs, Modal, money, fmtDate, ageOf, flag, pct, RoleIcon, Stat, Empty, ratingColor } from '../components/kit';
+import { Panel, Portrait, TeamLogo, Rating, Bar, RatingBar, RatingBandTag, ChampIcon, Pill, Tabs, Modal, money, fmtDate, ageOf, flag, pct, RoleIcon, Stat, Empty, ratingColor } from '../components/kit';
+import { RATING_MAX } from '../../engine/ratings';
+import { estimateRange } from '../../engine/management/scouting';
 import { ATTRIBUTE_LABEL, HIDDEN_LABEL, ROLE_LABEL, type HiddenAttributes, type MatchHistoryEntry, type PlayerAttributes, type Role } from '../../engine/types';
 import { TRAITS } from '../../engine/traits';
 import { overall } from '../../engine/setup';
@@ -49,9 +51,14 @@ export default function PlayerPage({ id }: { id: string }) {
 
   const hiddenRange = (k: keyof HiddenAttributes): [number, number] => {
     const v = p.hidden[k];
+    if (k === 'potential') { // 0..200 scale, never below the current overall; same stable estimate as scouting reports
+      const [a, b] = estimateRange(v, know, `${p.id}|potential`, 1, RATING_MAX, 1.5);
+      return [Math.max(ovr, a), Math.max(ovr, b)];
+    }
     const w = Math.round((100 - know) * 0.35);
     return [Math.max(1, v - w), Math.min(99, v + w)];
   };
+  const potShown = know >= 90 ? p.hidden.potential : (hiddenRange('potential')[0] + hiddenRange('potential')[1]) / 2;
   const visibleTraits = p.traits.filter((t) => !TRAITS[t]?.hidden || know >= 70);
   const hiddenCount = p.traits.length - visibleTraits.length;
 
@@ -88,10 +95,11 @@ export default function PlayerPage({ id }: { id: string }) {
             </div>
           </div>
           <div className="flex gap-3 items-center">
-            <div className="text-center"><Rating v={ovr} size="lg" /><div className="text-[11px] text-muted mt-1">Overall</div></div>
+            <div className="text-center"><Rating v={ovr} size="lg" /><div className="text-[11px] text-muted mt-1">Overall</div><RatingBandTag v={ovr} /></div>
             <div className="text-center">
-              <div className="font-display text-xl font-bold" style={{ color: ratingColor(p.hidden.potential) }}>{know >= 90 ? p.hidden.potential : `${hiddenRange('potential')[0]}–${hiddenRange('potential')[1]}`}</div>
+              <div className="font-display text-xl font-bold" style={{ color: ratingColor(potShown) }}>{know >= 90 ? Math.round(p.hidden.potential) : `${hiddenRange('potential')[0]}–${hiddenRange('potential')[1]}`}</div>
               <div className="text-[11px] text-muted">Potential</div>
+              <RatingBandTag v={potShown} prefix="ceiling: " />
             </div>
           </div>
         </div>
@@ -119,12 +127,12 @@ export default function PlayerPage({ id }: { id: string }) {
 
       {tab === 'overview' && (
         <div className="grid grid-cols-3 gap-4">
-          <Panel title="Attributes" className="col-span-2">
+          <Panel title="Attributes" className="col-span-2" right={<span className="text-[11px] text-muted" title="Ratings run 0–200. The best players of 2026 sit around 90; the tick marks 100.">scale 0–200 · tick = 100</span>}>
             <div className="grid grid-cols-2 gap-x-8 gap-y-5">
               {GROUPS.map((g) => (
                 <div key={g.title}>
                   <div className="text-xs uppercase text-muted font-bold mb-2 tracking-wider">{g.title}</div>
-                  <div className="space-y-1.5">{g.keys.map((k) => <Bar key={k} label={ATTRIBUTE_LABEL[k]} value={p.attributes[k]} />)}</div>
+                  <div className="space-y-1.5">{g.keys.map((k) => <RatingBar key={k} label={ATTRIBUTE_LABEL[k]} value={p.attributes[k]} />)}</div>
                 </div>
               ))}
               <div>

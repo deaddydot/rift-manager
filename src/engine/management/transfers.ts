@@ -9,6 +9,8 @@ import { addLedger, payrollYearly } from './finance';
 import { bidStance, bidSalary, bidPull, newBid, bidTerms, bidSold, bidRejected } from './bidTalks';
 import { traitContractMod } from './traitEffects';
 import { noteDeparture, noteArrival, aiSquadDaily, aiSquadWeekly, teamLevel, aiNeeds, neededRoles } from './aiSquad';
+import { rollPotential } from './potential';
+import { RATING_MAX, marketDrift } from '../ratings';
 
 export function inTransferWindow(date: string) {
   const md = date.slice(5);
@@ -26,7 +28,7 @@ const tierOf = (state: GameState, t?: Team | null) => (t ? state.leagues[t.leagu
 
 /** Salary a player asks for from a given team (yearly USD). */
 export function salaryDemand(state: GameState, p: Player, team: Team): number {
-  const base = salaryFor(playerOvr(p), tierOf(state, team), team.leagueId, p.traits);
+  const base = salaryFor(playerOvr(p), tierOf(state, team), team.leagueId, p.traits, marketDrift(state));
   const ego = 1 + (p.hidden.ego - 50) / 250;
   const loyalty = p.teamId === team.id ? 1 - p.hidden.loyalty / 600 : 1;
   const prestigeDiscount = 1 - clamp((team.prestige - 60) / 300, -0.1, 0.12);
@@ -123,7 +125,7 @@ export function processExpiries(state: GameState, rng: RNG) {
     const affordable = team.balance > demand * 0.8;
     const ovr = playerOvr(p), age = ageOn(p.birthdate, state.date) ?? 22;
     const level = teamLevel(state, team);
-    const chance = starter ? (ovr >= level + 3 ? 0.96 : ovr >= level - 4 ? 0.88 : 0.62) * (age >= 29 ? 0.85 : 1) : age <= 21 && p.hidden.potential - ovr >= 8 ? 0.5 : 0.22;
+    const chance = starter ? (ovr >= level + 3 ? 0.96 : ovr >= level - 4 ? 0.88 : 0.62) * (age >= 29 ? 0.85 : 1) : age <= 21 && p.hidden.potential - ovr >= 25 ? 0.5 : 0.22;
     const keep = affordable && rng.chance(chance);
     if (keep) p.contract = { salary: demand, expires: `${Number(state.date.slice(0, 4)) + rng.int(1, 2)}-11-18`, buyout: Math.round(p.value * 1.5 / 10000) * 10000, signedOn: state.date };
     else movePlayer(state, p, null, 0, 0);
@@ -282,19 +284,21 @@ export function generateProspects(state: GameState, rng: RNG, perRegion = 14) {
       if (state.players[id]) continue;
       const regionBase = { KR: 50, CN: 49, EMEA: 44, NA: 40, BR: 39, APAC: 41 }[region]!;
       const base = regionBase + rng.normal(0, 6);
-      const potential = clamp(Math.round(base + 12 + Math.abs(rng.normal(0, 11))), 40, 97);
       const a = () => clamp(Math.round(base + rng.normal(0, 6)), 15, 80);
       const attrs = { mechanics: a() + 4, laning: a(), farming: a(), teamfight: a() - 3, macro: a() - 6, vision: a() - 4, pathing: a() - 3, objectives: a() - 4, shotcalling: a() - 8, consistency: a() - 6, clutch: a() - 5, adaptability: a(), aggression: clamp(Math.round(rng.normal(58, 15)), 10, 95) };
       const champs = newChampionPool(rng, role, Math.round(base), rng.int(8, 13));
+      const birthdate = `${year - rng.int(16, 18)}-${String(rng.int(1, 12)).padStart(2, '0')}-${String(rng.int(1, 28)).padStart(2, '0')}`;
+      // ceiling on the 0..200 scale: most prospects sit around 85–120, the rare one far higher (management/potential.ts)
+      const potential = rollPotential(overall(attrs, role), ageOn(birthdate, state.date) ?? 17, rng);
       const p: Player = {
-        id, handle, name: ident.name, country: ident.country, birthdate: `${year - rng.int(16, 18)}-${String(rng.int(1, 12)).padStart(2, '0')}-${String(rng.int(1, 28)).padStart(2, '0')}`,
+        id, handle, name: ident.name, country: ident.country, birthdate,
         role, teamId: null, attributes: attrs,
         hidden: { potential, farsight: clamp(Math.round(rng.normal(50, 15)), 5, 99), mistakes: clamp(Math.round(rng.normal(52, 12)), 5, 95), composure: clamp(Math.round(rng.normal(48, 15)), 5, 99), snowball: clamp(Math.round(rng.normal(50, 15)), 5, 99), resilience: clamp(Math.round(rng.normal(50, 15)), 5, 99), workEthic: clamp(Math.round(rng.normal(62, 15)), 5, 99), professionalism: clamp(Math.round(rng.normal(58, 15)), 5, 99), ego: clamp(Math.round(rng.normal(45, 15)), 5, 99), loyalty: clamp(Math.round(rng.normal(55, 15)), 5, 99), injuryProne: clamp(Math.round(rng.normal(15, 8)), 1, 90) },
         traits: ['rookie'], champions: champs, playstyle: ['Solo queue prospect'], morale: 70, form: 0, fatigue: 0, contract: null, reputation: 5, value: 0,
         season: { games: 0, wins: 0, kills: 0, deaths: 0, assists: 0, cs: 0, gold: 0, damage: 0, vision: 0, minutes: 0, mvps: 0, champions: {} },
-        history: [], career: [], personality: { professionalism: 58, ambition: 60, loyalty: 55, temperament: 50 },
+        history: [], career: [], personality: { professionalism: 58, ambition: 60, loyalty: 55, temperament: 50 }, ratingScale: RATING_MAX,
       };
-      p.value = marketValue(p, state.date);
+      p.value = marketValue(p, state.date, marketDrift(state));
       state.players[id] = p;
     }
   }
