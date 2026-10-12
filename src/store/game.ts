@@ -1,7 +1,7 @@
 // Global store: the mutable GameState plus a version counter to trigger re-renders.
 import { create } from 'zustand';
 import type { GameState, MatchFixture } from '../engine/types';
-import { createNewGame, type Database } from '../engine/setup';
+import { createNewGame, type Database, refreshPortraits } from '../engine/setup';
 import { processDay, endDay, nextUserFixture, setBoardObjectives } from '../engine/game';
 import { saveGame } from './persist';
 import { addInbox } from '../engine/management/news';
@@ -31,7 +31,7 @@ export const useStore = create<Store>((set, get) => ({
   busy: false,
   toast: null,
   setDB: (db) => set({ db }),
-  setState: (s) => set({ state: s, v: get().v + 1 }),
+  setState: (s) => { const db = get().db; if (s && db) refreshPortraits(s, db); set({ state: s, v: get().v + 1 }); }, // loaded saves pick up newly found photos
   bump: () => set({ v: get().v + 1 }),
   notify: (msg) => { set({ toast: msg }); setTimeout(() => { if (get().toast === msg) set({ toast: null }); }, 3500); },
   newGame: (teamId, manager) => {

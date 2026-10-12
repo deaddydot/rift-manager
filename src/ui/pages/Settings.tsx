@@ -209,6 +209,7 @@ export default function Settings(_props: { id?: string; tab?: string; kind?: str
       <Panel title="Credits & data sources">
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 text-xs text-muted leading-relaxed">
           <Credit name="Leaguepedia" license="CC BY-SA 3.0" href="https://lol.fandom.com">Rosters, player and staff details, team logos, 2026 match history and results. Derived data is shared under the same license.</Credit>
+          <Credit name="Liquipedia" license="CC BY-SA 3.0" href="https://liquipedia.net/leagueoflegends">A few player portraits Leaguepedia had no photo of (only where the real name matched).</Credit>
           <Credit name="Riot Data Dragon" license="Riot Games static data" href="https://developer.riotgames.com/docs/lol#data-dragon">Champion, ability and item metadata, icons and splash assets.</Credit>
           <Credit name="Meraki Analytics" license="Community dataset" href="https://github.com/meraki-analytics/lolstaticdata">Detailed champion ability values: damage scalings, cooldowns, crowd control.</Credit>
           <Credit name="CommunityDragon" license="Community CDN" href="https://www.communitydragon.org">Additional game assets and map data used by the match viewer.</Credit>

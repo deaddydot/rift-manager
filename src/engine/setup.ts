@@ -21,7 +21,7 @@ export interface DbTeam {
   logoFile?: string; logoUrl?: string; elo: number; rating: number; realRecord: { wins: number; losses: number; games: number };
   roster: string[]; lineup: Partial<Record<Role, string>>; staff: string[];
 }
-export interface DbStaff { id: string; handle: string; name: string; country: string; teamId: string; role: 'headCoach' | 'coach'; attributes: Staff['attributes'] }
+export interface DbStaff { id: string; handle: string; name: string; country: string; teamId: string; role: 'headCoach' | 'coach'; attributes: Staff['attributes']; imageUrl?: string }
 export interface Database { leagues: (LeagueDef & { source?: string })[]; teams: DbTeam[]; players: DbPlayer[]; staff: DbStaff[] }
 
 export const START_DATE = '2026-01-02';
@@ -171,7 +171,7 @@ export function createNewGame(db: Database, userTeamId: string, managerName: str
     const team = teams[s.teamId];
     if (!team) continue;
     const st: Staff = {
-      id: s.id, handle: s.handle, name: s.name, country: s.country, role: s.role, teamId: s.teamId, attributes: { ...s.attributes },
+      id: s.id, handle: s.handle, name: s.name, country: s.country, role: s.role, teamId: s.teamId, attributes: { ...s.attributes }, image: s.imageUrl ?? undefined,
       contract: { salary: Math.round(salaryFor(Math.round((s.attributes.tactics + s.attributes.drafting) / 2), leagues[team.leagueId]?.tier ?? 3, team.leagueId, []) * 0.45 / 1000) * 1000, expires: `${SEASON_YEAR + rng.int(0, 1)}-11-18`, buyout: 0, signedOn: '2025-11-20' },
       reputation: clamp(Math.round((s.attributes.tactics + s.attributes.drafting) / 2), 1, 100),
     };
@@ -196,4 +196,12 @@ export function createNewGame(db: Database, userTeamId: string, managerName: str
 
 export function emptySeasonStats() {
   return { games: 0, wins: 0, kills: 0, deaths: 0, assists: 0, cs: 0, gold: 0, damage: 0, vision: 0, minutes: 0, mvps: 0, champions: {} };
+}
+
+/** Saves keep their own copy of every player and staff member: fill in photos found since the save was made. */
+export function refreshPortraits(state: GameState, db: Database) {
+  const pImg = new Map(db.players.filter((p) => p.imageUrl).map((p) => [p.id, p.imageUrl!]));
+  for (const p of Object.values(state.players)) if (!p.image && !p.imageUrl && pImg.has(p.id)) { p.imageUrl = pImg.get(p.id); p.image = p.imageUrl; }
+  const sImg = new Map(db.staff.filter((s) => s.imageUrl).map((s) => [s.id, s.imageUrl!]));
+  for (const s of Object.values(state.staff)) if (!s.image && sImg.has(s.id)) s.image = sImg.get(s.id);
 }

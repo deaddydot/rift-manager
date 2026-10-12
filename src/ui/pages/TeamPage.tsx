@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { useGame, useStore, nav } from '../../store/game';
 import type { GameState, Team, Player, Staff, MatchFixture, FacilityKey, StaffRole } from '../../engine/types';
 import { ROLES, ROLE_LABEL, REGION_LABEL, FACILITY_INFO } from '../../engine/types';
-import { Panel, Stat, TeamLogo, Portrait, Avatar, RoleIcon, Rating, Pill, Empty, Sparkline, money, num, fmtDate, ageOf, flag, pct } from '../components/kit';
+import { Panel, Stat, TeamLogo, Portrait, Avatar, RoleIcon, Rating, Pill, Empty, Sparkline, money, num, fmtDate, ageOf, flag, pct, StaffPortrait } from '../components/kit';
 import { overall } from '../../engine/setup';
 import {
   teamResults, teamFixtures, seasonRecord, seasonComps, teamStatusIn, outcome, scoreFor, opponentOf, cleanLabel, lineupRating, willEnter, compColor, TONE_COLOR,
@@ -213,7 +213,7 @@ function StaffTable({ state, team, isUser }: { state: GameState; team: Team; isU
                 <tr key={s.id}>
                   <td>
                     <div className="flex items-center gap-2.5">
-                      <Avatar name={s.handle} size={30} colors={team.colors} />
+                      <StaffPortrait staff={s} size={30} colors={team.colors} />
                       <div className="min-w-0"><div className="font-semibold truncate">{s.handle} <span className="text-xs">{flag(s.country)}</span></div><div className="text-[11px] text-dim truncate">{s.name}</div></div>
                     </div>
                   </td>

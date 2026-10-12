@@ -183,6 +183,8 @@ const METRICS = ['kda', 'kp', 'csm', 'gpm', 'dpm', 'vspm', 'dmgShare', 'goldShar
 const leaguesOut = [];
 const teamsOut = [];
 const playersOut = [];
+// cache written by scripts/fetch-portraits.mjs: { [wiki page]: { file, url } | { none: true } }
+const PORTRAITS = fs.existsSync(path.join(ROOT, 'scripts/data/portraits.json')) ? JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/data/portraits.json'), 'utf8')) : {};
 const staffOut = [];
 const historyOut = {};
 const playersInfo = {};
@@ -476,11 +478,13 @@ for (const [link, pt] of Object.entries(playerTeam)) {
     for (const t of ov.removeTraits ?? []) { const i = traits.indexOf(t); if (i >= 0) traits.splice(i, 1); }
     for (const [c, v] of Object.entries(ov.champions ?? {})) { const id2 = champId(c) ?? c; pool[id2] = v; }
   }
-  const imgFile = bestImage(link);
+  // photos found later by scripts/fetch-portraits.mjs fill the gaps the Cargo data leaves
+  const extra = !bestImage(link) ? PORTRAITS[link] : null;
+  const imgFile = bestImage(link) ?? extra?.file ?? null;
   playersOut.push({
     id, link, handle, name: info.Name || '', nativeName: info.NativeName || undefined, country: info.Country || info.NationalityPrimary || LEAGUES.find((l) => l.id === pt.league).country,
     birthdate: info.Birthdate || undefined, role: pt.role, teamId: pt.teamId, isSub: pt.isSub,
-    imageFile: imgFile, imageUrl: imageUrl(imgFile, 200),
+    imageFile: imgFile, imageUrl: extra?.url ?? imageUrl(imgFile, 200),
     attributes, hidden, traits, champions: pool, playstyle: style, realStats: real,
     streamer: !!info.Stream,
   });
@@ -513,6 +517,7 @@ for (const m of Object.values(meta)) { m.games = totalGames; m.presence = +((m.p
 fs.writeFileSync(path.join(OUT, 'leagues.json'), JSON.stringify(leaguesOut));
 fs.writeFileSync(path.join(OUT, 'teams.json'), JSON.stringify(teamsOut));
 fs.writeFileSync(path.join(OUT, 'players.json'), JSON.stringify(playersOut));
+for (const s of staffOut) { const c = PORTRAITS[s.link]; if (c?.url) { s.imageFile = c.file; s.imageUrl = c.url; } }
 fs.writeFileSync(path.join(OUT, 'staff.json'), JSON.stringify(staffOut));
 fs.writeFileSync(path.join(OUT, 'history.json'), JSON.stringify(historyOut));
 fs.writeFileSync(path.join(OUT, 'meta.json'), JSON.stringify({ games: totalGames, champions: meta }));

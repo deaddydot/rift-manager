@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useGame, useStore, nav } from '../../store/game';
 import type { Staff, StaffRole } from '../../engine/types';
-import { Panel, Stat, Empty, Modal, Pill, Bar, Rating, Avatar, money, fmtDate, flag, ratingColor } from '../components/kit';
+import { Panel, Stat, Empty, Modal, Pill, Bar, Rating, Avatar, money, fmtDate, flag, ratingColor, StaffPortrait } from '../components/kit';
 import { payrollYearly } from '../../engine/management/finance';
 import {
   MAX_STAFF, STAFF_ATTRS, STAFF_ATTR_LABEL, STAFF_ROLE_INFO, staffMarket, staffRating, staffSalaryDemand, signingFee,
@@ -96,7 +96,7 @@ export default function StaffPage(_props: { id?: string; tab?: string; kind?: st
                 return (
                   <div key={s.id} className="panel-flat p-3.5 flex flex-col gap-2.5">
                     <div className="flex items-start gap-3">
-                      <Avatar name={s.handle} size={48} colors={team.colors} />
+                      <StaffPortrait staff={s} size={48} colors={team.colors} />
                       <div className="flex-1 min-w-0">
                         <div className="font-display text-lg font-bold leading-tight truncate">{s.handle}</div>
                         <div className="text-xs text-muted truncate">{flag(s.country)} {s.name}</div>
@@ -185,7 +185,7 @@ export default function StaffPage(_props: { id?: string; tab?: string; kind?: st
                     <tr key={s.id} className="row" onClick={() => setHiring(s)}>
                       <td>
                         <div className="flex items-center gap-2.5">
-                          <Avatar name={s.handle} size={30} colors={['#334155', '#0f172a']} />
+                          <StaffPortrait staff={s} size={30} colors={['#334155', '#0f172a']} />
                           <div className="min-w-0">
                             <div className="font-semibold">{s.handle}</div>
                             <div className="text-[11px] text-dim truncate">{flag(s.country)} {s.name}</div>
@@ -243,7 +243,7 @@ function HireModal({ s, onClose, onHired }: { s: Staff; onClose: () => void; onH
     <Modal open onClose={onClose} title={`Hire ${s.handle}`} width={620}>
       <div className="space-y-4">
         <div className="flex items-start gap-4">
-          <Avatar name={s.handle} size={64} colors={team.colors} />
+          <StaffPortrait staff={s} size={64} colors={team.colors} />
           <div className="flex-1">
             <div className="font-display text-2xl font-bold leading-tight">{s.handle}</div>
             <div className="text-sm text-muted">{flag(s.country)} {s.name} · {s.country}</div>

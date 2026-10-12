@@ -58,6 +58,19 @@ export function Portrait({ player, size = 48, team, className = '', style }: { p
   return <Avatar name={player.handle} size={size} colors={colors as [string, string]} className={className} style={style} />;
 }
 
+/** Staff photo when there is one (linked from the wiki like player portraits), initials otherwise. */
+export function StaffPortrait({ staff, size = 48, colors, className = '', style }: { staff: { handle: string; image?: string }; size?: number; colors: [string, string]; className?: string; style?: CSSProperties }) {
+  const [failed, setFailed] = useState(false);
+  if (staff.image && !failed) {
+    return (
+      <div className={`relative overflow-hidden rounded-lg shrink-0 ${className}`} style={{ width: size, height: size, background: `linear-gradient(160deg, ${colors[0]}55, #0b1220)`, ...style }}>
+        <img src={asset(staff.image)} alt={staff.handle} referrerPolicy="no-referrer" loading="lazy" onError={() => setFailed(true)} className="w-full h-full object-cover object-top" />
+      </div>
+    );
+  }
+  return <Avatar name={staff.handle} size={size} colors={colors} className={className} style={style} />;
+}
+
 export function Avatar({ name, size = 48, colors, className = '', style }: { name: string; size?: number; colors: [string, string]; className?: string; style?: CSSProperties }) {
   const h = hashString(name);
   const hue = h % 360;

@@ -61,8 +61,14 @@ npx tsx scripts/sim-test.ts 50     # simulator calibration harness (MIRROR=1 for
 npx tsx scripts/season-test.ts     # headless full-season run
 ```
 
-Player portraits and team logos are loaded from Leaguepedia's image CDN at runtime; a generated avatar/badge is
-shown when an image is unavailable.
+Player, staff and caster portraits and team logos are loaded from Leaguepedia's image CDN at runtime (a few
+portraits from Liquipedia); a generated avatar/badge is shown when an image is unavailable. To look up photos for
+anyone still missing one:
+
+```bash
+node scripts/fetch-portraits.mjs               # Leaguepedia wiki API (page images), politely paced, cached
+node scripts/fetch-portraits-liquipedia.mjs    # Liquipedia API (≤1 req/2s), only when the real name matches
+```
 
 ## Hosting it online
 
@@ -89,5 +95,5 @@ needed. `npm run build` still produces the full version with the Editor and the 
 ## Credits
 
 Fan-made and non-commercial. Rosters, stats, match history and images: [Leaguepedia](https://lol.fandom.com)
-(CC BY-SA 3.0). 2024-2025 career stats: [gol.gg](https://gol.gg). Item builds: [op.gg](https://op.gg). Champion & item data: Riot Games Data Dragon, [Meraki Analytics](https://github.com/meraki-analytics/lolstaticdata),
+(CC BY-SA 3.0); a few portraits: [Liquipedia](https://liquipedia.net/leagueoflegends) (CC BY-SA 3.0). 2024-2025 career stats: [gol.gg](https://gol.gg). Item builds: [op.gg](https://op.gg). Champion & item data: Riot Games Data Dragon, [Meraki Analytics](https://github.com/meraki-analytics/lolstaticdata),
 CommunityDragon. League of Legends is a trademark of Riot Games, Inc.; this project is not endorsed by Riot Games.

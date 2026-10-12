@@ -103,7 +103,7 @@ function CasterDesk({ sim, teams, userSide, width, compact = false }: Props) {
         {c && (
           <div className="shrink-0 flex flex-col items-center pt-0.5 w-9">
             <div key={cur?.id ?? 0} className="relative w-8 h-8 rounded-full flex items-center justify-center font-display font-bold text-[12px] fadein" style={{ background: `${c.color}26`, color: c.color, boxShadow: `inset 0 0 0 1.5px ${c.color}99` }} title={`${c.name} — ${c.style}`}>
-              {c.initials}
+              {c.image ? <img src={c.image} alt={c.name} referrerPolicy="no-referrer" className="w-full h-full rounded-full object-cover object-top" onError={(e) => { e.currentTarget.style.display = 'none'; }} /> : c.initials}
               {cur && <span className="absolute -right-0.5 -bottom-0.5 w-2 h-2 rounded-full animate-pulse" style={{ background: c.color }} />}
             </div>
           </div>

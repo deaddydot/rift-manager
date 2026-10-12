@@ -19,6 +19,8 @@ export interface CasterDef {
   id: CasterId;
   name: string;          // on-air handle
   initials: string;
+  /** photo (Leaguepedia, linked like player portraits); initials when there's none */
+  image?: string;
   color: string;
   lang: 'en' | 'vi';
   role: 'pbp' | 'colour' | 'both';
@@ -32,12 +34,12 @@ export interface CasterDef {
 
 export const CASTERS: Record<CasterId, CasterDef> = {
   flowers: {
-    id: 'flowers', name: 'CaptainFlowers', initials: 'CF', color: '#38bdf8', lang: 'en', role: 'pbp', own: 0.7,
+    id: 'flowers', name: 'CaptainFlowers', initials: 'CF', image: 'https://static.wikia.nocookie.net/lolesports_gamepedia_en/images/0/06/LCS_CaptainFlowers_2020.png/revision/latest/scale-to-width-down/200?cb=20250420065935', color: '#38bdf8', lang: 'en', role: 'pbp', own: 0.7,
     style: 'Hype play-by-play: rapid-fire names, rising calls that peak on the big moment, stories of the series.',
     w: { analysis: 0.6, story: 1.2, hype: 1.6, wit: 0.6 },
   },
   kobe: {
-    id: 'kobe', name: 'Kobe', initials: 'KB', color: '#a3e635', lang: 'en', role: 'colour', own: 0.7,
+    id: 'kobe', name: 'Kobe', initials: 'KB', image: 'https://static.wikia.nocookie.net/lolesports_gamepedia_en/images/3/3f/LCS_Kobe_2020.png/revision/latest/scale-to-width-down/200?cb=20250420070124', color: '#a3e635', lang: 'en', role: 'colour', own: 0.7,
     style: 'Analytical colour: wave states, objective setups, draft win conditions and the gold behind every fight.',
     w: { analysis: 1.8, story: 0.9, hype: 0.4, wit: 0.4 },
   },
@@ -47,12 +49,12 @@ export const CASTERS: Record<CasterId, CasterDef> = {
     w: { analysis: 0.5, story: 1, hype: 1.8, wit: 0.7 },
   },
   quickshot: {
-    id: 'quickshot', name: 'Quickshot', initials: 'QS', color: '#c084fc', lang: 'en', role: 'both', own: 0.75,
+    id: 'quickshot', name: 'Quickshot', initials: 'QS', image: 'https://static.wikia.nocookie.net/lolesports_gamepedia_en/images/c/c1/Qu1ksh0t.jpg/revision/latest/scale-to-width-down/200?cb=20170802100642', color: '#c084fc', lang: 'en', role: 'both', own: 0.75,
     style: 'Witty wordsmith: puns on every champion, lyrical calls and a sharp read of the narrative.',
     w: { analysis: 0.9, story: 1.1, hype: 0.9, wit: 1.8 },
   },
   hoangluan: {
-    id: 'hoangluan', name: 'Hoàng Luân', initials: 'HL', color: '#ef4444', lang: 'vi', role: 'both', own: 1,
+    id: 'hoangluan', name: 'Hoàng Luân', initials: 'HL', image: 'https://static.wikia.nocookie.net/lolesports_gamepedia_en/images/0/0d/HoangLuan.jpg/revision/latest/scale-to-width-down/200?cb=20190627042731', color: '#ef4444', lang: 'vi', role: 'both', own: 1,
     style: 'Bình luận viên VCS: bùng nổ, giàu cảm xúc, nhịp gọi dồn dập. Explosive, emotional, rhythmic Vietnamese calls.',
     w: { analysis: 1, story: 1, hype: 1.8, wit: 0.6 },
   },

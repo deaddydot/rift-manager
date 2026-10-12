@@ -43,7 +43,7 @@ export default function MainMenu() {
           </div>
         )}
         <div className="relative mt-12 text-xs text-dim max-w-2xl text-center leading-relaxed">
-          Fan-made, non-commercial. Rosters, stats and match history from Leaguepedia (CC BY-SA). Champion data from Riot Data Dragon and Meraki Analytics.
+          Fan-made, non-commercial. Rosters, stats, match history and photos from Leaguepedia (CC BY-SA), a few portraits from Liquipedia (CC BY-SA). Champion data from Riot Data Dragon and Meraki Analytics.
           League of Legends is a trademark of Riot Games, Inc. This project is not endorsed by Riot Games.
         </div>
       </div>
