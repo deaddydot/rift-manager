@@ -1,0 +1,8606 @@
+{
+  "source": "op.gg",
+  "patch": "16.20",
+  "fetched": "2026-10-10",
+  "tier": "Emerald+",
+  "signal": "win rate",
+  "method": "op.gg /counters/<role> per-opponent game win rate (op.gg shows no per-matchup lane WR or GD@15 there). Opponents need >= max(30, 25% of the page's median matchup sample) games; ranked by win rate shrunk toward the champion's own games-weighted average matchup WR with 150 pseudo-games; opponents restricted to champions listing that role in champions.json (falls back to all opponents if fewer than 6). wr/games are op.gg's raw values.",
+  "matchups": {
+    "Aatrox": {
+      "top": {
+        "easy": [
+          {
+            "id": "Volibear",
+            "wr": 0.5561,
+            "games": 579
+          },
+          {
+            "id": "Nasus",
+            "wr": 0.5461,
+            "games": 608
+          },
+          {
+            "id": "Poppy",
+            "wr": 0.5739,
+            "games": 115
+          }
+        ],
+        "hard": [
+          {
+            "id": "Yasuo",
+            "wr": 0.4266,
+            "games": 436
+          },
+          {
+            "id": "Kennen",
+            "wr": 0.4348,
+            "games": 253
+          },
+          {
+            "id": "Gwen",
+            "wr": 0.4399,
+            "games": 291
+          }
+        ]
+      }
+    },
+    "Ahri": {
+      "mid": {
+        "easy": [
+          {
+            "id": "Orianna",
+            "wr": 0.557,
+            "games": 605
+          },
+          {
+            "id": "Irelia",
+            "wr": 0.5584,
+            "games": 471
+          },
+          {
+            "id": "Lucian",
+            "wr": 0.5745,
+            "games": 141
+          }
+        ],
+        "hard": [
+          {
+            "id": "Fizz",
+            "wr": 0.4653,
+            "games": 864
+          },
+          {
+            "id": "Zoe",
+            "wr": 0.4626,
+            "games": 562
+          },
+          {
+            "id": "Malzahar",
+            "wr": 0.4788,
+            "games": 896
+          }
+        ]
+      }
+    },
+    "Akali": {
+      "mid": {
+        "easy": [
+          {
+            "id": "Mel",
+            "wr": 0.6,
+            "games": 190
+          },
+          {
+            "id": "Xerath",
+            "wr": 0.5682,
+            "games": 359
+          },
+          {
+            "id": "Naafiri",
+            "wr": 0.6071,
+            "games": 84
+          }
+        ],
+        "hard": [
+          {
+            "id": "Lissandra",
+            "wr": 0.4373,
+            "games": 837
+          },
+          {
+            "id": "Lux",
+            "wr": 0.4316,
+            "games": 373
+          },
+          {
+            "id": "TwistedFate",
+            "wr": 0.4411,
+            "games": 755
+          }
+        ]
+      },
+      "top": {
+        "easy": [
+          {
+            "id": "DrMundo",
+            "wr": 0.5796,
+            "games": 157
+          },
+          {
+            "id": "Vladimir",
+            "wr": 0.6071,
+            "games": 84
+          },
+          {
+            "id": "Rumble",
+            "wr": 0.5955,
+            "games": 89
+          }
+        ],
+        "hard": [
+          {
+            "id": "Gangplank",
+            "wr": 0.4355,
+            "games": 287
+          },
+          {
+            "id": "Pantheon",
+            "wr": 0.4306,
+            "games": 209
+          },
+          {
+            "id": "Kled",
+            "wr": 0.4024,
+            "games": 82
+          }
+        ]
+      }
+    },
+    "Akshan": {
+      "mid": {
+        "easy": [
+          {
+            "id": "Qiyana",
+            "wr": 0.5762,
+            "games": 151
+          },
+          {
+            "id": "Leblanc",
+            "wr": 0.5512,
+            "games": 283
+          },
+          {
+            "id": "Xerath",
+            "wr": 0.5584,
+            "games": 197
+          }
+        ],
+        "hard": [
+          {
+            "id": "Malphite",
+            "wr": 0.375,
+            "games": 88
+          },
+          {
+            "id": "Vladimir",
+            "wr": 0.4158,
+            "games": 202
+          },
+          {
+            "id": "Yasuo",
+            "wr": 0.4317,
+            "games": 278
+          }
+        ]
+      }
+    },
+    "Alistar": {
+      "support": {
+        "easy": [
+          {
+            "id": "Camille",
+            "wr": 0.5972,
+            "games": 216
+          },
+          {
+            "id": "Renata",
+            "wr": 0.5845,
+            "games": 219
+          },
+          {
+            "id": "Yuumi",
+            "wr": 0.5629,
+            "games": 652
+          }
+        ],
+        "hard": [
+          {
+            "id": "Brand",
+            "wr": 0.3927,
+            "games": 219
+          },
+          {
+            "id": "Bard",
+            "wr": 0.4778,
+            "games": 496
+          },
+          {
+            "id": "Swain",
+            "wr": 0.4752,
+            "games": 343
+          }
+        ]
+      }
+    },
+    "Ambessa": {
+      "top": {
+        "easy": [
+          {
+            "id": "Sion",
+            "wr": 0.5983,
+            "games": 234
+          },
+          {
+            "id": "Gnar",
+            "wr": 0.5628,
+            "games": 247
+          },
+          {
+            "id": "Vladimir",
+            "wr": 0.6087,
+            "games": 92
+          }
+        ],
+        "hard": [
+          {
+            "id": "Camille",
+            "wr": 0.4412,
+            "games": 451
+          },
+          {
+            "id": "Pantheon",
+            "wr": 0.4325,
+            "games": 252
+          },
+          {
+            "id": "Zaahen",
+            "wr": 0.4336,
+            "games": 256
+          }
+        ]
+      },
+      "jungle": {
+        "easy": [
+          {
+            "id": "Rengar",
+            "wr": 0.6081,
+            "games": 74
+          },
+          {
+            "id": "Graves",
+            "wr": 0.5271,
+            "games": 129
+          },
+          {
+            "id": "Diana",
+            "wr": 0.5439,
+            "games": 57
+          }
+        ],
+        "hard": [
+          {
+            "id": "Elise",
+            "wr": 0.3396,
+            "games": 53
+          },
+          {
+            "id": "Udyr",
+            "wr": 0.2903,
+            "games": 31
+          },
+          {
+            "id": "Talon",
+            "wr": 0.3889,
+            "games": 90
+          }
+        ]
+      }
+    },
+    "Amumu": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "Graves",
+            "wr": 0.5547,
+            "games": 256
+          },
+          {
+            "id": "Kayn",
+            "wr": 0.5345,
+            "games": 290
+          },
+          {
+            "id": "Nidalee",
+            "wr": 0.5758,
+            "games": 66
+          }
+        ],
+        "hard": [
+          {
+            "id": "Karthus",
+            "wr": 0.3636,
+            "games": 55
+          },
+          {
+            "id": "MasterYi",
+            "wr": 0.4467,
+            "games": 244
+          },
+          {
+            "id": "Evelynn",
+            "wr": 0.4235,
+            "games": 85
+          }
+        ]
+      },
+      "support": {
+        "easy": [
+          {
+            "id": "Nami",
+            "wr": 0.64,
+            "games": 100
+          },
+          {
+            "id": "Bard",
+            "wr": 0.6104,
+            "games": 77
+          },
+          {
+            "id": "Yuumi",
+            "wr": 0.5876,
+            "games": 97
+          }
+        ],
+        "hard": [
+          {
+            "id": "Nautilus",
+            "wr": 0.4182,
+            "games": 110
+          },
+          {
+            "id": "Rell",
+            "wr": 0.3542,
+            "games": 48
+          },
+          {
+            "id": "Karma",
+            "wr": 0.4231,
+            "games": 78
+          }
+        ]
+      }
+    },
+    "Anivia": {
+      "mid": {
+        "easy": [
+          {
+            "id": "Taliyah",
+            "wr": 0.6389,
+            "games": 72
+          },
+          {
+            "id": "Veigar",
+            "wr": 0.58,
+            "games": 150
+          },
+          {
+            "id": "Akshan",
+            "wr": 0.5812,
+            "games": 117
+          }
+        ],
+        "hard": [
+          {
+            "id": "Qiyana",
+            "wr": 0.4174,
+            "games": 115
+          },
+          {
+            "id": "Yone",
+            "wr": 0.471,
+            "games": 431
+          },
+          {
+            "id": "Zed",
+            "wr": 0.4718,
+            "games": 354
+          }
+        ]
+      }
+    },
+    "Annie": {
+      "mid": {
+        "easy": [
+          {
+            "id": "Yone",
+            "wr": 0.5772,
+            "games": 324
+          },
+          {
+            "id": "Mel",
+            "wr": 0.593,
+            "games": 86
+          },
+          {
+            "id": "Zoe",
+            "wr": 0.5692,
+            "games": 130
+          }
+        ],
+        "hard": [
+          {
+            "id": "Lux",
+            "wr": 0.4315,
+            "games": 146
+          },
+          {
+            "id": "Velkoz",
+            "wr": 0.3556,
+            "games": 45
+          },
+          {
+            "id": "Diana",
+            "wr": 0.439,
+            "games": 123
+          }
+        ]
+      }
+    },
+    "Aphelios": {
+      "adc": {
+        "easy": [
+          {
+            "id": "Smolder",
+            "wr": 0.5516,
+            "games": 1028
+          },
+          {
+            "id": "Ezreal",
+            "wr": 0.5431,
+            "games": 2086
+          },
+          {
+            "id": "Kaisa",
+            "wr": 0.5216,
+            "games": 3656
+          }
+        ],
+        "hard": [
+          {
+            "id": "Nilah",
+            "wr": 0.3911,
+            "games": 179
+          },
+          {
+            "id": "Ziggs",
+            "wr": 0.4155,
+            "games": 296
+          },
+          {
+            "id": "Jinx",
+            "wr": 0.4649,
+            "games": 4270
+          }
+        ]
+      }
+    },
+    "Ashe": {
+      "adc": {
+        "easy": [
+          {
+            "id": "Zeri",
+            "wr": 0.5503,
+            "games": 507
+          },
+          {
+            "id": "KogMaw",
+            "wr": 0.5425,
+            "games": 247
+          },
+          {
+            "id": "Vayne",
+            "wr": 0.5354,
+            "games": 396
+          }
+        ],
+        "hard": [
+          {
+            "id": "Yasuo",
+            "wr": 0.412,
+            "games": 233
+          },
+          {
+            "id": "Twitch",
+            "wr": 0.4424,
+            "games": 590
+          },
+          {
+            "id": "Swain",
+            "wr": 0.4228,
+            "games": 123
+          }
+        ]
+      },
+      "support": {
+        "easy": [
+          {
+            "id": "Lulu",
+            "wr": 0.5,
+            "games": 168
+          },
+          {
+            "id": "Xerath",
+            "wr": 0.5484,
+            "games": 62
+          },
+          {
+            "id": "Seraphine",
+            "wr": 0.5,
+            "games": 100
+          }
+        ],
+        "hard": [
+          {
+            "id": "Karma",
+            "wr": 0.3551,
+            "games": 107
+          },
+          {
+            "id": "Janna",
+            "wr": 0.3608,
+            "games": 97
+          },
+          {
+            "id": "Thresh",
+            "wr": 0.3878,
+            "games": 245
+          }
+        ]
+      }
+    },
+    "AurelionSol": {
+      "mid": {
+        "easy": [
+          {
+            "id": "Yasuo",
+            "wr": 0.5482,
+            "games": 363
+          },
+          {
+            "id": "Smolder",
+            "wr": 0.6471,
+            "games": 34
+          },
+          {
+            "id": "Orianna",
+            "wr": 0.5657,
+            "games": 99
+          }
+        ],
+        "hard": [
+          {
+            "id": "Yone",
+            "wr": 0.4371,
+            "games": 302
+          },
+          {
+            "id": "Kassadin",
+            "wr": 0.4366,
+            "games": 142
+          },
+          {
+            "id": "Akshan",
+            "wr": 0.411,
+            "games": 73
+          }
+        ]
+      }
+    },
+    "Aurora": {
+      "mid": {
+        "easy": [
+          {
+            "id": "Ryze",
+            "wr": 0.6129,
+            "games": 155
+          },
+          {
+            "id": "Azir",
+            "wr": 0.6176,
+            "games": 102
+          },
+          {
+            "id": "Ekko",
+            "wr": 0.5709,
+            "games": 268
+          }
+        ],
+        "hard": [
+          {
+            "id": "Jayce",
+            "wr": 0.3478,
+            "games": 46
+          },
+          {
+            "id": "Irelia",
+            "wr": 0.45,
+            "games": 160
+          },
+          {
+            "id": "Diana",
+            "wr": 0.4602,
+            "games": 226
+          }
+        ]
+      },
+      "top": {
+        "easy": [
+          {
+            "id": "Malphite",
+            "wr": 0.5976,
+            "games": 82
+          },
+          {
+            "id": "Volibear",
+            "wr": 0.6275,
+            "games": 51
+          },
+          {
+            "id": "Ornn",
+            "wr": 0.6102,
+            "games": 59
+          }
+        ],
+        "hard": [
+          {
+            "id": "Mordekaiser",
+            "wr": 0.375,
+            "games": 56
+          },
+          {
+            "id": "Yone",
+            "wr": 0.4394,
+            "games": 132
+          },
+          {
+            "id": "Gragas",
+            "wr": 0.3871,
+            "games": 31
+          }
+        ]
+      }
+    },
+    "Azir": {
+      "mid": {
+        "easy": [
+          {
+            "id": "Yasuo",
+            "wr": 0.5157,
+            "games": 382
+          },
+          {
+            "id": "Lissandra",
+            "wr": 0.5302,
+            "games": 149
+          },
+          {
+            "id": "Fizz",
+            "wr": 0.5226,
+            "games": 155
+          }
+        ],
+        "hard": [
+          {
+            "id": "Galio",
+            "wr": 0.375,
+            "games": 112
+          },
+          {
+            "id": "Aurora",
+            "wr": 0.3824,
+            "games": 102
+          },
+          {
+            "id": "Vladimir",
+            "wr": 0.4059,
+            "games": 170
+          }
+        ]
+      }
+    },
+    "Bard": {
+      "support": {
+        "easy": [
+          {
+            "id": "Pantheon",
+            "wr": 0.5462,
+            "games": 357
+          },
+          {
+            "id": "Zyra",
+            "wr": 0.5443,
+            "games": 237
+          },
+          {
+            "id": "Poppy",
+            "wr": 0.5467,
+            "games": 150
+          }
+        ],
+        "hard": [
+          {
+            "id": "Hwei",
+            "wr": 0.3506,
+            "games": 77
+          },
+          {
+            "id": "Senna",
+            "wr": 0.4439,
+            "games": 588
+          },
+          {
+            "id": "Thresh",
+            "wr": 0.4518,
+            "games": 1744
+          }
+        ]
+      }
+    },
+    "Belveth": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "Volibear",
+            "wr": 0.6143,
+            "games": 70
+          },
+          {
+            "id": "Talon",
+            "wr": 0.5577,
+            "games": 312
+          },
+          {
+            "id": "Viego",
+            "wr": 0.5496,
+            "games": 484
+          }
+        ],
+        "hard": [
+          {
+            "id": "Elise",
+            "wr": 0.4111,
+            "games": 180
+          },
+          {
+            "id": "Diana",
+            "wr": 0.4286,
+            "games": 210
+          },
+          {
+            "id": "Rammus",
+            "wr": 0.4215,
+            "games": 121
+          }
+        ]
+      }
+    },
+    "Blitzcrank": {
+      "support": {
+        "easy": [
+          {
+            "id": "Camille",
+            "wr": 0.6016,
+            "games": 246
+          },
+          {
+            "id": "Yuumi",
+            "wr": 0.5682,
+            "games": 799
+          },
+          {
+            "id": "TahmKench",
+            "wr": 0.576,
+            "games": 342
+          }
+        ],
+        "hard": [
+          {
+            "id": "Galio",
+            "wr": 0.3814,
+            "games": 118
+          },
+          {
+            "id": "Braum",
+            "wr": 0.4512,
+            "games": 1015
+          },
+          {
+            "id": "Leona",
+            "wr": 0.4602,
+            "games": 1232
+          }
+        ]
+      }
+    },
+    "Brand": {
+      "support": {
+        "easy": [
+          {
+            "id": "Alistar",
+            "wr": 0.6073,
+            "games": 219
+          },
+          {
+            "id": "TahmKench",
+            "wr": 0.5921,
+            "games": 152
+          },
+          {
+            "id": "Swain",
+            "wr": 0.5744,
+            "games": 195
+          }
+        ],
+        "hard": [
+          {
+            "id": "Velkoz",
+            "wr": 0.3889,
+            "games": 162
+          },
+          {
+            "id": "Sona",
+            "wr": 0.3929,
+            "games": 112
+          },
+          {
+            "id": "Taric",
+            "wr": 0.3636,
+            "games": 44
+          }
+        ]
+      },
+      "mid": {
+        "easy": [
+          {
+            "id": "Syndra",
+            "wr": 0.5586,
+            "games": 111
+          },
+          {
+            "id": "Yasuo",
+            "wr": 0.5268,
+            "games": 112
+          },
+          {
+            "id": "Lissandra",
+            "wr": 0.5375,
+            "games": 80
+          }
+        ],
+        "hard": [
+          {
+            "id": "Hwei",
+            "wr": 0.3333,
+            "games": 51
+          },
+          {
+            "id": "Leblanc",
+            "wr": 0.3889,
+            "games": 72
+          },
+          {
+            "id": "Ekko",
+            "wr": 0.3898,
+            "games": 59
+          }
+        ]
+      }
+    },
+    "Braum": {
+      "support": {
+        "easy": [
+          {
+            "id": "Yuumi",
+            "wr": 0.5929,
+            "games": 533
+          },
+          {
+            "id": "Nautilus",
+            "wr": 0.5561,
+            "games": 2255
+          },
+          {
+            "id": "Camille",
+            "wr": 0.5771,
+            "games": 201
+          }
+        ],
+        "hard": [
+          {
+            "id": "Rell",
+            "wr": 0.4678,
+            "games": 528
+          },
+          {
+            "id": "Taric",
+            "wr": 0.4514,
+            "games": 175
+          },
+          {
+            "id": "Zyra",
+            "wr": 0.4658,
+            "games": 219
+          }
+        ]
+      }
+    },
+    "Briar": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "Udyr",
+            "wr": 0.5665,
+            "games": 173
+          },
+          {
+            "id": "Vi",
+            "wr": 0.5406,
+            "games": 283
+          },
+          {
+            "id": "Khazix",
+            "wr": 0.5317,
+            "games": 583
+          }
+        ],
+        "hard": [
+          {
+            "id": "XinZhao",
+            "wr": 0.3988,
+            "games": 168
+          },
+          {
+            "id": "MonkeyKing",
+            "wr": 0.4407,
+            "games": 658
+          },
+          {
+            "id": "JarvanIV",
+            "wr": 0.4504,
+            "games": 464
+          }
+        ]
+      }
+    },
+    "Caitlyn": {
+      "adc": {
+        "easy": [
+          {
+            "id": "Vayne",
+            "wr": 0.5363,
+            "games": 979
+          },
+          {
+            "id": "Yunara",
+            "wr": 0.5289,
+            "games": 3494
+          },
+          {
+            "id": "Varus",
+            "wr": 0.5288,
+            "games": 834
+          }
+        ],
+        "hard": [
+          {
+            "id": "KogMaw",
+            "wr": 0.4554,
+            "games": 617
+          },
+          {
+            "id": "Nilah",
+            "wr": 0.4591,
+            "games": 257
+          },
+          {
+            "id": "Yasuo",
+            "wr": 0.4678,
+            "games": 637
+          }
+        ]
+      }
+    },
+    "Camille": {
+      "top": {
+        "easy": [
+          {
+            "id": "Yasuo",
+            "wr": 0.5856,
+            "games": 292
+          },
+          {
+            "id": "Sylas",
+            "wr": 0.6667,
+            "games": 66
+          },
+          {
+            "id": "Garen",
+            "wr": 0.5606,
+            "games": 751
+          }
+        ],
+        "hard": [
+          {
+            "id": "MonkeyKing",
+            "wr": 0.4097,
+            "games": 144
+          },
+          {
+            "id": "Illaoi",
+            "wr": 0.4235,
+            "games": 196
+          },
+          {
+            "id": "Shen",
+            "wr": 0.4479,
+            "games": 326
+          }
+        ]
+      },
+      "support": {
+        "easy": [
+          {
+            "id": "Morgana",
+            "wr": 0.6019,
+            "games": 103
+          },
+          {
+            "id": "Brand",
+            "wr": 0.5529,
+            "games": 85
+          },
+          {
+            "id": "Lux",
+            "wr": 0.5086,
+            "games": 232
+          }
+        ],
+        "hard": [
+          {
+            "id": "Leona",
+            "wr": 0.3884,
+            "games": 242
+          },
+          {
+            "id": "Blitzcrank",
+            "wr": 0.3984,
+            "games": 246
+          },
+          {
+            "id": "Alistar",
+            "wr": 0.4028,
+            "games": 216
+          }
+        ]
+      }
+    },
+    "Cassiopeia": {
+      "mid": {
+        "easy": [
+          {
+            "id": "TwistedFate",
+            "wr": 0.5508,
+            "games": 118
+          },
+          {
+            "id": "Sylas",
+            "wr": 0.5315,
+            "games": 222
+          },
+          {
+            "id": "Veigar",
+            "wr": 0.5692,
+            "games": 65
+          }
+        ],
+        "hard": [
+          {
+            "id": "Qiyana",
+            "wr": 0.3833,
+            "games": 60
+          },
+          {
+            "id": "Locke",
+            "wr": 0.4295,
+            "games": 156
+          },
+          {
+            "id": "Ekko",
+            "wr": 0.4234,
+            "games": 111
+          }
+        ]
+      }
+    },
+    "Chogath": {
+      "top": {
+        "easy": [
+          {
+            "id": "Gangplank",
+            "wr": 0.5534,
+            "games": 421
+          },
+          {
+            "id": "Warwick",
+            "wr": 0.5773,
+            "games": 97
+          },
+          {
+            "id": "Rumble",
+            "wr": 0.5773,
+            "games": 97
+          }
+        ],
+        "hard": [
+          {
+            "id": "DrMundo",
+            "wr": 0.4385,
+            "games": 260
+          },
+          {
+            "id": "Ornn",
+            "wr": 0.456,
+            "games": 307
+          },
+          {
+            "id": "Vayne",
+            "wr": 0.4257,
+            "games": 101
+          }
+        ]
+      }
+    },
+    "Corki": {
+      "adc": {
+        "easy": [
+          {
+            "id": "Caitlyn",
+            "wr": 0.534,
+            "games": 412
+          },
+          {
+            "id": "Lucian",
+            "wr": 0.5333,
+            "games": 435
+          },
+          {
+            "id": "Varus",
+            "wr": 0.5732,
+            "games": 82
+          }
+        ],
+        "hard": [
+          {
+            "id": "Jhin",
+            "wr": 0.4509,
+            "games": 692
+          },
+          {
+            "id": "KogMaw",
+            "wr": 0.4342,
+            "games": 76
+          },
+          {
+            "id": "Draven",
+            "wr": 0.4563,
+            "games": 160
+          }
+        ]
+      }
+    },
+    "Darius": {
+      "top": {
+        "easy": [
+          {
+            "id": "KSante",
+            "wr": 0.5632,
+            "games": 554
+          },
+          {
+            "id": "Udyr",
+            "wr": 0.6264,
+            "games": 91
+          },
+          {
+            "id": "Sion",
+            "wr": 0.549,
+            "games": 306
+          }
+        ],
+        "hard": [
+          {
+            "id": "Gragas",
+            "wr": 0.4393,
+            "games": 321
+          },
+          {
+            "id": "DrMundo",
+            "wr": 0.4466,
+            "games": 515
+          },
+          {
+            "id": "Kayle",
+            "wr": 0.4453,
+            "games": 256
+          }
+        ]
+      }
+    },
+    "Diana": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "Belveth",
+            "wr": 0.5714,
+            "games": 210
+          },
+          {
+            "id": "Rengar",
+            "wr": 0.5634,
+            "games": 284
+          },
+          {
+            "id": "Graves",
+            "wr": 0.5492,
+            "games": 732
+          }
+        ],
+        "hard": [
+          {
+            "id": "XinZhao",
+            "wr": 0.397,
+            "games": 199
+          },
+          {
+            "id": "RekSai",
+            "wr": 0.37,
+            "games": 100
+          },
+          {
+            "id": "Ekko",
+            "wr": 0.4435,
+            "games": 345
+          }
+        ]
+      },
+      "mid": {
+        "easy": [
+          {
+            "id": "Mel",
+            "wr": 0.6028,
+            "games": 141
+          },
+          {
+            "id": "Katarina",
+            "wr": 0.5605,
+            "games": 612
+          },
+          {
+            "id": "Qiyana",
+            "wr": 0.57,
+            "games": 200
+          }
+        ],
+        "hard": [
+          {
+            "id": "Lux",
+            "wr": 0.4329,
+            "games": 231
+          },
+          {
+            "id": "Gragas",
+            "wr": 0.34,
+            "games": 50
+          },
+          {
+            "id": "Yasuo",
+            "wr": 0.4588,
+            "games": 510
+          }
+        ]
+      }
+    },
+    "DrMundo": {
+      "top": {
+        "easy": [
+          {
+            "id": "Volibear",
+            "wr": 0.5781,
+            "games": 301
+          },
+          {
+            "id": "Zaahen",
+            "wr": 0.5988,
+            "games": 162
+          },
+          {
+            "id": "Renekton",
+            "wr": 0.5572,
+            "games": 463
+          }
+        ],
+        "hard": [
+          {
+            "id": "Gwen",
+            "wr": 0.4164,
+            "games": 305
+          },
+          {
+            "id": "Akali",
+            "wr": 0.4076,
+            "games": 157
+          },
+          {
+            "id": "Yone",
+            "wr": 0.4433,
+            "games": 573
+          }
+        ]
+      }
+    },
+    "Draven": {
+      "adc": {
+        "easy": [
+          {
+            "id": "Sivir",
+            "wr": 0.5509,
+            "games": 383
+          },
+          {
+            "id": "Zeri",
+            "wr": 0.5418,
+            "games": 419
+          },
+          {
+            "id": "Ezreal",
+            "wr": 0.5306,
+            "games": 1061
+          }
+        ],
+        "hard": [
+          {
+            "id": "Swain",
+            "wr": 0.4218,
+            "games": 147
+          },
+          {
+            "id": "Yasuo",
+            "wr": 0.4478,
+            "games": 201
+          },
+          {
+            "id": "Jinx",
+            "wr": 0.4761,
+            "games": 1487
+          }
+        ]
+      }
+    },
+    "Ekko": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "Karthus",
+            "wr": 0.5882,
+            "games": 119
+          },
+          {
+            "id": "Diana",
+            "wr": 0.5565,
+            "games": 345
+          },
+          {
+            "id": "Skarner",
+            "wr": 0.587,
+            "games": 92
+          }
+        ],
+        "hard": [
+          {
+            "id": "Gragas",
+            "wr": 0.3714,
+            "games": 70
+          },
+          {
+            "id": "Vi",
+            "wr": 0.4683,
+            "games": 363
+          },
+          {
+            "id": "MasterYi",
+            "wr": 0.4774,
+            "games": 553
+          }
+        ]
+      },
+      "mid": {
+        "easy": [
+          {
+            "id": "Azir",
+            "wr": 0.5812,
+            "games": 191
+          },
+          {
+            "id": "Mel",
+            "wr": 0.5758,
+            "games": 165
+          },
+          {
+            "id": "Ryze",
+            "wr": 0.5625,
+            "games": 208
+          }
+        ],
+        "hard": [
+          {
+            "id": "Aurora",
+            "wr": 0.4291,
+            "games": 268
+          },
+          {
+            "id": "Gragas",
+            "wr": 0.3913,
+            "games": 69
+          },
+          {
+            "id": "Malzahar",
+            "wr": 0.4767,
+            "games": 472
+          }
+        ]
+      }
+    },
+    "Elise": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "Belveth",
+            "wr": 0.5889,
+            "games": 180
+          },
+          {
+            "id": "Ambessa",
+            "wr": 0.6604,
+            "games": 53
+          },
+          {
+            "id": "Nocturne",
+            "wr": 0.562,
+            "games": 258
+          }
+        ],
+        "hard": [
+          {
+            "id": "RekSai",
+            "wr": 0.3769,
+            "games": 130
+          },
+          {
+            "id": "Shaco",
+            "wr": 0.4301,
+            "games": 279
+          },
+          {
+            "id": "Zac",
+            "wr": 0.4279,
+            "games": 215
+          }
+        ]
+      }
+    },
+    "Evelynn": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "Nocturne",
+            "wr": 0.5784,
+            "games": 185
+          },
+          {
+            "id": "Graves",
+            "wr": 0.5479,
+            "games": 376
+          },
+          {
+            "id": "Ambessa",
+            "wr": 0.6571,
+            "games": 35
+          }
+        ],
+        "hard": [
+          {
+            "id": "Rammus",
+            "wr": 0.3678,
+            "games": 87
+          },
+          {
+            "id": "Fiddlesticks",
+            "wr": 0.4,
+            "games": 95
+          },
+          {
+            "id": "RekSai",
+            "wr": 0.4369,
+            "games": 103
+          }
+        ]
+      }
+    },
+    "Ezreal": {
+      "adc": {
+        "easy": [
+          {
+            "id": "Ashe",
+            "wr": 0.5015,
+            "games": 1310
+          },
+          {
+            "id": "MissFortune",
+            "wr": 0.4996,
+            "games": 1159
+          },
+          {
+            "id": "Caitlyn",
+            "wr": 0.4864,
+            "games": 4289
+          }
+        ],
+        "hard": [
+          {
+            "id": "Yasuo",
+            "wr": 0.3925,
+            "games": 530
+          },
+          {
+            "id": "KogMaw",
+            "wr": 0.392,
+            "games": 398
+          },
+          {
+            "id": "Zeri",
+            "wr": 0.4217,
+            "games": 920
+          }
+        ]
+      }
+    },
+    "Fiddlesticks": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "Vi",
+            "wr": 0.5929,
+            "games": 140
+          },
+          {
+            "id": "Evelynn",
+            "wr": 0.6,
+            "games": 95
+          },
+          {
+            "id": "Khazix",
+            "wr": 0.5505,
+            "games": 327
+          }
+        ],
+        "hard": [
+          {
+            "id": "Shyvana",
+            "wr": 0.4369,
+            "games": 206
+          },
+          {
+            "id": "Rammus",
+            "wr": 0.4103,
+            "games": 78
+          },
+          {
+            "id": "Nunu",
+            "wr": 0.4133,
+            "games": 75
+          }
+        ]
+      }
+    },
+    "Fiora": {
+      "top": {
+        "easy": [
+          {
+            "id": "KSante",
+            "wr": 0.5886,
+            "games": 508
+          },
+          {
+            "id": "Yorick",
+            "wr": 0.5935,
+            "games": 246
+          },
+          {
+            "id": "Illaoi",
+            "wr": 0.5569,
+            "games": 246
+          }
+        ],
+        "hard": [
+          {
+            "id": "Malphite",
+            "wr": 0.4387,
+            "games": 734
+          },
+          {
+            "id": "Quinn",
+            "wr": 0.383,
+            "games": 94
+          },
+          {
+            "id": "Kayle",
+            "wr": 0.4402,
+            "games": 209
+          }
+        ]
+      }
+    },
+    "Fizz": {
+      "mid": {
+        "easy": [
+          {
+            "id": "Syndra",
+            "wr": 0.571,
+            "games": 1000
+          },
+          {
+            "id": "Mel",
+            "wr": 0.5888,
+            "games": 197
+          },
+          {
+            "id": "Swain",
+            "wr": 0.6076,
+            "games": 79
+          }
+        ],
+        "hard": [
+          {
+            "id": "Zoe",
+            "wr": 0.4519,
+            "games": 312
+          },
+          {
+            "id": "Yone",
+            "wr": 0.4754,
+            "games": 772
+          },
+          {
+            "id": "Lissandra",
+            "wr": 0.4752,
+            "games": 745
+          }
+        ]
+      }
+    },
+    "Galio": {
+      "mid": {
+        "easy": [
+          {
+            "id": "Azir",
+            "wr": 0.625,
+            "games": 112
+          },
+          {
+            "id": "Mel",
+            "wr": 0.6034,
+            "games": 116
+          },
+          {
+            "id": "Cassiopeia",
+            "wr": 0.5854,
+            "games": 82
+          }
+        ],
+        "hard": [
+          {
+            "id": "Lux",
+            "wr": 0.4095,
+            "games": 210
+          },
+          {
+            "id": "Pantheon",
+            "wr": 0.4151,
+            "games": 106
+          },
+          {
+            "id": "Ekko",
+            "wr": 0.4514,
+            "games": 432
+          }
+        ]
+      },
+      "support": {
+        "easy": [
+          {
+            "id": "Blitzcrank",
+            "wr": 0.6186,
+            "games": 118
+          },
+          {
+            "id": "Maokai",
+            "wr": 0.6486,
+            "games": 37
+          },
+          {
+            "id": "Brand",
+            "wr": 0.641,
+            "games": 39
+          }
+        ],
+        "hard": [
+          {
+            "id": "Soraka",
+            "wr": 0.3333,
+            "games": 72
+          },
+          {
+            "id": "Zyra",
+            "wr": 0.3784,
+            "games": 37
+          },
+          {
+            "id": "Lux",
+            "wr": 0.4528,
+            "games": 106
+          }
+        ]
+      }
+    },
+    "Gangplank": {
+      "top": {
+        "easy": [
+          {
+            "id": "Riven",
+            "wr": 0.5542,
+            "games": 332
+          },
+          {
+            "id": "Akali",
+            "wr": 0.5556,
+            "games": 288
+          },
+          {
+            "id": "Vladimir",
+            "wr": 0.5473,
+            "games": 201
+          }
+        ],
+        "hard": [
+          {
+            "id": "Chogath",
+            "wr": 0.4506,
+            "games": 415
+          },
+          {
+            "id": "Gwen",
+            "wr": 0.4486,
+            "games": 292
+          },
+          {
+            "id": "Sion",
+            "wr": 0.4578,
+            "games": 391
+          }
+        ]
+      }
+    },
+    "Garen": {
+      "top": {
+        "easy": [
+          {
+            "id": "Riven",
+            "wr": 0.5831,
+            "games": 415
+          },
+          {
+            "id": "Jax",
+            "wr": 0.5609,
+            "games": 1232
+          },
+          {
+            "id": "Gwen",
+            "wr": 0.5648,
+            "games": 301
+          }
+        ],
+        "hard": [
+          {
+            "id": "Kennen",
+            "wr": 0.4036,
+            "games": 223
+          },
+          {
+            "id": "Camille",
+            "wr": 0.4381,
+            "games": 751
+          },
+          {
+            "id": "Tryndamere",
+            "wr": 0.4442,
+            "games": 439
+          }
+        ]
+      }
+    },
+    "Gnar": {
+      "top": {
+        "easy": [
+          {
+            "id": "KSante",
+            "wr": 0.5505,
+            "games": 545
+          },
+          {
+            "id": "Volibear",
+            "wr": 0.5527,
+            "games": 351
+          },
+          {
+            "id": "Trundle",
+            "wr": 0.5862,
+            "games": 116
+          }
+        ],
+        "hard": [
+          {
+            "id": "Malphite",
+            "wr": 0.4242,
+            "games": 693
+          },
+          {
+            "id": "Ornn",
+            "wr": 0.4203,
+            "games": 364
+          },
+          {
+            "id": "Ambessa",
+            "wr": 0.4378,
+            "games": 249
+          }
+        ]
+      }
+    },
+    "Gragas": {
+      "top": {
+        "easy": [
+          {
+            "id": "Tryndamere",
+            "wr": 0.5902,
+            "games": 205
+          },
+          {
+            "id": "Kayle",
+            "wr": 0.6364,
+            "games": 88
+          },
+          {
+            "id": "Sylas",
+            "wr": 0.6333,
+            "games": 90
+          }
+        ],
+        "hard": [
+          {
+            "id": "Singed",
+            "wr": 0.3909,
+            "games": 110
+          },
+          {
+            "id": "Warwick",
+            "wr": 0.4066,
+            "games": 91
+          },
+          {
+            "id": "Sion",
+            "wr": 0.4375,
+            "games": 144
+          }
+        ]
+      },
+      "jungle": {
+        "easy": [
+          {
+            "id": "Rengar",
+            "wr": 0.678,
+            "games": 59
+          },
+          {
+            "id": "Vi",
+            "wr": 0.6429,
+            "games": 70
+          },
+          {
+            "id": "Ekko",
+            "wr": 0.6286,
+            "games": 70
+          }
+        ],
+        "hard": [
+          {
+            "id": "Nidalee",
+            "wr": 0.35,
+            "games": 40
+          },
+          {
+            "id": "MonkeyKing",
+            "wr": 0.4667,
+            "games": 120
+          },
+          {
+            "id": "MasterYi",
+            "wr": 0.4649,
+            "games": 114
+          }
+        ]
+      },
+      "mid": {
+        "easy": [
+          {
+            "id": "Diana",
+            "wr": 0.66,
+            "games": 50
+          },
+          {
+            "id": "Locke",
+            "wr": 0.5979,
+            "games": 97
+          },
+          {
+            "id": "Irelia",
+            "wr": 0.6667,
+            "games": 39
+          }
+        ],
+        "hard": [
+          {
+            "id": "Yone",
+            "wr": 0.4019,
+            "games": 107
+          },
+          {
+            "id": "Ahri",
+            "wr": 0.4024,
+            "games": 82
+          },
+          {
+            "id": "Xerath",
+            "wr": 0.4103,
+            "games": 39
+          }
+        ]
+      }
+    },
+    "Graves": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "Volibear",
+            "wr": 0.6167,
+            "games": 120
+          },
+          {
+            "id": "Nocturne",
+            "wr": 0.5364,
+            "games": 604
+          },
+          {
+            "id": "Nunu",
+            "wr": 0.5407,
+            "games": 270
+          }
+        ],
+        "hard": [
+          {
+            "id": "Rammus",
+            "wr": 0.4161,
+            "games": 310
+          },
+          {
+            "id": "RekSai",
+            "wr": 0.4206,
+            "games": 233
+          },
+          {
+            "id": "Gragas",
+            "wr": 0.4091,
+            "games": 154
+          }
+        ]
+      }
+    },
+    "Gwen": {
+      "top": {
+        "easy": [
+          {
+            "id": "DrMundo",
+            "wr": 0.5896,
+            "games": 307
+          },
+          {
+            "id": "Trundle",
+            "wr": 0.641,
+            "games": 78
+          },
+          {
+            "id": "Mordekaiser",
+            "wr": 0.5714,
+            "games": 336
+          }
+        ],
+        "hard": [
+          {
+            "id": "Riven",
+            "wr": 0.3826,
+            "games": 115
+          },
+          {
+            "id": "Tryndamere",
+            "wr": 0.4128,
+            "games": 172
+          },
+          {
+            "id": "Garen",
+            "wr": 0.4348,
+            "games": 299
+          }
+        ]
+      },
+      "jungle": {
+        "easy": [
+          {
+            "id": "Kayn",
+            "wr": 0.6099,
+            "games": 141
+          },
+          {
+            "id": "Amumu",
+            "wr": 0.6471,
+            "games": 34
+          },
+          {
+            "id": "LeeSin",
+            "wr": 0.5539,
+            "games": 204
+          }
+        ],
+        "hard": [
+          {
+            "id": "Belveth",
+            "wr": 0.4,
+            "games": 45
+          },
+          {
+            "id": "Vi",
+            "wr": 0.4237,
+            "games": 59
+          },
+          {
+            "id": "Shyvana",
+            "wr": 0.4571,
+            "games": 105
+          }
+        ]
+      }
+    },
+    "Hecarim": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "Volibear",
+            "wr": 0.5682,
+            "games": 132
+          },
+          {
+            "id": "Viego",
+            "wr": 0.5315,
+            "games": 1110
+          },
+          {
+            "id": "Pantheon",
+            "wr": 0.5765,
+            "games": 85
+          }
+        ],
+        "hard": [
+          {
+            "id": "MonkeyKing",
+            "wr": 0.4498,
+            "games": 947
+          },
+          {
+            "id": "Rammus",
+            "wr": 0.45,
+            "games": 240
+          },
+          {
+            "id": "Zyra",
+            "wr": 0.4408,
+            "games": 152
+          }
+        ]
+      }
+    },
+    "Heimerdinger": {
+      "top": {
+        "easy": [
+          {
+            "id": "Warwick",
+            "wr": 0.725,
+            "games": 40
+          },
+          {
+            "id": "Sett",
+            "wr": 0.5901,
+            "games": 161
+          },
+          {
+            "id": "Mordekaiser",
+            "wr": 0.5957,
+            "games": 141
+          }
+        ],
+        "hard": [
+          {
+            "id": "Kayle",
+            "wr": 0.3607,
+            "games": 61
+          },
+          {
+            "id": "Malphite",
+            "wr": 0.4198,
+            "games": 131
+          },
+          {
+            "id": "Darius",
+            "wr": 0.4315,
+            "games": 146
+          }
+        ]
+      }
+    },
+    "Hwei": {
+      "mid": {
+        "easy": [
+          {
+            "id": "Ryze",
+            "wr": 0.6646,
+            "games": 164
+          },
+          {
+            "id": "Brand",
+            "wr": 0.6667,
+            "games": 51
+          },
+          {
+            "id": "Orianna",
+            "wr": 0.5698,
+            "games": 265
+          }
+        ],
+        "hard": [
+          {
+            "id": "Fizz",
+            "wr": 0.4444,
+            "games": 360
+          },
+          {
+            "id": "Talon",
+            "wr": 0.4068,
+            "games": 118
+          },
+          {
+            "id": "Diana",
+            "wr": 0.4542,
+            "games": 251
+          }
+        ]
+      },
+      "support": {
+        "easy": [
+          {
+            "id": "Bard",
+            "wr": 0.6494,
+            "games": 77
+          },
+          {
+            "id": "Janna",
+            "wr": 0.625,
+            "games": 64
+          },
+          {
+            "id": "Swain",
+            "wr": 0.6471,
+            "games": 34
+          }
+        ],
+        "hard": [
+          {
+            "id": "Pyke",
+            "wr": 0.3667,
+            "games": 60
+          },
+          {
+            "id": "Soraka",
+            "wr": 0.4,
+            "games": 60
+          },
+          {
+            "id": "Lulu",
+            "wr": 0.4486,
+            "games": 185
+          }
+        ]
+      }
+    },
+    "Illaoi": {
+      "top": {
+        "easy": [
+          {
+            "id": "Camille",
+            "wr": 0.5808,
+            "games": 198
+          },
+          {
+            "id": "Renekton",
+            "wr": 0.5585,
+            "games": 342
+          },
+          {
+            "id": "Yorick",
+            "wr": 0.5767,
+            "games": 163
+          }
+        ],
+        "hard": [
+          {
+            "id": "Teemo",
+            "wr": 0.3729,
+            "games": 177
+          },
+          {
+            "id": "Yasuo",
+            "wr": 0.4145,
+            "games": 152
+          },
+          {
+            "id": "Fiora",
+            "wr": 0.4417,
+            "games": 240
+          }
+        ]
+      }
+    },
+    "Irelia": {
+      "top": {
+        "easy": [
+          {
+            "id": "Vladimir",
+            "wr": 0.6292,
+            "games": 178
+          },
+          {
+            "id": "Kayle",
+            "wr": 0.5885,
+            "games": 209
+          },
+          {
+            "id": "Jayce",
+            "wr": 0.5494,
+            "games": 1032
+          }
+        ],
+        "hard": [
+          {
+            "id": "Zaahen",
+            "wr": 0.3953,
+            "games": 258
+          },
+          {
+            "id": "Malphite",
+            "wr": 0.4294,
+            "games": 694
+          },
+          {
+            "id": "Volibear",
+            "wr": 0.45,
+            "games": 500
+          }
+        ]
+      },
+      "mid": {
+        "easy": [
+          {
+            "id": "Mel",
+            "wr": 0.6042,
+            "games": 96
+          },
+          {
+            "id": "Talon",
+            "wr": 0.5876,
+            "games": 97
+          },
+          {
+            "id": "Aurora",
+            "wr": 0.55,
+            "games": 160
+          }
+        ],
+        "hard": [
+          {
+            "id": "Veigar",
+            "wr": 0.3901,
+            "games": 141
+          },
+          {
+            "id": "Malphite",
+            "wr": 0.3854,
+            "games": 96
+          },
+          {
+            "id": "Ahri",
+            "wr": 0.4416,
+            "games": 471
+          }
+        ]
+      }
+    },
+    "Ivern": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "Lillia",
+            "wr": 0.58,
+            "games": 150
+          },
+          {
+            "id": "Sejuani",
+            "wr": 0.6757,
+            "games": 37
+          },
+          {
+            "id": "Viego",
+            "wr": 0.5767,
+            "games": 163
+          }
+        ],
+        "hard": [
+          {
+            "id": "Khazix",
+            "wr": 0.4304,
+            "games": 158
+          },
+          {
+            "id": "Rengar",
+            "wr": 0.4091,
+            "games": 88
+          },
+          {
+            "id": "Nidalee",
+            "wr": 0.4328,
+            "games": 67
+          }
+        ]
+      }
+    },
+    "Janna": {
+      "support": {
+        "easy": [
+          {
+            "id": "Ashe",
+            "wr": 0.6392,
+            "games": 97
+          },
+          {
+            "id": "Camille",
+            "wr": 0.5963,
+            "games": 161
+          },
+          {
+            "id": "Soraka",
+            "wr": 0.5597,
+            "games": 729
+          }
+        ],
+        "hard": [
+          {
+            "id": "TahmKench",
+            "wr": 0.4353,
+            "games": 278
+          },
+          {
+            "id": "Amumu",
+            "wr": 0.4186,
+            "games": 86
+          },
+          {
+            "id": "Velkoz",
+            "wr": 0.4818,
+            "games": 330
+          }
+        ]
+      }
+    },
+    "JarvanIV": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "Rengar",
+            "wr": 0.5621,
+            "games": 459
+          },
+          {
+            "id": "Briar",
+            "wr": 0.5496,
+            "games": 464
+          },
+          {
+            "id": "Pantheon",
+            "wr": 0.547,
+            "games": 117
+          }
+        ],
+        "hard": [
+          {
+            "id": "Skarner",
+            "wr": 0.4091,
+            "games": 154
+          },
+          {
+            "id": "MasterYi",
+            "wr": 0.4471,
+            "games": 803
+          },
+          {
+            "id": "XinZhao",
+            "wr": 0.4455,
+            "games": 312
+          }
+        ]
+      }
+    },
+    "Jax": {
+      "top": {
+        "easy": [
+          {
+            "id": "MonkeyKing",
+            "wr": 0.6306,
+            "games": 111
+          },
+          {
+            "id": "Tryndamere",
+            "wr": 0.5461,
+            "games": 542
+          },
+          {
+            "id": "Irelia",
+            "wr": 0.5428,
+            "games": 643
+          }
+        ],
+        "hard": [
+          {
+            "id": "Garen",
+            "wr": 0.443,
+            "games": 1210
+          },
+          {
+            "id": "Quinn",
+            "wr": 0.3736,
+            "games": 91
+          },
+          {
+            "id": "Sett",
+            "wr": 0.4476,
+            "games": 601
+          }
+        ]
+      },
+      "jungle": {
+        "easy": [
+          {
+            "id": "Briar",
+            "wr": 0.55,
+            "games": 140
+          },
+          {
+            "id": "Diana",
+            "wr": 0.5789,
+            "games": 57
+          },
+          {
+            "id": "Zed",
+            "wr": 0.5897,
+            "games": 39
+          }
+        ],
+        "hard": [
+          {
+            "id": "Nidalee",
+            "wr": 0.3243,
+            "games": 37
+          },
+          {
+            "id": "Kayn",
+            "wr": 0.4135,
+            "games": 104
+          },
+          {
+            "id": "Elise",
+            "wr": 0.3673,
+            "games": 49
+          }
+        ]
+      }
+    },
+    "Jayce": {
+      "top": {
+        "easy": [
+          {
+            "id": "Ambessa",
+            "wr": 0.5365,
+            "games": 520
+          },
+          {
+            "id": "KSante",
+            "wr": 0.5273,
+            "games": 713
+          },
+          {
+            "id": "Aatrox",
+            "wr": 0.5217,
+            "games": 1083
+          }
+        ],
+        "hard": [
+          {
+            "id": "Malphite",
+            "wr": 0.4238,
+            "games": 1753
+          },
+          {
+            "id": "Ornn",
+            "wr": 0.4257,
+            "games": 444
+          },
+          {
+            "id": "Zaahen",
+            "wr": 0.417,
+            "games": 247
+          }
+        ]
+      },
+      "mid": {
+        "easy": [
+          {
+            "id": "Aurora",
+            "wr": 0.6522,
+            "games": 46
+          },
+          {
+            "id": "Yone",
+            "wr": 0.5503,
+            "games": 169
+          },
+          {
+            "id": "Orianna",
+            "wr": 0.619,
+            "games": 42
+          }
+        ],
+        "hard": [
+          {
+            "id": "Viktor",
+            "wr": 0.4135,
+            "games": 133
+          },
+          {
+            "id": "Ahri",
+            "wr": 0.4127,
+            "games": 126
+          },
+          {
+            "id": "Syndra",
+            "wr": 0.42,
+            "games": 100
+          }
+        ]
+      }
+    },
+    "Jhin": {
+      "adc": {
+        "easy": [
+          {
+            "id": "Corki",
+            "wr": 0.5491,
+            "games": 692
+          },
+          {
+            "id": "Ezreal",
+            "wr": 0.5381,
+            "games": 4953
+          },
+          {
+            "id": "Varus",
+            "wr": 0.5261,
+            "games": 1053
+          }
+        ],
+        "hard": [
+          {
+            "id": "KogMaw",
+            "wr": 0.4399,
+            "games": 757
+          },
+          {
+            "id": "Xayah",
+            "wr": 0.4561,
+            "games": 1651
+          },
+          {
+            "id": "Swain",
+            "wr": 0.464,
+            "games": 444
+          }
+        ]
+      }
+    },
+    "Jinx": {
+      "adc": {
+        "easy": [
+          {
+            "id": "Kalista",
+            "wr": 0.5647,
+            "games": 1128
+          },
+          {
+            "id": "Varus",
+            "wr": 0.5658,
+            "games": 882
+          },
+          {
+            "id": "Ezreal",
+            "wr": 0.5567,
+            "games": 3316
+          }
+        ],
+        "hard": [
+          {
+            "id": "Swain",
+            "wr": 0.4508,
+            "games": 386
+          },
+          {
+            "id": "Ziggs",
+            "wr": 0.4717,
+            "games": 494
+          },
+          {
+            "id": "Twitch",
+            "wr": 0.4909,
+            "games": 2363
+          }
+        ]
+      }
+    },
+    "KSante": {
+      "top": {
+        "easy": [
+          {
+            "id": "Nasus",
+            "wr": 0.5556,
+            "games": 333
+          },
+          {
+            "id": "Kled",
+            "wr": 0.5455,
+            "games": 154
+          },
+          {
+            "id": "Sylas",
+            "wr": 0.5797,
+            "games": 69
+          }
+        ],
+        "hard": [
+          {
+            "id": "Fiora",
+            "wr": 0.409,
+            "games": 511
+          },
+          {
+            "id": "Tryndamere",
+            "wr": 0.4023,
+            "games": 266
+          },
+          {
+            "id": "Kayle",
+            "wr": 0.4104,
+            "games": 251
+          }
+        ]
+      }
+    },
+    "Kaisa": {
+      "adc": {
+        "easy": [
+          {
+            "id": "Ezreal",
+            "wr": 0.5473,
+            "games": 6090
+          },
+          {
+            "id": "Varus",
+            "wr": 0.5306,
+            "games": 1093
+          },
+          {
+            "id": "Lucian",
+            "wr": 0.519,
+            "games": 4216
+          }
+        ],
+        "hard": [
+          {
+            "id": "Xayah",
+            "wr": 0.4475,
+            "games": 3879
+          },
+          {
+            "id": "Samira",
+            "wr": 0.4533,
+            "games": 1531
+          },
+          {
+            "id": "Swain",
+            "wr": 0.4518,
+            "games": 456
+          }
+        ]
+      }
+    },
+    "Kalista": {
+      "adc": {
+        "easy": [
+          {
+            "id": "Ezreal",
+            "wr": 0.5611,
+            "games": 875
+          },
+          {
+            "id": "Varus",
+            "wr": 0.5404,
+            "games": 198
+          },
+          {
+            "id": "Yasuo",
+            "wr": 0.5278,
+            "games": 180
+          }
+        ],
+        "hard": [
+          {
+            "id": "Jinx",
+            "wr": 0.4353,
+            "games": 1128
+          },
+          {
+            "id": "Swain",
+            "wr": 0.3918,
+            "games": 97
+          },
+          {
+            "id": "Xayah",
+            "wr": 0.4427,
+            "games": 445
+          }
+        ]
+      }
+    },
+    "Karma": {
+      "support": {
+        "easy": [
+          {
+            "id": "Ashe",
+            "wr": 0.6449,
+            "games": 107
+          },
+          {
+            "id": "Swain",
+            "wr": 0.5495,
+            "games": 364
+          },
+          {
+            "id": "Morgana",
+            "wr": 0.5347,
+            "games": 649
+          }
+        ],
+        "hard": [
+          {
+            "id": "Rell",
+            "wr": 0.4365,
+            "games": 598
+          },
+          {
+            "id": "Blitzcrank",
+            "wr": 0.4431,
+            "games": 1002
+          },
+          {
+            "id": "Maokai",
+            "wr": 0.4244,
+            "games": 205
+          }
+        ]
+      }
+    },
+    "Karthus": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "Zed",
+            "wr": 0.6438,
+            "games": 73
+          },
+          {
+            "id": "Viego",
+            "wr": 0.5641,
+            "games": 234
+          },
+          {
+            "id": "Amumu",
+            "wr": 0.6364,
+            "games": 55
+          }
+        ],
+        "hard": [
+          {
+            "id": "Nidalee",
+            "wr": 0.3636,
+            "games": 88
+          },
+          {
+            "id": "Shyvana",
+            "wr": 0.4052,
+            "games": 116
+          },
+          {
+            "id": "Ekko",
+            "wr": 0.4118,
+            "games": 119
+          }
+        ]
+      },
+      "adc": {
+        "easy": [
+          {
+            "id": "Jhin",
+            "wr": 0.592,
+            "games": 201
+          },
+          {
+            "id": "Ezreal",
+            "wr": 0.6095,
+            "games": 105
+          },
+          {
+            "id": "MissFortune",
+            "wr": 0.614,
+            "games": 57
+          }
+        ],
+        "hard": [
+          {
+            "id": "Draven",
+            "wr": 0.45,
+            "games": 80
+          },
+          {
+            "id": "Yunara",
+            "wr": 0.4727,
+            "games": 110
+          },
+          {
+            "id": "Kalista",
+            "wr": 0.4222,
+            "games": 45
+          }
+        ]
+      }
+    },
+    "Kassadin": {
+      "mid": {
+        "easy": [
+          {
+            "id": "Sylas",
+            "wr": 0.5568,
+            "games": 370
+          },
+          {
+            "id": "Orianna",
+            "wr": 0.56,
+            "games": 175
+          },
+          {
+            "id": "AurelionSol",
+            "wr": 0.5634,
+            "games": 142
+          }
+        ],
+        "hard": [
+          {
+            "id": "Pantheon",
+            "wr": 0.4255,
+            "games": 94
+          },
+          {
+            "id": "Yone",
+            "wr": 0.4689,
+            "games": 644
+          },
+          {
+            "id": "Hwei",
+            "wr": 0.4559,
+            "games": 204
+          }
+        ]
+      }
+    },
+    "Katarina": {
+      "mid": {
+        "easy": [
+          {
+            "id": "Qiyana",
+            "wr": 0.5839,
+            "games": 423
+          },
+          {
+            "id": "Veigar",
+            "wr": 0.5777,
+            "games": 476
+          },
+          {
+            "id": "Mel",
+            "wr": 0.578,
+            "games": 218
+          }
+        ],
+        "hard": [
+          {
+            "id": "Diana",
+            "wr": 0.4395,
+            "games": 612
+          },
+          {
+            "id": "Vex",
+            "wr": 0.4535,
+            "games": 538
+          },
+          {
+            "id": "Lux",
+            "wr": 0.4539,
+            "games": 531
+          }
+        ]
+      }
+    },
+    "Kayle": {
+      "top": {
+        "easy": [
+          {
+            "id": "KSante",
+            "wr": 0.5847,
+            "games": 248
+          },
+          {
+            "id": "Riven",
+            "wr": 0.6163,
+            "games": 86
+          },
+          {
+            "id": "Kled",
+            "wr": 0.6087,
+            "games": 92
+          }
+        ],
+        "hard": [
+          {
+            "id": "Irelia",
+            "wr": 0.4106,
+            "games": 207
+          },
+          {
+            "id": "Gragas",
+            "wr": 0.3605,
+            "games": 86
+          },
+          {
+            "id": "Malphite",
+            "wr": 0.4275,
+            "games": 276
+          }
+        ]
+      }
+    },
+    "Kayn": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "Nunu",
+            "wr": 0.5858,
+            "games": 268
+          },
+          {
+            "id": "Karthus",
+            "wr": 0.5659,
+            "games": 205
+          },
+          {
+            "id": "Jax",
+            "wr": 0.5865,
+            "games": 104
+          }
+        ],
+        "hard": [
+          {
+            "id": "Gwen",
+            "wr": 0.3901,
+            "games": 141
+          },
+          {
+            "id": "MonkeyKing",
+            "wr": 0.4508,
+            "games": 1249
+          },
+          {
+            "id": "MasterYi",
+            "wr": 0.452,
+            "games": 969
+          }
+        ]
+      }
+    },
+    "Kennen": {
+      "top": {
+        "easy": [
+          {
+            "id": "Garen",
+            "wr": 0.6,
+            "games": 225
+          },
+          {
+            "id": "Renekton",
+            "wr": 0.5885,
+            "games": 226
+          },
+          {
+            "id": "Volibear",
+            "wr": 0.5774,
+            "games": 168
+          }
+        ],
+        "hard": [
+          {
+            "id": "Irelia",
+            "wr": 0.4431,
+            "games": 246
+          },
+          {
+            "id": "DrMundo",
+            "wr": 0.4438,
+            "games": 169
+          },
+          {
+            "id": "Kled",
+            "wr": 0.4133,
+            "games": 75
+          }
+        ]
+      }
+    },
+    "Khazix": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "Viego",
+            "wr": 0.5497,
+            "games": 1408
+          },
+          {
+            "id": "Ivern",
+            "wr": 0.5696,
+            "games": 158
+          },
+          {
+            "id": "Zed",
+            "wr": 0.5413,
+            "games": 412
+          }
+        ],
+        "hard": [
+          {
+            "id": "Sejuani",
+            "wr": 0.429,
+            "games": 352
+          },
+          {
+            "id": "Skarner",
+            "wr": 0.4156,
+            "games": 154
+          },
+          {
+            "id": "Zyra",
+            "wr": 0.4294,
+            "games": 170
+          }
+        ]
+      }
+    },
+    "Kindred": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "Zed",
+            "wr": 0.5915,
+            "games": 142
+          },
+          {
+            "id": "Vi",
+            "wr": 0.5707,
+            "games": 205
+          },
+          {
+            "id": "Belveth",
+            "wr": 0.5489,
+            "games": 184
+          }
+        ],
+        "hard": [
+          {
+            "id": "RekSai",
+            "wr": 0.3793,
+            "games": 116
+          },
+          {
+            "id": "MonkeyKing",
+            "wr": 0.4336,
+            "games": 452
+          },
+          {
+            "id": "Shaco",
+            "wr": 0.4314,
+            "games": 255
+          }
+        ]
+      }
+    },
+    "Kled": {
+      "top": {
+        "easy": [
+          {
+            "id": "Jayce",
+            "wr": 0.5988,
+            "games": 167
+          },
+          {
+            "id": "Akali",
+            "wr": 0.6098,
+            "games": 82
+          },
+          {
+            "id": "Irelia",
+            "wr": 0.5789,
+            "games": 133
+          }
+        ],
+        "hard": [
+          {
+            "id": "Kayle",
+            "wr": 0.3956,
+            "games": 91
+          },
+          {
+            "id": "Olaf",
+            "wr": 0.4286,
+            "games": 147
+          },
+          {
+            "id": "KSante",
+            "wr": 0.4379,
+            "games": 153
+          }
+        ]
+      }
+    },
+    "KogMaw": {
+      "adc": {
+        "easy": [
+          {
+            "id": "Ezreal",
+            "wr": 0.608,
+            "games": 398
+          },
+          {
+            "id": "Jhin",
+            "wr": 0.5601,
+            "games": 757
+          },
+          {
+            "id": "Varus",
+            "wr": 0.5868,
+            "games": 121
+          }
+        ],
+        "hard": [
+          {
+            "id": "Ashe",
+            "wr": 0.4575,
+            "games": 247
+          },
+          {
+            "id": "Jinx",
+            "wr": 0.4898,
+            "games": 782
+          },
+          {
+            "id": "Twitch",
+            "wr": 0.4846,
+            "games": 260
+          }
+        ]
+      }
+    },
+    "Leblanc": {
+      "mid": {
+        "easy": [
+          {
+            "id": "Taliyah",
+            "wr": 0.5909,
+            "games": 132
+          },
+          {
+            "id": "Lucian",
+            "wr": 0.6042,
+            "games": 96
+          },
+          {
+            "id": "Brand",
+            "wr": 0.6111,
+            "games": 72
+          }
+        ],
+        "hard": [
+          {
+            "id": "Malzahar",
+            "wr": 0.4453,
+            "games": 658
+          },
+          {
+            "id": "Vex",
+            "wr": 0.4548,
+            "games": 719
+          },
+          {
+            "id": "Akshan",
+            "wr": 0.4488,
+            "games": 283
+          }
+        ]
+      }
+    },
+    "LeeSin": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "Ambessa",
+            "wr": 0.582,
+            "games": 189
+          },
+          {
+            "id": "Rengar",
+            "wr": 0.5229,
+            "games": 895
+          },
+          {
+            "id": "Viego",
+            "wr": 0.52,
+            "games": 2748
+          }
+        ],
+        "hard": [
+          {
+            "id": "Shaco",
+            "wr": 0.4445,
+            "games": 1082
+          },
+          {
+            "id": "Taliyah",
+            "wr": 0.4429,
+            "games": 350
+          },
+          {
+            "id": "Warwick",
+            "wr": 0.4513,
+            "games": 749
+          }
+        ]
+      }
+    },
+    "Leona": {
+      "support": {
+        "easy": [
+          {
+            "id": "Camille",
+            "wr": 0.6116,
+            "games": 242
+          },
+          {
+            "id": "Shaco",
+            "wr": 0.6067,
+            "games": 178
+          },
+          {
+            "id": "Nautilus",
+            "wr": 0.5566,
+            "games": 1935
+          }
+        ],
+        "hard": [
+          {
+            "id": "Sona",
+            "wr": 0.4553,
+            "games": 369
+          },
+          {
+            "id": "Janna",
+            "wr": 0.4764,
+            "games": 932
+          },
+          {
+            "id": "Renata",
+            "wr": 0.4716,
+            "games": 299
+          }
+        ]
+      }
+    },
+    "Lillia": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "Zac",
+            "wr": 0.5724,
+            "games": 428
+          },
+          {
+            "id": "Rammus",
+            "wr": 0.5531,
+            "games": 273
+          },
+          {
+            "id": "Amumu",
+            "wr": 0.5472,
+            "games": 212
+          }
+        ],
+        "hard": [
+          {
+            "id": "Taliyah",
+            "wr": 0.3708,
+            "games": 89
+          },
+          {
+            "id": "Ivern",
+            "wr": 0.42,
+            "games": 150
+          },
+          {
+            "id": "Zed",
+            "wr": 0.452,
+            "games": 250
+          }
+        ]
+      }
+    },
+    "Lissandra": {
+      "mid": {
+        "easy": [
+          {
+            "id": "Mel",
+            "wr": 0.5887,
+            "games": 231
+          },
+          {
+            "id": "Naafiri",
+            "wr": 0.6316,
+            "games": 95
+          },
+          {
+            "id": "Akali",
+            "wr": 0.5627,
+            "games": 837
+          }
+        ],
+        "hard": [
+          {
+            "id": "Swain",
+            "wr": 0.3913,
+            "games": 115
+          },
+          {
+            "id": "Xerath",
+            "wr": 0.4613,
+            "games": 542
+          },
+          {
+            "id": "Taliyah",
+            "wr": 0.4388,
+            "games": 139
+          }
+        ]
+      }
+    },
+    "Locke": {
+      "mid": {
+        "easy": [
+          {
+            "id": "Orianna",
+            "wr": 0.5643,
+            "games": 459
+          },
+          {
+            "id": "Xerath",
+            "wr": 0.5548,
+            "games": 566
+          },
+          {
+            "id": "Lucian",
+            "wr": 0.5847,
+            "games": 118
+          }
+        ],
+        "hard": [
+          {
+            "id": "Vex",
+            "wr": 0.4422,
+            "games": 493
+          },
+          {
+            "id": "Aurora",
+            "wr": 0.4595,
+            "games": 494
+          },
+          {
+            "id": "Katarina",
+            "wr": 0.4652,
+            "games": 1006
+          }
+        ]
+      }
+    },
+    "Lucian": {
+      "adc": {
+        "easy": [
+          {
+            "id": "Ezreal",
+            "wr": 0.5348,
+            "games": 2358
+          },
+          {
+            "id": "Sivir",
+            "wr": 0.5378,
+            "games": 714
+          },
+          {
+            "id": "Varus",
+            "wr": 0.5264,
+            "games": 530
+          }
+        ],
+        "hard": [
+          {
+            "id": "Draven",
+            "wr": 0.4697,
+            "games": 824
+          },
+          {
+            "id": "Corki",
+            "wr": 0.4667,
+            "games": 435
+          },
+          {
+            "id": "Ashe",
+            "wr": 0.4721,
+            "games": 1023
+          }
+        ]
+      },
+      "mid": {
+        "easy": [
+          {
+            "id": "Galio",
+            "wr": 0.4956,
+            "games": 113
+          },
+          {
+            "id": "Kassadin",
+            "wr": 0.4865,
+            "games": 111
+          },
+          {
+            "id": "Hwei",
+            "wr": 0.5185,
+            "games": 54
+          }
+        ],
+        "hard": [
+          {
+            "id": "Zoe",
+            "wr": 0.25,
+            "games": 72
+          },
+          {
+            "id": "Malzahar",
+            "wr": 0.3279,
+            "games": 61
+          },
+          {
+            "id": "Mel",
+            "wr": 0.2813,
+            "games": 32
+          }
+        ]
+      }
+    },
+    "Lulu": {
+      "support": {
+        "easy": [
+          {
+            "id": "Shaco",
+            "wr": 0.6057,
+            "games": 279
+          },
+          {
+            "id": "Shen",
+            "wr": 0.5968,
+            "games": 186
+          },
+          {
+            "id": "Camille",
+            "wr": 0.5681,
+            "games": 426
+          }
+        ],
+        "hard": [
+          {
+            "id": "Blitzcrank",
+            "wr": 0.4588,
+            "games": 2243
+          },
+          {
+            "id": "Thresh",
+            "wr": 0.464,
+            "games": 4373
+          },
+          {
+            "id": "Leona",
+            "wr": 0.4628,
+            "games": 1936
+          }
+        ]
+      }
+    },
+    "Lux": {
+      "support": {
+        "easy": [
+          {
+            "id": "Mel",
+            "wr": 0.5746,
+            "games": 134
+          },
+          {
+            "id": "Seraphine",
+            "wr": 0.536,
+            "games": 1028
+          },
+          {
+            "id": "Brand",
+            "wr": 0.5375,
+            "games": 400
+          }
+        ],
+        "hard": [
+          {
+            "id": "Sona",
+            "wr": 0.4145,
+            "games": 304
+          },
+          {
+            "id": "Nami",
+            "wr": 0.4503,
+            "games": 1137
+          },
+          {
+            "id": "Pyke",
+            "wr": 0.4573,
+            "games": 831
+          }
+        ]
+      },
+      "mid": {
+        "easy": [
+          {
+            "id": "Galio",
+            "wr": 0.5905,
+            "games": 210
+          },
+          {
+            "id": "Akali",
+            "wr": 0.5684,
+            "games": 373
+          },
+          {
+            "id": "Diana",
+            "wr": 0.5671,
+            "games": 231
+          }
+        ],
+        "hard": [
+          {
+            "id": "Ahri",
+            "wr": 0.4716,
+            "games": 776
+          },
+          {
+            "id": "Locke",
+            "wr": 0.4752,
+            "games": 484
+          },
+          {
+            "id": "TwistedFate",
+            "wr": 0.4744,
+            "games": 390
+          }
+        ]
+      }
+    },
+    "Malphite": {
+      "top": {
+        "easy": [
+          {
+            "id": "Vayne",
+            "wr": 0.6563,
+            "games": 224
+          },
+          {
+            "id": "Tryndamere",
+            "wr": 0.594,
+            "games": 670
+          },
+          {
+            "id": "Jayce",
+            "wr": 0.5807,
+            "games": 1748
+          }
+        ],
+        "hard": [
+          {
+            "id": "Shen",
+            "wr": 0.4519,
+            "games": 489
+          },
+          {
+            "id": "DrMundo",
+            "wr": 0.4591,
+            "games": 684
+          },
+          {
+            "id": "Sylas",
+            "wr": 0.4652,
+            "games": 1277
+          }
+        ]
+      },
+      "mid": {
+        "easy": [
+          {
+            "id": "Akshan",
+            "wr": 0.625,
+            "games": 88
+          },
+          {
+            "id": "Irelia",
+            "wr": 0.6146,
+            "games": 96
+          },
+          {
+            "id": "Zed",
+            "wr": 0.5567,
+            "games": 485
+          }
+        ],
+        "hard": [
+          {
+            "id": "Galio",
+            "wr": 0.3514,
+            "games": 37
+          },
+          {
+            "id": "Ahri",
+            "wr": 0.4404,
+            "games": 109
+          },
+          {
+            "id": "Sylas",
+            "wr": 0.4694,
+            "games": 147
+          }
+        ]
+      }
+    },
+    "Malzahar": {
+      "mid": {
+        "easy": [
+          {
+            "id": "Vladimir",
+            "wr": 0.5673,
+            "games": 557
+          },
+          {
+            "id": "Yasuo",
+            "wr": 0.5605,
+            "games": 992
+          },
+          {
+            "id": "Naafiri",
+            "wr": 0.6579,
+            "games": 76
+          }
+        ],
+        "hard": [
+          {
+            "id": "TwistedFate",
+            "wr": 0.4397,
+            "games": 705
+          },
+          {
+            "id": "Xerath",
+            "wr": 0.4369,
+            "games": 531
+          },
+          {
+            "id": "Yone",
+            "wr": 0.4475,
+            "games": 733
+          }
+        ]
+      }
+    },
+    "Maokai": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "MonkeyKing",
+            "wr": 0.59,
+            "games": 100
+          },
+          {
+            "id": "Talon",
+            "wr": 0.5738,
+            "games": 61
+          },
+          {
+            "id": "Elise",
+            "wr": 0.5897,
+            "games": 39
+          }
+        ],
+        "hard": [
+          {
+            "id": "Hecarim",
+            "wr": 0.4167,
+            "games": 60
+          },
+          {
+            "id": "Diana",
+            "wr": 0.4043,
+            "games": 47
+          },
+          {
+            "id": "Kayn",
+            "wr": 0.4286,
+            "games": 70
+          }
+        ]
+      },
+      "support": {
+        "easy": [
+          {
+            "id": "Karma",
+            "wr": 0.5756,
+            "games": 205
+          },
+          {
+            "id": "Blitzcrank",
+            "wr": 0.5522,
+            "games": 201
+          },
+          {
+            "id": "Pyke",
+            "wr": 0.5426,
+            "games": 317
+          }
+        ],
+        "hard": [
+          {
+            "id": "Leona",
+            "wr": 0.4397,
+            "games": 282
+          },
+          {
+            "id": "Galio",
+            "wr": 0.3514,
+            "games": 37
+          },
+          {
+            "id": "Rakan",
+            "wr": 0.4476,
+            "games": 143
+          }
+        ]
+      }
+    },
+    "MasterYi": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "Zed",
+            "wr": 0.61,
+            "games": 341
+          },
+          {
+            "id": "Pantheon",
+            "wr": 0.6058,
+            "games": 104
+          },
+          {
+            "id": "JarvanIV",
+            "wr": 0.5529,
+            "games": 803
+          }
+        ],
+        "hard": [
+          {
+            "id": "Rammus",
+            "wr": 0.4548,
+            "games": 620
+          },
+          {
+            "id": "Elise",
+            "wr": 0.4617,
+            "games": 470
+          },
+          {
+            "id": "Shaco",
+            "wr": 0.4679,
+            "games": 530
+          }
+        ]
+      }
+    },
+    "Mel": {
+      "mid": {
+        "easy": [
+          {
+            "id": "Ahri",
+            "wr": 0.5017,
+            "games": 865
+          },
+          {
+            "id": "Taliyah",
+            "wr": 0.5574,
+            "games": 61
+          },
+          {
+            "id": "Ryze",
+            "wr": 0.5636,
+            "games": 55
+          }
+        ],
+        "hard": [
+          {
+            "id": "Akali",
+            "wr": 0.4,
+            "games": 190
+          },
+          {
+            "id": "Syndra",
+            "wr": 0.4133,
+            "games": 346
+          },
+          {
+            "id": "Viktor",
+            "wr": 0.4125,
+            "games": 320
+          }
+        ]
+      },
+      "support": {
+        "easy": [
+          {
+            "id": "Pantheon",
+            "wr": 0.5667,
+            "games": 30
+          },
+          {
+            "id": "Seraphine",
+            "wr": 0.4722,
+            "games": 180
+          },
+          {
+            "id": "Thresh",
+            "wr": 0.4626,
+            "games": 281
+          }
+        ],
+        "hard": [
+          {
+            "id": "Soraka",
+            "wr": 0.3077,
+            "games": 39
+          },
+          {
+            "id": "Braum",
+            "wr": 0.3158,
+            "games": 38
+          },
+          {
+            "id": "Leona",
+            "wr": 0.3846,
+            "games": 65
+          }
+        ]
+      }
+    },
+    "Milio": {
+      "support": {
+        "easy": [
+          {
+            "id": "Shaco",
+            "wr": 0.6012,
+            "games": 163
+          },
+          {
+            "id": "Yuumi",
+            "wr": 0.5457,
+            "games": 777
+          },
+          {
+            "id": "Swain",
+            "wr": 0.5528,
+            "games": 360
+          }
+        ],
+        "hard": [
+          {
+            "id": "Rell",
+            "wr": 0.4523,
+            "games": 482
+          },
+          {
+            "id": "Blitzcrank",
+            "wr": 0.4599,
+            "games": 1059
+          },
+          {
+            "id": "Poppy",
+            "wr": 0.4383,
+            "games": 162
+          }
+        ]
+      }
+    },
+    "MissFortune": {
+      "adc": {
+        "easy": [
+          {
+            "id": "Nilah",
+            "wr": 0.5758,
+            "games": 99
+          },
+          {
+            "id": "Vayne",
+            "wr": 0.5348,
+            "games": 402
+          },
+          {
+            "id": "Aphelios",
+            "wr": 0.5161,
+            "games": 1025
+          }
+        ],
+        "hard": [
+          {
+            "id": "Ziggs",
+            "wr": 0.4176,
+            "games": 182
+          },
+          {
+            "id": "Tristana",
+            "wr": 0.4545,
+            "games": 1109
+          },
+          {
+            "id": "Yasuo",
+            "wr": 0.4381,
+            "games": 194
+          }
+        ]
+      }
+    },
+    "MonkeyKing": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "XinZhao",
+            "wr": 0.5721,
+            "games": 430
+          },
+          {
+            "id": "Pantheon",
+            "wr": 0.6016,
+            "games": 123
+          },
+          {
+            "id": "Qiyana",
+            "wr": 0.5626,
+            "games": 1239
+          }
+        ],
+        "hard": [
+          {
+            "id": "Lillia",
+            "wr": 0.4656,
+            "games": 1089
+          },
+          {
+            "id": "Maokai",
+            "wr": 0.41,
+            "games": 100
+          },
+          {
+            "id": "Gwen",
+            "wr": 0.4493,
+            "games": 207
+          }
+        ]
+      },
+      "top": {
+        "easy": [
+          {
+            "id": "Jayce",
+            "wr": 0.5852,
+            "games": 176
+          },
+          {
+            "id": "Camille",
+            "wr": 0.5772,
+            "games": 149
+          },
+          {
+            "id": "Tryndamere",
+            "wr": 0.6,
+            "games": 85
+          }
+        ],
+        "hard": [
+          {
+            "id": "Jax",
+            "wr": 0.3604,
+            "games": 111
+          },
+          {
+            "id": "Mordekaiser",
+            "wr": 0.3796,
+            "games": 108
+          },
+          {
+            "id": "TahmKench",
+            "wr": 0.3125,
+            "games": 32
+          }
+        ]
+      }
+    },
+    "Mordekaiser": {
+      "top": {
+        "easy": [
+          {
+            "id": "Renekton",
+            "wr": 0.5681,
+            "games": 683
+          },
+          {
+            "id": "MonkeyKing",
+            "wr": 0.6161,
+            "games": 112
+          },
+          {
+            "id": "Rumble",
+            "wr": 0.5882,
+            "games": 170
+          }
+        ],
+        "hard": [
+          {
+            "id": "Yasuo",
+            "wr": 0.4164,
+            "games": 353
+          },
+          {
+            "id": "Gwen",
+            "wr": 0.437,
+            "games": 341
+          },
+          {
+            "id": "Heimerdinger",
+            "wr": 0.4071,
+            "games": 140
+          }
+        ]
+      }
+    },
+    "Morgana": {
+      "support": {
+        "easy": [
+          {
+            "id": "Rakan",
+            "wr": 0.5693,
+            "games": 274
+          },
+          {
+            "id": "Swain",
+            "wr": 0.5411,
+            "games": 231
+          },
+          {
+            "id": "Velkoz",
+            "wr": 0.534,
+            "games": 206
+          }
+        ],
+        "hard": [
+          {
+            "id": "Senna",
+            "wr": 0.4181,
+            "games": 452
+          },
+          {
+            "id": "Camille",
+            "wr": 0.3981,
+            "games": 103
+          },
+          {
+            "id": "Zilean",
+            "wr": 0.4353,
+            "games": 232
+          }
+        ]
+      }
+    },
+    "Naafiri": {
+      "mid": {
+        "easy": [
+          {
+            "id": "Ryze",
+            "wr": 0.6383,
+            "games": 47
+          },
+          {
+            "id": "Leblanc",
+            "wr": 0.537,
+            "games": 108
+          },
+          {
+            "id": "Sylas",
+            "wr": 0.5288,
+            "games": 104
+          }
+        ],
+        "hard": [
+          {
+            "id": "Ekko",
+            "wr": 0.3175,
+            "games": 63
+          },
+          {
+            "id": "Malzahar",
+            "wr": 0.3421,
+            "games": 76
+          },
+          {
+            "id": "Lissandra",
+            "wr": 0.3684,
+            "games": 95
+          }
+        ]
+      }
+    },
+    "Nami": {
+      "support": {
+        "easy": [
+          {
+            "id": "Swain",
+            "wr": 0.5849,
+            "games": 436
+          },
+          {
+            "id": "Xerath",
+            "wr": 0.5601,
+            "games": 391
+          },
+          {
+            "id": "Lux",
+            "wr": 0.5497,
+            "games": 1137
+          }
+        ],
+        "hard": [
+          {
+            "id": "Thresh",
+            "wr": 0.4732,
+            "games": 2684
+          },
+          {
+            "id": "Renata",
+            "wr": 0.4658,
+            "games": 322
+          },
+          {
+            "id": "Braum",
+            "wr": 0.4758,
+            "games": 931
+          }
+        ]
+      }
+    },
+    "Nasus": {
+      "top": {
+        "easy": [
+          {
+            "id": "Trundle",
+            "wr": 0.6146,
+            "games": 192
+          },
+          {
+            "id": "Tryndamere",
+            "wr": 0.5884,
+            "games": 345
+          },
+          {
+            "id": "Vayne",
+            "wr": 0.6218,
+            "games": 119
+          }
+        ],
+        "hard": [
+          {
+            "id": "TahmKench",
+            "wr": 0.4217,
+            "games": 230
+          },
+          {
+            "id": "Aatrox",
+            "wr": 0.4502,
+            "games": 602
+          },
+          {
+            "id": "KSante",
+            "wr": 0.4529,
+            "games": 340
+          }
+        ]
+      }
+    },
+    "Nautilus": {
+      "support": {
+        "easy": [
+          {
+            "id": "Yuumi",
+            "wr": 0.5699,
+            "games": 1367
+          },
+          {
+            "id": "Camille",
+            "wr": 0.5691,
+            "games": 376
+          },
+          {
+            "id": "Xerath",
+            "wr": 0.5428,
+            "games": 678
+          }
+        ],
+        "hard": [
+          {
+            "id": "Rell",
+            "wr": 0.4382,
+            "games": 1125
+          },
+          {
+            "id": "Braum",
+            "wr": 0.4439,
+            "games": 2255
+          },
+          {
+            "id": "Leona",
+            "wr": 0.4434,
+            "games": 1935
+          }
+        ]
+      }
+    },
+    "Neeko": {
+      "support": {
+        "easy": [
+          {
+            "id": "Xerath",
+            "wr": 0.6602,
+            "games": 103
+          },
+          {
+            "id": "Yuumi",
+            "wr": 0.5862,
+            "games": 174
+          },
+          {
+            "id": "Rakan",
+            "wr": 0.5629,
+            "games": 167
+          }
+        ],
+        "hard": [
+          {
+            "id": "Seraphine",
+            "wr": 0.407,
+            "games": 258
+          },
+          {
+            "id": "Rell",
+            "wr": 0.4318,
+            "games": 132
+          },
+          {
+            "id": "Poppy",
+            "wr": 0.403,
+            "games": 67
+          }
+        ]
+      }
+    },
+    "Nidalee": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "Karthus",
+            "wr": 0.6364,
+            "games": 88
+          },
+          {
+            "id": "XinZhao",
+            "wr": 0.5793,
+            "games": 164
+          },
+          {
+            "id": "Skarner",
+            "wr": 0.6027,
+            "games": 73
+          }
+        ],
+        "hard": [
+          {
+            "id": "Zyra",
+            "wr": 0.424,
+            "games": 125
+          },
+          {
+            "id": "Warwick",
+            "wr": 0.4511,
+            "games": 133
+          },
+          {
+            "id": "Shaco",
+            "wr": 0.4636,
+            "games": 220
+          }
+        ]
+      }
+    },
+    "Nilah": {
+      "adc": {
+        "easy": [
+          {
+            "id": "Aphelios",
+            "wr": 0.6089,
+            "games": 179
+          },
+          {
+            "id": "Yunara",
+            "wr": 0.5595,
+            "games": 227
+          },
+          {
+            "id": "Varus",
+            "wr": 0.6383,
+            "games": 47
+          }
+        ],
+        "hard": [
+          {
+            "id": "Xayah",
+            "wr": 0.3438,
+            "games": 128
+          },
+          {
+            "id": "Samira",
+            "wr": 0.4183,
+            "games": 153
+          },
+          {
+            "id": "Jinx",
+            "wr": 0.4479,
+            "games": 326
+          }
+        ]
+      }
+    },
+    "Nocturne": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "Zed",
+            "wr": 0.5714,
+            "games": 210
+          },
+          {
+            "id": "Kayn",
+            "wr": 0.5433,
+            "games": 554
+          },
+          {
+            "id": "Sejuani",
+            "wr": 0.5714,
+            "games": 161
+          }
+        ],
+        "hard": [
+          {
+            "id": "Skarner",
+            "wr": 0.3662,
+            "games": 71
+          },
+          {
+            "id": "Evelynn",
+            "wr": 0.4216,
+            "games": 185
+          },
+          {
+            "id": "Elise",
+            "wr": 0.438,
+            "games": 258
+          }
+        ]
+      }
+    },
+    "Nunu": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "Ambessa",
+            "wr": 0.6774,
+            "games": 31
+          },
+          {
+            "id": "Fiddlesticks",
+            "wr": 0.5867,
+            "games": 75
+          },
+          {
+            "id": "Nocturne",
+            "wr": 0.5615,
+            "games": 130
+          }
+        ],
+        "hard": [
+          {
+            "id": "Kayn",
+            "wr": 0.4142,
+            "games": 268
+          },
+          {
+            "id": "RekSai",
+            "wr": 0.3704,
+            "games": 54
+          },
+          {
+            "id": "Graves",
+            "wr": 0.4593,
+            "games": 270
+          }
+        ]
+      }
+    },
+    "Olaf": {
+      "top": {
+        "easy": [
+          {
+            "id": "Vayne",
+            "wr": 0.5849,
+            "games": 106
+          },
+          {
+            "id": "Kled",
+            "wr": 0.5714,
+            "games": 147
+          },
+          {
+            "id": "Jayce",
+            "wr": 0.5386,
+            "games": 492
+          }
+        ],
+        "hard": [
+          {
+            "id": "Sett",
+            "wr": 0.4448,
+            "games": 344
+          },
+          {
+            "id": "Tryndamere",
+            "wr": 0.4395,
+            "games": 223
+          },
+          {
+            "id": "Udyr",
+            "wr": 0.3654,
+            "games": 52
+          }
+        ]
+      }
+    },
+    "Orianna": {
+      "mid": {
+        "easy": [
+          {
+            "id": "Yone",
+            "wr": 0.5196,
+            "games": 485
+          },
+          {
+            "id": "Galio",
+            "wr": 0.5274,
+            "games": 237
+          },
+          {
+            "id": "Azir",
+            "wr": 0.5429,
+            "games": 105
+          }
+        ],
+        "hard": [
+          {
+            "id": "Xerath",
+            "wr": 0.4263,
+            "games": 312
+          },
+          {
+            "id": "Locke",
+            "wr": 0.4357,
+            "games": 459
+          },
+          {
+            "id": "Pantheon",
+            "wr": 0.3617,
+            "games": 47
+          }
+        ]
+      }
+    },
+    "Ornn": {
+      "top": {
+        "easy": [
+          {
+            "id": "Tryndamere",
+            "wr": 0.5848,
+            "games": 224
+          },
+          {
+            "id": "Gnar",
+            "wr": 0.5718,
+            "games": 362
+          },
+          {
+            "id": "Jayce",
+            "wr": 0.5675,
+            "games": 437
+          }
+        ],
+        "hard": [
+          {
+            "id": "Shen",
+            "wr": 0.4469,
+            "games": 311
+          },
+          {
+            "id": "Aurora",
+            "wr": 0.386,
+            "games": 57
+          },
+          {
+            "id": "Yone",
+            "wr": 0.4753,
+            "games": 728
+          }
+        ]
+      }
+    },
+    "Pantheon": {
+      "support": {
+        "easy": [
+          {
+            "id": "Shaco",
+            "wr": 0.6327,
+            "games": 98
+          },
+          {
+            "id": "Yuumi",
+            "wr": 0.5352,
+            "games": 525
+          },
+          {
+            "id": "Zyra",
+            "wr": 0.562,
+            "games": 137
+          }
+        ],
+        "hard": [
+          {
+            "id": "Taric",
+            "wr": 0.3882,
+            "games": 85
+          },
+          {
+            "id": "Leona",
+            "wr": 0.4429,
+            "games": 517
+          },
+          {
+            "id": "Thresh",
+            "wr": 0.4506,
+            "games": 1072
+          }
+        ]
+      },
+      "top": {
+        "easy": [
+          {
+            "id": "Trundle",
+            "wr": 0.65,
+            "games": 80
+          },
+          {
+            "id": "Yasuo",
+            "wr": 0.5688,
+            "games": 276
+          },
+          {
+            "id": "Jayce",
+            "wr": 0.5587,
+            "games": 528
+          }
+        ],
+        "hard": [
+          {
+            "id": "Malphite",
+            "wr": 0.4233,
+            "games": 463
+          },
+          {
+            "id": "Nasus",
+            "wr": 0.4344,
+            "games": 244
+          },
+          {
+            "id": "Irelia",
+            "wr": 0.4404,
+            "games": 302
+          }
+        ]
+      },
+      "mid": {
+        "easy": [
+          {
+            "id": "Yasuo",
+            "wr": 0.5676,
+            "games": 296
+          },
+          {
+            "id": "Orianna",
+            "wr": 0.6383,
+            "games": 47
+          },
+          {
+            "id": "Galio",
+            "wr": 0.5849,
+            "games": 106
+          }
+        ],
+        "hard": [
+          {
+            "id": "Ahri",
+            "wr": 0.367,
+            "games": 109
+          },
+          {
+            "id": "TwistedFate",
+            "wr": 0.4362,
+            "games": 94
+          },
+          {
+            "id": "Vex",
+            "wr": 0.381,
+            "games": 42
+          }
+        ]
+      },
+      "jungle": {
+        "easy": [
+          {
+            "id": "Rengar",
+            "wr": 0.661,
+            "games": 59
+          },
+          {
+            "id": "LeeSin",
+            "wr": 0.5263,
+            "games": 437
+          },
+          {
+            "id": "Zed",
+            "wr": 0.5652,
+            "games": 46
+          }
+        ],
+        "hard": [
+          {
+            "id": "MonkeyKing",
+            "wr": 0.3984,
+            "games": 123
+          },
+          {
+            "id": "MasterYi",
+            "wr": 0.3942,
+            "games": 104
+          },
+          {
+            "id": "Hecarim",
+            "wr": 0.4235,
+            "games": 85
+          }
+        ]
+      }
+    },
+    "Poppy": {
+      "support": {
+        "easy": [
+          {
+            "id": "Camille",
+            "wr": 0.56,
+            "games": 175
+          },
+          {
+            "id": "Milio",
+            "wr": 0.5617,
+            "games": 162
+          },
+          {
+            "id": "Neeko",
+            "wr": 0.597,
+            "games": 67
+          }
+        ],
+        "hard": [
+          {
+            "id": "Renata",
+            "wr": 0.4,
+            "games": 110
+          },
+          {
+            "id": "Alistar",
+            "wr": 0.4439,
+            "games": 437
+          },
+          {
+            "id": "Zilean",
+            "wr": 0.3906,
+            "games": 64
+          }
+        ]
+      },
+      "top": {
+        "easy": [
+          {
+            "id": "KSante",
+            "wr": 0.5827,
+            "games": 127
+          },
+          {
+            "id": "Jayce",
+            "wr": 0.5775,
+            "games": 142
+          },
+          {
+            "id": "Yone",
+            "wr": 0.5597,
+            "games": 134
+          }
+        ],
+        "hard": [
+          {
+            "id": "Malphite",
+            "wr": 0.4167,
+            "games": 96
+          },
+          {
+            "id": "DrMundo",
+            "wr": 0.4,
+            "games": 70
+          },
+          {
+            "id": "Sett",
+            "wr": 0.42,
+            "games": 100
+          }
+        ]
+      }
+    },
+    "Pyke": {
+      "support": {
+        "easy": [
+          {
+            "id": "Swain",
+            "wr": 0.5568,
+            "games": 352
+          },
+          {
+            "id": "Lux",
+            "wr": 0.5427,
+            "games": 831
+          },
+          {
+            "id": "Camille",
+            "wr": 0.5542,
+            "games": 249
+          }
+        ],
+        "hard": [
+          {
+            "id": "Rakan",
+            "wr": 0.4496,
+            "games": 783
+          },
+          {
+            "id": "Thresh",
+            "wr": 0.4632,
+            "games": 2148
+          },
+          {
+            "id": "Maokai",
+            "wr": 0.4574,
+            "games": 317
+          }
+        ]
+      }
+    },
+    "Qiyana": {
+      "mid": {
+        "easy": [
+          {
+            "id": "Swain",
+            "wr": 0.6731,
+            "games": 52
+          },
+          {
+            "id": "Talon",
+            "wr": 0.582,
+            "games": 122
+          },
+          {
+            "id": "Anivia",
+            "wr": 0.5826,
+            "games": 115
+          }
+        ],
+        "hard": [
+          {
+            "id": "Katarina",
+            "wr": 0.4161,
+            "games": 423
+          },
+          {
+            "id": "Diana",
+            "wr": 0.43,
+            "games": 200
+          },
+          {
+            "id": "Akshan",
+            "wr": 0.4238,
+            "games": 151
+          }
+        ]
+      },
+      "jungle": {
+        "easy": [
+          {
+            "id": "Vi",
+            "wr": 0.5507,
+            "games": 621
+          },
+          {
+            "id": "Viego",
+            "wr": 0.538,
+            "games": 1409
+          },
+          {
+            "id": "Ambessa",
+            "wr": 0.5701,
+            "games": 107
+          }
+        ],
+        "hard": [
+          {
+            "id": "Rammus",
+            "wr": 0.4082,
+            "games": 294
+          },
+          {
+            "id": "Shyvana",
+            "wr": 0.4223,
+            "games": 547
+          },
+          {
+            "id": "Rengar",
+            "wr": 0.4304,
+            "games": 704
+          }
+        ]
+      }
+    },
+    "Quinn": {
+      "top": {
+        "easy": [
+          {
+            "id": "Volibear",
+            "wr": 0.6707,
+            "games": 82
+          },
+          {
+            "id": "Jax",
+            "wr": 0.6222,
+            "games": 90
+          },
+          {
+            "id": "Fiora",
+            "wr": 0.617,
+            "games": 94
+          }
+        ],
+        "hard": [
+          {
+            "id": "Malphite",
+            "wr": 0.3615,
+            "games": 130
+          },
+          {
+            "id": "Urgot",
+            "wr": 0.3125,
+            "games": 32
+          },
+          {
+            "id": "Irelia",
+            "wr": 0.4054,
+            "games": 74
+          }
+        ]
+      }
+    },
+    "Rakan": {
+      "support": {
+        "easy": [
+          {
+            "id": "Yuumi",
+            "wr": 0.6094,
+            "games": 448
+          },
+          {
+            "id": "Shaco",
+            "wr": 0.6667,
+            "games": 108
+          },
+          {
+            "id": "Pyke",
+            "wr": 0.5504,
+            "games": 783
+          }
+        ],
+        "hard": [
+          {
+            "id": "Taric",
+            "wr": 0.3565,
+            "games": 115
+          },
+          {
+            "id": "Morgana",
+            "wr": 0.427,
+            "games": 274
+          },
+          {
+            "id": "Swain",
+            "wr": 0.4323,
+            "games": 229
+          }
+        ]
+      }
+    },
+    "Rammus": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "Zyra",
+            "wr": 0.7436,
+            "games": 39
+          },
+          {
+            "id": "Qiyana",
+            "wr": 0.5918,
+            "games": 294
+          },
+          {
+            "id": "Evelynn",
+            "wr": 0.6322,
+            "games": 87
+          }
+        ],
+        "hard": [
+          {
+            "id": "Lillia",
+            "wr": 0.4469,
+            "games": 273
+          },
+          {
+            "id": "Shaco",
+            "wr": 0.4314,
+            "games": 153
+          },
+          {
+            "id": "Shyvana",
+            "wr": 0.4537,
+            "games": 108
+          }
+        ]
+      }
+    },
+    "RekSai": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "Sejuani",
+            "wr": 0.6716,
+            "games": 67
+          },
+          {
+            "id": "Elise",
+            "wr": 0.6231,
+            "games": 130
+          },
+          {
+            "id": "Diana",
+            "wr": 0.63,
+            "games": 100
+          }
+        ],
+        "hard": [
+          {
+            "id": "MonkeyKing",
+            "wr": 0.4523,
+            "games": 241
+          },
+          {
+            "id": "Lillia",
+            "wr": 0.4649,
+            "games": 185
+          },
+          {
+            "id": "Ivern",
+            "wr": 0.4048,
+            "games": 42
+          }
+        ]
+      }
+    },
+    "Rell": {
+      "support": {
+        "easy": [
+          {
+            "id": "Nautilus",
+            "wr": 0.5609,
+            "games": 1125
+          },
+          {
+            "id": "Karma",
+            "wr": 0.5635,
+            "games": 598
+          },
+          {
+            "id": "Yuumi",
+            "wr": 0.5495,
+            "games": 515
+          }
+        ],
+        "hard": [
+          {
+            "id": "Thresh",
+            "wr": 0.4702,
+            "games": 1310
+          },
+          {
+            "id": "Janna",
+            "wr": 0.4764,
+            "games": 573
+          },
+          {
+            "id": "Zilean",
+            "wr": 0.465,
+            "games": 243
+          }
+        ]
+      }
+    },
+    "Renata": {
+      "support": {
+        "easy": [
+          {
+            "id": "Poppy",
+            "wr": 0.6,
+            "games": 110
+          },
+          {
+            "id": "TahmKench",
+            "wr": 0.6154,
+            "games": 78
+          },
+          {
+            "id": "Nautilus",
+            "wr": 0.5406,
+            "games": 357
+          }
+        ],
+        "hard": [
+          {
+            "id": "Alistar",
+            "wr": 0.4155,
+            "games": 219
+          },
+          {
+            "id": "Braum",
+            "wr": 0.4306,
+            "games": 209
+          },
+          {
+            "id": "Seraphine",
+            "wr": 0.435,
+            "games": 223
+          }
+        ]
+      }
+    },
+    "Renekton": {
+      "top": {
+        "easy": [
+          {
+            "id": "Yasuo",
+            "wr": 0.5763,
+            "games": 727
+          },
+          {
+            "id": "Pantheon",
+            "wr": 0.5567,
+            "games": 397
+          },
+          {
+            "id": "Yorick",
+            "wr": 0.5519,
+            "games": 337
+          }
+        ],
+        "hard": [
+          {
+            "id": "Mordekaiser",
+            "wr": 0.4282,
+            "games": 682
+          },
+          {
+            "id": "Kennen",
+            "wr": 0.4061,
+            "games": 229
+          },
+          {
+            "id": "DrMundo",
+            "wr": 0.4401,
+            "games": 459
+          }
+        ]
+      }
+    },
+    "Rengar": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "Qiyana",
+            "wr": 0.5696,
+            "games": 704
+          },
+          {
+            "id": "Zed",
+            "wr": 0.5862,
+            "games": 174
+          },
+          {
+            "id": "Udyr",
+            "wr": 0.5779,
+            "games": 154
+          }
+        ],
+        "hard": [
+          {
+            "id": "Gragas",
+            "wr": 0.322,
+            "games": 59
+          },
+          {
+            "id": "Pantheon",
+            "wr": 0.339,
+            "games": 59
+          },
+          {
+            "id": "JarvanIV",
+            "wr": 0.4379,
+            "games": 459
+          }
+        ]
+      }
+    },
+    "Riven": {
+      "top": {
+        "easy": [
+          {
+            "id": "Gwen",
+            "wr": 0.614,
+            "games": 114
+          },
+          {
+            "id": "Ambessa",
+            "wr": 0.5722,
+            "games": 180
+          },
+          {
+            "id": "Rumble",
+            "wr": 0.6491,
+            "games": 57
+          }
+        ],
+        "hard": [
+          {
+            "id": "Garen",
+            "wr": 0.4185,
+            "games": 411
+          },
+          {
+            "id": "Kayle",
+            "wr": 0.3977,
+            "games": 88
+          },
+          {
+            "id": "Ornn",
+            "wr": 0.4255,
+            "games": 141
+          }
+        ]
+      }
+    },
+    "Rumble": {
+      "top": {
+        "easy": [
+          {
+            "id": "Vladimir",
+            "wr": 0.6757,
+            "games": 37
+          },
+          {
+            "id": "Darius",
+            "wr": 0.526,
+            "games": 154
+          },
+          {
+            "id": "MonkeyKing",
+            "wr": 0.6098,
+            "games": 41
+          }
+        ],
+        "hard": [
+          {
+            "id": "Yone",
+            "wr": 0.4077,
+            "games": 287
+          },
+          {
+            "id": "Kayle",
+            "wr": 0.3333,
+            "games": 51
+          },
+          {
+            "id": "Warwick",
+            "wr": 0.3182,
+            "games": 44
+          }
+        ]
+      }
+    },
+    "Ryze": {
+      "mid": {
+        "easy": [
+          {
+            "id": "Vladimir",
+            "wr": 0.5057,
+            "games": 261
+          },
+          {
+            "id": "Leblanc",
+            "wr": 0.5066,
+            "games": 227
+          },
+          {
+            "id": "Akshan",
+            "wr": 0.5288,
+            "games": 104
+          }
+        ],
+        "hard": [
+          {
+            "id": "Hwei",
+            "wr": 0.3354,
+            "games": 164
+          },
+          {
+            "id": "TwistedFate",
+            "wr": 0.4042,
+            "games": 334
+          },
+          {
+            "id": "Aurora",
+            "wr": 0.3871,
+            "games": 155
+          }
+        ]
+      },
+      "top": {
+        "easy": [
+          {
+            "id": "Volibear",
+            "wr": 0.6563,
+            "games": 32
+          },
+          {
+            "id": "Gangplank",
+            "wr": 0.5122,
+            "games": 123
+          },
+          {
+            "id": "Malphite",
+            "wr": 0.5122,
+            "games": 82
+          }
+        ],
+        "hard": [
+          {
+            "id": "Yone",
+            "wr": 0.359,
+            "games": 117
+          },
+          {
+            "id": "Irelia",
+            "wr": 0.3469,
+            "games": 49
+          },
+          {
+            "id": "Jax",
+            "wr": 0.3607,
+            "games": 61
+          }
+        ]
+      }
+    },
+    "Samira": {
+      "adc": {
+        "easy": [
+          {
+            "id": "Ezreal",
+            "wr": 0.5632,
+            "games": 799
+          },
+          {
+            "id": "Kaisa",
+            "wr": 0.5467,
+            "games": 1531
+          },
+          {
+            "id": "Nilah",
+            "wr": 0.5817,
+            "games": 153
+          }
+        ],
+        "hard": [
+          {
+            "id": "Zeri",
+            "wr": 0.4382,
+            "games": 340
+          },
+          {
+            "id": "Swain",
+            "wr": 0.3908,
+            "games": 87
+          },
+          {
+            "id": "Jinx",
+            "wr": 0.4598,
+            "games": 1168
+          }
+        ]
+      }
+    },
+    "Sejuani": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "Khazix",
+            "wr": 0.571,
+            "games": 352
+          },
+          {
+            "id": "Udyr",
+            "wr": 0.6265,
+            "games": 83
+          },
+          {
+            "id": "Karthus",
+            "wr": 0.614,
+            "games": 57
+          }
+        ],
+        "hard": [
+          {
+            "id": "RekSai",
+            "wr": 0.3284,
+            "games": 67
+          },
+          {
+            "id": "Nocturne",
+            "wr": 0.4286,
+            "games": 161
+          },
+          {
+            "id": "Diana",
+            "wr": 0.4379,
+            "games": 169
+          }
+        ]
+      }
+    },
+    "Senna": {
+      "support": {
+        "easy": [
+          {
+            "id": "Morgana",
+            "wr": 0.5819,
+            "games": 452
+          },
+          {
+            "id": "Bard",
+            "wr": 0.5561,
+            "games": 588
+          },
+          {
+            "id": "Swain",
+            "wr": 0.5639,
+            "games": 321
+          }
+        ],
+        "hard": [
+          {
+            "id": "Thresh",
+            "wr": 0.4732,
+            "games": 1530
+          },
+          {
+            "id": "Lux",
+            "wr": 0.4765,
+            "games": 745
+          },
+          {
+            "id": "Taric",
+            "wr": 0.459,
+            "games": 122
+          }
+        ]
+      }
+    },
+    "Seraphine": {
+      "support": {
+        "easy": [
+          {
+            "id": "Swain",
+            "wr": 0.5905,
+            "games": 359
+          },
+          {
+            "id": "Neeko",
+            "wr": 0.593,
+            "games": 258
+          },
+          {
+            "id": "Shaco",
+            "wr": 0.5759,
+            "games": 158
+          }
+        ],
+        "hard": [
+          {
+            "id": "Sona",
+            "wr": 0.434,
+            "games": 424
+          },
+          {
+            "id": "Braum",
+            "wr": 0.4485,
+            "games": 544
+          },
+          {
+            "id": "Lux",
+            "wr": 0.464,
+            "games": 1028
+          }
+        ]
+      },
+      "adc": {
+        "easy": [
+          {
+            "id": "Caitlyn",
+            "wr": 0.5839,
+            "games": 161
+          },
+          {
+            "id": "Aphelios",
+            "wr": 0.5765,
+            "games": 85
+          },
+          {
+            "id": "MissFortune",
+            "wr": 0.5902,
+            "games": 61
+          }
+        ],
+        "hard": [
+          {
+            "id": "Xayah",
+            "wr": 0.35,
+            "games": 40
+          },
+          {
+            "id": "Kaisa",
+            "wr": 0.4563,
+            "games": 160
+          },
+          {
+            "id": "Ashe",
+            "wr": 0.4151,
+            "games": 53
+          }
+        ]
+      }
+    },
+    "Sett": {
+      "top": {
+        "easy": [
+          {
+            "id": "Jax",
+            "wr": 0.5597,
+            "games": 595
+          },
+          {
+            "id": "Yasuo",
+            "wr": 0.5569,
+            "games": 413
+          },
+          {
+            "id": "Olaf",
+            "wr": 0.5585,
+            "games": 342
+          }
+        ],
+        "hard": [
+          {
+            "id": "Heimerdinger",
+            "wr": 0.4177,
+            "games": 158
+          },
+          {
+            "id": "Urgot",
+            "wr": 0.4568,
+            "games": 370
+          },
+          {
+            "id": "Tryndamere",
+            "wr": 0.4582,
+            "games": 323
+          }
+        ]
+      }
+    },
+    "Shaco": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "LeeSin",
+            "wr": 0.5555,
+            "games": 1082
+          },
+          {
+            "id": "Elise",
+            "wr": 0.5699,
+            "games": 279
+          },
+          {
+            "id": "Kindred",
+            "wr": 0.5686,
+            "games": 255
+          }
+        ],
+        "hard": [
+          {
+            "id": "Talon",
+            "wr": 0.4414,
+            "games": 546
+          },
+          {
+            "id": "RekSai",
+            "wr": 0.4245,
+            "games": 139
+          },
+          {
+            "id": "Zyra",
+            "wr": 0.419,
+            "games": 105
+          }
+        ]
+      },
+      "support": {
+        "easy": [
+          {
+            "id": "Nautilus",
+            "wr": 0.5381,
+            "games": 223
+          },
+          {
+            "id": "Maokai",
+            "wr": 0.5814,
+            "games": 43
+          },
+          {
+            "id": "Karma",
+            "wr": 0.5,
+            "games": 194
+          }
+        ],
+        "hard": [
+          {
+            "id": "Rakan",
+            "wr": 0.3333,
+            "games": 108
+          },
+          {
+            "id": "Lulu",
+            "wr": 0.3943,
+            "games": 279
+          },
+          {
+            "id": "Pantheon",
+            "wr": 0.3673,
+            "games": 98
+          }
+        ]
+      }
+    },
+    "Shen": {
+      "top": {
+        "easy": [
+          {
+            "id": "Volibear",
+            "wr": 0.6071,
+            "games": 336
+          },
+          {
+            "id": "Sion",
+            "wr": 0.5928,
+            "games": 194
+          },
+          {
+            "id": "Udyr",
+            "wr": 0.6316,
+            "games": 57
+          }
+        ],
+        "hard": [
+          {
+            "id": "DrMundo",
+            "wr": 0.4298,
+            "games": 242
+          },
+          {
+            "id": "Garen",
+            "wr": 0.4555,
+            "games": 494
+          },
+          {
+            "id": "Teemo",
+            "wr": 0.4486,
+            "games": 214
+          }
+        ]
+      },
+      "support": {
+        "easy": [
+          {
+            "id": "Blitzcrank",
+            "wr": 0.5859,
+            "games": 99
+          },
+          {
+            "id": "Nami",
+            "wr": 0.5769,
+            "games": 104
+          },
+          {
+            "id": "Senna",
+            "wr": 0.5429,
+            "games": 70
+          }
+        ],
+        "hard": [
+          {
+            "id": "Lulu",
+            "wr": 0.4032,
+            "games": 186
+          },
+          {
+            "id": "Janna",
+            "wr": 0.3692,
+            "games": 65
+          },
+          {
+            "id": "Nautilus",
+            "wr": 0.4191,
+            "games": 136
+          }
+        ]
+      }
+    },
+    "Shyvana": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "Qiyana",
+            "wr": 0.5777,
+            "games": 547
+          },
+          {
+            "id": "Karthus",
+            "wr": 0.5948,
+            "games": 116
+          },
+          {
+            "id": "Fiddlesticks",
+            "wr": 0.5631,
+            "games": 206
+          }
+        ],
+        "hard": [
+          {
+            "id": "Volibear",
+            "wr": 0.4118,
+            "games": 136
+          },
+          {
+            "id": "Taliyah",
+            "wr": 0.381,
+            "games": 63
+          },
+          {
+            "id": "Warwick",
+            "wr": 0.4487,
+            "games": 263
+          }
+        ]
+      }
+    },
+    "Singed": {
+      "top": {
+        "easy": [
+          {
+            "id": "Yasuo",
+            "wr": 0.609,
+            "games": 133
+          },
+          {
+            "id": "Gragas",
+            "wr": 0.6038,
+            "games": 106
+          },
+          {
+            "id": "Zaahen",
+            "wr": 0.585,
+            "games": 147
+          }
+        ],
+        "hard": [
+          {
+            "id": "Nasus",
+            "wr": 0.4609,
+            "games": 371
+          },
+          {
+            "id": "Teemo",
+            "wr": 0.4488,
+            "games": 205
+          },
+          {
+            "id": "Riven",
+            "wr": 0.4322,
+            "games": 118
+          }
+        ]
+      }
+    },
+    "Sion": {
+      "top": {
+        "easy": [
+          {
+            "id": "Yorick",
+            "wr": 0.5946,
+            "games": 185
+          },
+          {
+            "id": "Gangplank",
+            "wr": 0.544,
+            "games": 386
+          },
+          {
+            "id": "Gragas",
+            "wr": 0.5664,
+            "games": 143
+          }
+        ],
+        "hard": [
+          {
+            "id": "Ambessa",
+            "wr": 0.406,
+            "games": 234
+          },
+          {
+            "id": "Shen",
+            "wr": 0.4103,
+            "games": 195
+          },
+          {
+            "id": "Yone",
+            "wr": 0.4423,
+            "games": 581
+          }
+        ]
+      }
+    },
+    "Sivir": {
+      "adc": {
+        "easy": [
+          {
+            "id": "Ezreal",
+            "wr": 0.5569,
+            "games": 1230
+          },
+          {
+            "id": "Caitlyn",
+            "wr": 0.5229,
+            "games": 1438
+          },
+          {
+            "id": "Ziggs",
+            "wr": 0.5359,
+            "games": 153
+          }
+        ],
+        "hard": [
+          {
+            "id": "Twitch",
+            "wr": 0.4306,
+            "games": 425
+          },
+          {
+            "id": "Yasuo",
+            "wr": 0.435,
+            "games": 200
+          },
+          {
+            "id": "Draven",
+            "wr": 0.4491,
+            "games": 383
+          }
+        ]
+      }
+    },
+    "Skarner": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "JarvanIV",
+            "wr": 0.5909,
+            "games": 154
+          },
+          {
+            "id": "Nocturne",
+            "wr": 0.6338,
+            "games": 71
+          },
+          {
+            "id": "Khazix",
+            "wr": 0.5844,
+            "games": 154
+          }
+        ],
+        "hard": [
+          {
+            "id": "Warwick",
+            "wr": 0.3692,
+            "games": 65
+          },
+          {
+            "id": "Nidalee",
+            "wr": 0.3973,
+            "games": 73
+          },
+          {
+            "id": "Ekko",
+            "wr": 0.413,
+            "games": 92
+          }
+        ]
+      }
+    },
+    "Smolder": {
+      "adc": {
+        "easy": [
+          {
+            "id": "Varus",
+            "wr": 0.5535,
+            "games": 318
+          },
+          {
+            "id": "Ezreal",
+            "wr": 0.536,
+            "games": 1222
+          },
+          {
+            "id": "Ziggs",
+            "wr": 0.5419,
+            "games": 227
+          }
+        ],
+        "hard": [
+          {
+            "id": "Aphelios",
+            "wr": 0.4484,
+            "games": 1028
+          },
+          {
+            "id": "Jinx",
+            "wr": 0.4619,
+            "games": 2414
+          },
+          {
+            "id": "Zeri",
+            "wr": 0.46,
+            "games": 563
+          }
+        ]
+      },
+      "mid": {
+        "easy": [
+          {
+            "id": "Malzahar",
+            "wr": 0.5165,
+            "games": 544
+          },
+          {
+            "id": "Sylas",
+            "wr": 0.5402,
+            "games": 87
+          },
+          {
+            "id": "Galio",
+            "wr": 0.5051,
+            "games": 99
+          }
+        ],
+        "hard": [
+          {
+            "id": "Hwei",
+            "wr": 0.2581,
+            "games": 31
+          },
+          {
+            "id": "Viktor",
+            "wr": 0.3654,
+            "games": 104
+          },
+          {
+            "id": "Zed",
+            "wr": 0.3433,
+            "games": 67
+          }
+        ]
+      }
+    },
+    "Sona": {
+      "support": {
+        "easy": [
+          {
+            "id": "Lux",
+            "wr": 0.5855,
+            "games": 304
+          },
+          {
+            "id": "Zilean",
+            "wr": 0.5859,
+            "games": 227
+          },
+          {
+            "id": "Brand",
+            "wr": 0.6071,
+            "games": 112
+          }
+        ],
+        "hard": [
+          {
+            "id": "Nautilus",
+            "wr": 0.4703,
+            "games": 489
+          },
+          {
+            "id": "Amumu",
+            "wr": 0.3571,
+            "games": 42
+          },
+          {
+            "id": "Galio",
+            "wr": 0.4,
+            "games": 45
+          }
+        ]
+      }
+    },
+    "Soraka": {
+      "support": {
+        "easy": [
+          {
+            "id": "Galio",
+            "wr": 0.6667,
+            "games": 72
+          },
+          {
+            "id": "Morgana",
+            "wr": 0.5457,
+            "games": 328
+          },
+          {
+            "id": "Shaco",
+            "wr": 0.5603,
+            "games": 116
+          }
+        ],
+        "hard": [
+          {
+            "id": "Janna",
+            "wr": 0.4403,
+            "games": 729
+          },
+          {
+            "id": "Nami",
+            "wr": 0.4673,
+            "games": 1207
+          },
+          {
+            "id": "Senna",
+            "wr": 0.4678,
+            "games": 637
+          }
+        ]
+      }
+    },
+    "Swain": {
+      "support": {
+        "easy": [
+          {
+            "id": "Rakan",
+            "wr": 0.5677,
+            "games": 229
+          },
+          {
+            "id": "Bard",
+            "wr": 0.5641,
+            "games": 234
+          },
+          {
+            "id": "Shaco",
+            "wr": 0.6129,
+            "games": 62
+          }
+        ],
+        "hard": [
+          {
+            "id": "Zilean",
+            "wr": 0.3758,
+            "games": 149
+          },
+          {
+            "id": "Seraphine",
+            "wr": 0.4095,
+            "games": 359
+          },
+          {
+            "id": "Nami",
+            "wr": 0.4151,
+            "games": 436
+          }
+        ]
+      },
+      "mid": {
+        "easy": [
+          {
+            "id": "Sylas",
+            "wr": 0.5905,
+            "games": 232
+          },
+          {
+            "id": "Lissandra",
+            "wr": 0.6087,
+            "games": 115
+          },
+          {
+            "id": "Akshan",
+            "wr": 0.7297,
+            "games": 37
+          }
+        ],
+        "hard": [
+          {
+            "id": "Qiyana",
+            "wr": 0.3269,
+            "games": 52
+          },
+          {
+            "id": "Fizz",
+            "wr": 0.3924,
+            "games": 79
+          },
+          {
+            "id": "Leblanc",
+            "wr": 0.3857,
+            "games": 70
+          }
+        ]
+      },
+      "adc": {
+        "easy": [
+          {
+            "id": "Kalista",
+            "wr": 0.6082,
+            "games": 97
+          },
+          {
+            "id": "Samira",
+            "wr": 0.6092,
+            "games": 87
+          },
+          {
+            "id": "Draven",
+            "wr": 0.5782,
+            "games": 147
+          }
+        ],
+        "hard": [
+          {
+            "id": "Zeri",
+            "wr": 0.4513,
+            "games": 113
+          },
+          {
+            "id": "Caitlyn",
+            "wr": 0.4822,
+            "games": 365
+          },
+          {
+            "id": "Ziggs",
+            "wr": 0.3864,
+            "games": 44
+          }
+        ]
+      }
+    },
+    "Sylas": {
+      "mid": {
+        "easy": [
+          {
+            "id": "Azir",
+            "wr": 0.558,
+            "games": 276
+          },
+          {
+            "id": "Zed",
+            "wr": 0.5375,
+            "games": 1280
+          },
+          {
+            "id": "Lucian",
+            "wr": 0.584,
+            "games": 125
+          }
+        ],
+        "hard": [
+          {
+            "id": "Vex",
+            "wr": 0.4224,
+            "games": 483
+          },
+          {
+            "id": "Swain",
+            "wr": 0.4095,
+            "games": 232
+          },
+          {
+            "id": "Yasuo",
+            "wr": 0.444,
+            "games": 1286
+          }
+        ]
+      },
+      "top": {
+        "easy": [
+          {
+            "id": "Rumble",
+            "wr": 0.6739,
+            "games": 46
+          },
+          {
+            "id": "Malphite",
+            "wr": 0.5345,
+            "games": 1276
+          },
+          {
+            "id": "Gnar",
+            "wr": 0.537,
+            "games": 216
+          }
+        ],
+        "hard": [
+          {
+            "id": "Camille",
+            "wr": 0.3385,
+            "games": 65
+          },
+          {
+            "id": "Gragas",
+            "wr": 0.3846,
+            "games": 91
+          },
+          {
+            "id": "Ornn",
+            "wr": 0.3882,
+            "games": 85
+          }
+        ]
+      }
+    },
+    "Syndra": {
+      "mid": {
+        "easy": [
+          {
+            "id": "Mel",
+            "wr": 0.5867,
+            "games": 346
+          },
+          {
+            "id": "Akshan",
+            "wr": 0.5565,
+            "games": 363
+          },
+          {
+            "id": "Orianna",
+            "wr": 0.5463,
+            "games": 615
+          }
+        ],
+        "hard": [
+          {
+            "id": "Fizz",
+            "wr": 0.429,
+            "games": 1000
+          },
+          {
+            "id": "Vex",
+            "wr": 0.446,
+            "games": 491
+          },
+          {
+            "id": "Leblanc",
+            "wr": 0.4604,
+            "games": 858
+          }
+        ]
+      }
+    },
+    "TahmKench": {
+      "support": {
+        "easy": [
+          {
+            "id": "Janna",
+            "wr": 0.5647,
+            "games": 278
+          },
+          {
+            "id": "Karma",
+            "wr": 0.5598,
+            "games": 343
+          },
+          {
+            "id": "Bard",
+            "wr": 0.5571,
+            "games": 219
+          }
+        ],
+        "hard": [
+          {
+            "id": "Blitzcrank",
+            "wr": 0.424,
+            "games": 342
+          },
+          {
+            "id": "Brand",
+            "wr": 0.4079,
+            "games": 152
+          },
+          {
+            "id": "Renata",
+            "wr": 0.3846,
+            "games": 78
+          }
+        ]
+      },
+      "top": {
+        "easy": [
+          {
+            "id": "Nasus",
+            "wr": 0.5907,
+            "games": 237
+          },
+          {
+            "id": "Garen",
+            "wr": 0.5775,
+            "games": 258
+          },
+          {
+            "id": "MonkeyKing",
+            "wr": 0.7097,
+            "games": 31
+          }
+        ],
+        "hard": [
+          {
+            "id": "Gwen",
+            "wr": 0.3971,
+            "games": 136
+          },
+          {
+            "id": "Renekton",
+            "wr": 0.4348,
+            "games": 184
+          },
+          {
+            "id": "Mordekaiser",
+            "wr": 0.4478,
+            "games": 297
+          }
+        ]
+      }
+    },
+    "Taliyah": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "Lillia",
+            "wr": 0.6292,
+            "games": 89
+          },
+          {
+            "id": "Shyvana",
+            "wr": 0.619,
+            "games": 63
+          },
+          {
+            "id": "LeeSin",
+            "wr": 0.5571,
+            "games": 350
+          }
+        ],
+        "hard": [
+          {
+            "id": "Qiyana",
+            "wr": 0.4479,
+            "games": 163
+          },
+          {
+            "id": "Khazix",
+            "wr": 0.458,
+            "games": 131
+          },
+          {
+            "id": "Nunu",
+            "wr": 0.3784,
+            "games": 37
+          }
+        ]
+      },
+      "mid": {
+        "easy": [
+          {
+            "id": "Sylas",
+            "wr": 0.5543,
+            "games": 276
+          },
+          {
+            "id": "Lissandra",
+            "wr": 0.5612,
+            "games": 139
+          },
+          {
+            "id": "Azir",
+            "wr": 0.5867,
+            "games": 75
+          }
+        ],
+        "hard": [
+          {
+            "id": "Anivia",
+            "wr": 0.3611,
+            "games": 72
+          },
+          {
+            "id": "Leblanc",
+            "wr": 0.4091,
+            "games": 132
+          },
+          {
+            "id": "Syndra",
+            "wr": 0.4457,
+            "games": 267
+          }
+        ]
+      }
+    },
+    "Talon": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "Udyr",
+            "wr": 0.574,
+            "games": 223
+          },
+          {
+            "id": "Ambessa",
+            "wr": 0.6111,
+            "games": 90
+          },
+          {
+            "id": "Shaco",
+            "wr": 0.5586,
+            "games": 546
+          }
+        ],
+        "hard": [
+          {
+            "id": "Belveth",
+            "wr": 0.4423,
+            "games": 312
+          },
+          {
+            "id": "Rammus",
+            "wr": 0.4506,
+            "games": 233
+          },
+          {
+            "id": "MonkeyKing",
+            "wr": 0.4689,
+            "games": 917
+          }
+        ]
+      },
+      "mid": {
+        "easy": [
+          {
+            "id": "Naafiri",
+            "wr": 0.7222,
+            "games": 36
+          },
+          {
+            "id": "Hwei",
+            "wr": 0.5932,
+            "games": 118
+          },
+          {
+            "id": "Malzahar",
+            "wr": 0.5562,
+            "games": 178
+          }
+        ],
+        "hard": [
+          {
+            "id": "Vex",
+            "wr": 0.4101,
+            "games": 139
+          },
+          {
+            "id": "Qiyana",
+            "wr": 0.418,
+            "games": 122
+          },
+          {
+            "id": "Vladimir",
+            "wr": 0.4295,
+            "games": 149
+          }
+        ]
+      }
+    },
+    "Taric": {
+      "support": {
+        "easy": [
+          {
+            "id": "Rakan",
+            "wr": 0.6435,
+            "games": 115
+          },
+          {
+            "id": "Pantheon",
+            "wr": 0.6118,
+            "games": 85
+          },
+          {
+            "id": "Karma",
+            "wr": 0.5766,
+            "games": 137
+          }
+        ],
+        "hard": [
+          {
+            "id": "Leona",
+            "wr": 0.4582,
+            "games": 275
+          },
+          {
+            "id": "Nami",
+            "wr": 0.4558,
+            "games": 215
+          },
+          {
+            "id": "Seraphine",
+            "wr": 0.4656,
+            "games": 131
+          }
+        ]
+      }
+    },
+    "Teemo": {
+      "top": {
+        "easy": [
+          {
+            "id": "Illaoi",
+            "wr": 0.6229,
+            "games": 175
+          },
+          {
+            "id": "Vayne",
+            "wr": 0.6118,
+            "games": 170
+          },
+          {
+            "id": "Tryndamere",
+            "wr": 0.5766,
+            "games": 274
+          }
+        ],
+        "hard": [
+          {
+            "id": "Olaf",
+            "wr": 0.4575,
+            "games": 341
+          },
+          {
+            "id": "Gangplank",
+            "wr": 0.4683,
+            "games": 410
+          },
+          {
+            "id": "Malphite",
+            "wr": 0.48,
+            "games": 900
+          }
+        ]
+      }
+    },
+    "Thresh": {
+      "support": {
+        "easy": [
+          {
+            "id": "Ashe",
+            "wr": 0.6122,
+            "games": 245
+          },
+          {
+            "id": "Yuumi",
+            "wr": 0.5668,
+            "games": 1713
+          },
+          {
+            "id": "Bard",
+            "wr": 0.5482,
+            "games": 1744
+          }
+        ],
+        "hard": [
+          {
+            "id": "Braum",
+            "wr": 0.4796,
+            "games": 2675
+          },
+          {
+            "id": "Leona",
+            "wr": 0.4877,
+            "games": 2719
+          },
+          {
+            "id": "Galio",
+            "wr": 0.4773,
+            "games": 264
+          }
+        ]
+      }
+    },
+    "Tristana": {
+      "adc": {
+        "easy": [
+          {
+            "id": "Ezreal",
+            "wr": 0.5517,
+            "games": 2409
+          },
+          {
+            "id": "MissFortune",
+            "wr": 0.5455,
+            "games": 1109
+          },
+          {
+            "id": "Yunara",
+            "wr": 0.5342,
+            "games": 2791
+          }
+        ],
+        "hard": [
+          {
+            "id": "Swain",
+            "wr": 0.4421,
+            "games": 285
+          },
+          {
+            "id": "Nilah",
+            "wr": 0.4526,
+            "games": 285
+          },
+          {
+            "id": "Sivir",
+            "wr": 0.4798,
+            "games": 1013
+          }
+        ]
+      }
+    },
+    "Trundle": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "XinZhao",
+            "wr": 0.6444,
+            "games": 45
+          },
+          {
+            "id": "Viego",
+            "wr": 0.5701,
+            "games": 107
+          },
+          {
+            "id": "JarvanIV",
+            "wr": 0.557,
+            "games": 79
+          }
+        ],
+        "hard": [
+          {
+            "id": "Graves",
+            "wr": 0.4167,
+            "games": 96
+          },
+          {
+            "id": "Skarner",
+            "wr": 0.3611,
+            "games": 36
+          },
+          {
+            "id": "Briar",
+            "wr": 0.4211,
+            "games": 57
+          }
+        ]
+      },
+      "top": {
+        "easy": [
+          {
+            "id": "Sett",
+            "wr": 0.5289,
+            "games": 225
+          },
+          {
+            "id": "Renekton",
+            "wr": 0.5338,
+            "games": 133
+          },
+          {
+            "id": "Garen",
+            "wr": 0.516,
+            "games": 250
+          }
+        ],
+        "hard": [
+          {
+            "id": "Nasus",
+            "wr": 0.3834,
+            "games": 193
+          },
+          {
+            "id": "Pantheon",
+            "wr": 0.3247,
+            "games": 77
+          },
+          {
+            "id": "Gwen",
+            "wr": 0.3506,
+            "games": 77
+          }
+        ]
+      }
+    },
+    "Tryndamere": {
+      "top": {
+        "easy": [
+          {
+            "id": "Yasuo",
+            "wr": 0.6,
+            "games": 245
+          },
+          {
+            "id": "KSante",
+            "wr": 0.5932,
+            "games": 263
+          },
+          {
+            "id": "Gwen",
+            "wr": 0.593,
+            "games": 172
+          }
+        ],
+        "hard": [
+          {
+            "id": "Malphite",
+            "wr": 0.4114,
+            "games": 666
+          },
+          {
+            "id": "Nasus",
+            "wr": 0.4047,
+            "games": 341
+          },
+          {
+            "id": "Ornn",
+            "wr": 0.4115,
+            "games": 226
+          }
+        ]
+      }
+    },
+    "TwistedFate": {
+      "mid": {
+        "easy": [
+          {
+            "id": "Ryze",
+            "wr": 0.5958,
+            "games": 334
+          },
+          {
+            "id": "Lucian",
+            "wr": 0.6364,
+            "games": 88
+          },
+          {
+            "id": "Malzahar",
+            "wr": 0.5603,
+            "games": 705
+          }
+        ],
+        "hard": [
+          {
+            "id": "Zed",
+            "wr": 0.4603,
+            "games": 769
+          },
+          {
+            "id": "Ekko",
+            "wr": 0.4672,
+            "games": 458
+          },
+          {
+            "id": "Swain",
+            "wr": 0.4493,
+            "games": 138
+          }
+        ]
+      }
+    },
+    "Twitch": {
+      "adc": {
+        "easy": [
+          {
+            "id": "Varus",
+            "wr": 0.6021,
+            "games": 289
+          },
+          {
+            "id": "Sivir",
+            "wr": 0.5694,
+            "games": 425
+          },
+          {
+            "id": "Ashe",
+            "wr": 0.5576,
+            "games": 590
+          }
+        ],
+        "hard": [
+          {
+            "id": "Yasuo",
+            "wr": 0.4205,
+            "games": 264
+          },
+          {
+            "id": "Tristana",
+            "wr": 0.4826,
+            "games": 1351
+          },
+          {
+            "id": "Swain",
+            "wr": 0.4561,
+            "games": 114
+          }
+        ]
+      }
+    },
+    "Udyr": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "XinZhao",
+            "wr": 0.7273,
+            "games": 44
+          },
+          {
+            "id": "Vi",
+            "wr": 0.6017,
+            "games": 118
+          },
+          {
+            "id": "Graves",
+            "wr": 0.5709,
+            "games": 254
+          }
+        ],
+        "hard": [
+          {
+            "id": "Sejuani",
+            "wr": 0.3735,
+            "games": 83
+          },
+          {
+            "id": "Talon",
+            "wr": 0.426,
+            "games": 223
+          },
+          {
+            "id": "Rengar",
+            "wr": 0.4221,
+            "games": 154
+          }
+        ]
+      },
+      "top": {
+        "easy": [
+          {
+            "id": "Olaf",
+            "wr": 0.6346,
+            "games": 52
+          },
+          {
+            "id": "Jayce",
+            "wr": 0.5918,
+            "games": 49
+          },
+          {
+            "id": "DrMundo",
+            "wr": 0.5652,
+            "games": 46
+          }
+        ],
+        "hard": [
+          {
+            "id": "Darius",
+            "wr": 0.3871,
+            "games": 93
+          },
+          {
+            "id": "Urgot",
+            "wr": 0.3421,
+            "games": 38
+          },
+          {
+            "id": "Shen",
+            "wr": 0.3793,
+            "games": 58
+          }
+        ]
+      }
+    },
+    "Urgot": {
+      "top": {
+        "easy": [
+          {
+            "id": "KSante",
+            "wr": 0.565,
+            "games": 200
+          },
+          {
+            "id": "Jax",
+            "wr": 0.5522,
+            "games": 297
+          },
+          {
+            "id": "Rumble",
+            "wr": 0.5968,
+            "games": 62
+          }
+        ],
+        "hard": [
+          {
+            "id": "Yorick",
+            "wr": 0.454,
+            "games": 174
+          },
+          {
+            "id": "Olaf",
+            "wr": 0.4634,
+            "games": 246
+          },
+          {
+            "id": "Malphite",
+            "wr": 0.4681,
+            "games": 282
+          }
+        ]
+      }
+    },
+    "Varus": {
+      "adc": {
+        "easy": [
+          {
+            "id": "Samira",
+            "wr": 0.5658,
+            "games": 152
+          },
+          {
+            "id": "Ezreal",
+            "wr": 0.5202,
+            "games": 619
+          },
+          {
+            "id": "Ashe",
+            "wr": 0.5203,
+            "games": 296
+          }
+        ],
+        "hard": [
+          {
+            "id": "Twitch",
+            "wr": 0.3979,
+            "games": 289
+          },
+          {
+            "id": "Yasuo",
+            "wr": 0.3661,
+            "games": 112
+          },
+          {
+            "id": "Zeri",
+            "wr": 0.4112,
+            "games": 214
+          }
+        ]
+      }
+    },
+    "Vayne": {
+      "adc": {
+        "easy": [
+          {
+            "id": "Ezreal",
+            "wr": 0.5479,
+            "games": 710
+          },
+          {
+            "id": "Kalista",
+            "wr": 0.5291,
+            "games": 206
+          },
+          {
+            "id": "Draven",
+            "wr": 0.5177,
+            "games": 311
+          }
+        ],
+        "hard": [
+          {
+            "id": "Zeri",
+            "wr": 0.3962,
+            "games": 313
+          },
+          {
+            "id": "Xayah",
+            "wr": 0.4543,
+            "games": 328
+          },
+          {
+            "id": "Caitlyn",
+            "wr": 0.4637,
+            "games": 979
+          }
+        ]
+      },
+      "top": {
+        "easy": [
+          {
+            "id": "Illaoi",
+            "wr": 0.5977,
+            "games": 87
+          },
+          {
+            "id": "Volibear",
+            "wr": 0.5842,
+            "games": 101
+          },
+          {
+            "id": "Camille",
+            "wr": 0.5974,
+            "games": 77
+          }
+        ],
+        "hard": [
+          {
+            "id": "Malphite",
+            "wr": 0.3436,
+            "games": 227
+          },
+          {
+            "id": "Teemo",
+            "wr": 0.3976,
+            "games": 166
+          },
+          {
+            "id": "Nasus",
+            "wr": 0.3866,
+            "games": 119
+          }
+        ]
+      }
+    },
+    "Veigar": {
+      "mid": {
+        "easy": [
+          {
+            "id": "Yasuo",
+            "wr": 0.5992,
+            "games": 529
+          },
+          {
+            "id": "Irelia",
+            "wr": 0.6099,
+            "games": 141
+          },
+          {
+            "id": "Mel",
+            "wr": 0.5801,
+            "games": 181
+          }
+        ],
+        "hard": [
+          {
+            "id": "Katarina",
+            "wr": 0.4223,
+            "games": 476
+          },
+          {
+            "id": "Vladimir",
+            "wr": 0.4381,
+            "games": 299
+          },
+          {
+            "id": "Anivia",
+            "wr": 0.42,
+            "games": 150
+          }
+        ]
+      }
+    },
+    "Velkoz": {
+      "support": {
+        "easy": [
+          {
+            "id": "Brand",
+            "wr": 0.6111,
+            "games": 162
+          },
+          {
+            "id": "Swain",
+            "wr": 0.5563,
+            "games": 151
+          },
+          {
+            "id": "Soraka",
+            "wr": 0.539,
+            "games": 269
+          }
+        ],
+        "hard": [
+          {
+            "id": "Zilean",
+            "wr": 0.3791,
+            "games": 182
+          },
+          {
+            "id": "Xerath",
+            "wr": 0.4356,
+            "games": 225
+          },
+          {
+            "id": "Pyke",
+            "wr": 0.4472,
+            "games": 246
+          }
+        ]
+      },
+      "mid": {
+        "easy": [
+          {
+            "id": "Mel",
+            "wr": 0.6667,
+            "games": 39
+          },
+          {
+            "id": "Annie",
+            "wr": 0.6444,
+            "games": 45
+          },
+          {
+            "id": "Orianna",
+            "wr": 0.6275,
+            "games": 51
+          }
+        ],
+        "hard": [
+          {
+            "id": "Yone",
+            "wr": 0.4069,
+            "games": 145
+          },
+          {
+            "id": "Katarina",
+            "wr": 0.4105,
+            "games": 95
+          },
+          {
+            "id": "Locke",
+            "wr": 0.4309,
+            "games": 123
+          }
+        ]
+      }
+    },
+    "Vex": {
+      "mid": {
+        "easy": [
+          {
+            "id": "Sylas",
+            "wr": 0.5756,
+            "games": 483
+          },
+          {
+            "id": "Talon",
+            "wr": 0.5899,
+            "games": 139
+          },
+          {
+            "id": "Locke",
+            "wr": 0.5578,
+            "games": 493
+          }
+        ],
+        "hard": [
+          {
+            "id": "TwistedFate",
+            "wr": 0.4441,
+            "games": 340
+          },
+          {
+            "id": "Hwei",
+            "wr": 0.4398,
+            "games": 241
+          },
+          {
+            "id": "Viktor",
+            "wr": 0.4736,
+            "games": 492
+          }
+        ]
+      }
+    },
+    "Vi": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "Ekko",
+            "wr": 0.5317,
+            "games": 363
+          },
+          {
+            "id": "Kayn",
+            "wr": 0.523,
+            "games": 543
+          },
+          {
+            "id": "Hecarim",
+            "wr": 0.5229,
+            "games": 436
+          }
+        ],
+        "hard": [
+          {
+            "id": "Gragas",
+            "wr": 0.3571,
+            "games": 70
+          },
+          {
+            "id": "Udyr",
+            "wr": 0.3983,
+            "games": 118
+          },
+          {
+            "id": "Fiddlesticks",
+            "wr": 0.4071,
+            "games": 140
+          }
+        ]
+      }
+    },
+    "Viego": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "Nocturne",
+            "wr": 0.5314,
+            "games": 636
+          },
+          {
+            "id": "Pantheon",
+            "wr": 0.5489,
+            "games": 133
+          },
+          {
+            "id": "JarvanIV",
+            "wr": 0.5178,
+            "games": 1068
+          }
+        ],
+        "hard": [
+          {
+            "id": "Rammus",
+            "wr": 0.4255,
+            "games": 369
+          },
+          {
+            "id": "Ivern",
+            "wr": 0.4233,
+            "games": 163
+          },
+          {
+            "id": "Khazix",
+            "wr": 0.4503,
+            "games": 1408
+          }
+        ]
+      }
+    },
+    "Viktor": {
+      "mid": {
+        "easy": [
+          {
+            "id": "Ryze",
+            "wr": 0.5819,
+            "games": 531
+          },
+          {
+            "id": "Mel",
+            "wr": 0.5875,
+            "games": 320
+          },
+          {
+            "id": "Lucian",
+            "wr": 0.5806,
+            "games": 155
+          }
+        ],
+        "hard": [
+          {
+            "id": "Xerath",
+            "wr": 0.4613,
+            "games": 1459
+          },
+          {
+            "id": "Locke",
+            "wr": 0.4671,
+            "games": 1460
+          },
+          {
+            "id": "Akali",
+            "wr": 0.4668,
+            "games": 1294
+          }
+        ]
+      }
+    },
+    "Vladimir": {
+      "mid": {
+        "easy": [
+          {
+            "id": "Yasuo",
+            "wr": 0.561,
+            "games": 1009
+          },
+          {
+            "id": "Azir",
+            "wr": 0.5941,
+            "games": 170
+          },
+          {
+            "id": "Akshan",
+            "wr": 0.5842,
+            "games": 202
+          }
+        ],
+        "hard": [
+          {
+            "id": "Malzahar",
+            "wr": 0.4327,
+            "games": 557
+          },
+          {
+            "id": "Zoe",
+            "wr": 0.4494,
+            "games": 267
+          },
+          {
+            "id": "Anivia",
+            "wr": 0.446,
+            "games": 213
+          }
+        ]
+      },
+      "top": {
+        "easy": [
+          {
+            "id": "Fiora",
+            "wr": 0.5839,
+            "games": 137
+          },
+          {
+            "id": "Jayce",
+            "wr": 0.5691,
+            "games": 181
+          },
+          {
+            "id": "Gragas",
+            "wr": 0.5882,
+            "games": 85
+          }
+        ],
+        "hard": [
+          {
+            "id": "Irelia",
+            "wr": 0.3708,
+            "games": 178
+          },
+          {
+            "id": "Ambessa",
+            "wr": 0.3933,
+            "games": 89
+          },
+          {
+            "id": "Nasus",
+            "wr": 0.4184,
+            "games": 141
+          }
+        ]
+      }
+    },
+    "Volibear": {
+      "top": {
+        "easy": [
+          {
+            "id": "Yorick",
+            "wr": 0.6224,
+            "games": 286
+          },
+          {
+            "id": "Irelia",
+            "wr": 0.5516,
+            "games": 504
+          },
+          {
+            "id": "Olaf",
+            "wr": 0.5532,
+            "games": 282
+          }
+        ],
+        "hard": [
+          {
+            "id": "Shen",
+            "wr": 0.3817,
+            "games": 338
+          },
+          {
+            "id": "Quinn",
+            "wr": 0.325,
+            "games": 80
+          },
+          {
+            "id": "Teemo",
+            "wr": 0.4244,
+            "games": 311
+          }
+        ]
+      },
+      "jungle": {
+        "easy": [
+          {
+            "id": "Shyvana",
+            "wr": 0.5882,
+            "games": 136
+          },
+          {
+            "id": "XinZhao",
+            "wr": 0.6491,
+            "games": 57
+          },
+          {
+            "id": "Diana",
+            "wr": 0.6022,
+            "games": 93
+          }
+        ],
+        "hard": [
+          {
+            "id": "Graves",
+            "wr": 0.3833,
+            "games": 120
+          },
+          {
+            "id": "Belveth",
+            "wr": 0.3857,
+            "games": 70
+          },
+          {
+            "id": "Hecarim",
+            "wr": 0.4318,
+            "games": 132
+          }
+        ]
+      }
+    },
+    "Warwick": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "Skarner",
+            "wr": 0.6308,
+            "games": 65
+          },
+          {
+            "id": "LeeSin",
+            "wr": 0.5487,
+            "games": 749
+          },
+          {
+            "id": "Rengar",
+            "wr": 0.5659,
+            "games": 205
+          }
+        ],
+        "hard": [
+          {
+            "id": "Volibear",
+            "wr": 0.4118,
+            "games": 85
+          },
+          {
+            "id": "RekSai",
+            "wr": 0.4194,
+            "games": 93
+          },
+          {
+            "id": "Fiddlesticks",
+            "wr": 0.4561,
+            "games": 114
+          }
+        ]
+      },
+      "top": {
+        "easy": [
+          {
+            "id": "Renekton",
+            "wr": 0.596,
+            "games": 151
+          },
+          {
+            "id": "Jayce",
+            "wr": 0.5968,
+            "games": 124
+          },
+          {
+            "id": "Vladimir",
+            "wr": 0.697,
+            "games": 33
+          }
+        ],
+        "hard": [
+          {
+            "id": "Malphite",
+            "wr": 0.4118,
+            "games": 136
+          },
+          {
+            "id": "Heimerdinger",
+            "wr": 0.3095,
+            "games": 42
+          },
+          {
+            "id": "Shen",
+            "wr": 0.422,
+            "games": 109
+          }
+        ]
+      }
+    },
+    "Xayah": {
+      "adc": {
+        "easy": [
+          {
+            "id": "Nilah",
+            "wr": 0.6563,
+            "games": 128
+          },
+          {
+            "id": "Kaisa",
+            "wr": 0.5525,
+            "games": 3879
+          },
+          {
+            "id": "Kalista",
+            "wr": 0.5573,
+            "games": 445
+          }
+        ],
+        "hard": [
+          {
+            "id": "Jinx",
+            "wr": 0.4853,
+            "games": 1774
+          },
+          {
+            "id": "Ashe",
+            "wr": 0.4908,
+            "games": 544
+          },
+          {
+            "id": "Smolder",
+            "wr": 0.4924,
+            "games": 589
+          }
+        ]
+      }
+    },
+    "Xerath": {
+      "support": {
+        "easy": [
+          {
+            "id": "Velkoz",
+            "wr": 0.5644,
+            "games": 225
+          },
+          {
+            "id": "Morgana",
+            "wr": 0.5522,
+            "games": 268
+          },
+          {
+            "id": "Camille",
+            "wr": 0.5581,
+            "games": 129
+          }
+        ],
+        "hard": [
+          {
+            "id": "Neeko",
+            "wr": 0.3398,
+            "games": 103
+          },
+          {
+            "id": "Nami",
+            "wr": 0.4399,
+            "games": 391
+          },
+          {
+            "id": "Yuumi",
+            "wr": 0.4455,
+            "games": 312
+          }
+        ]
+      },
+      "mid": {
+        "easy": [
+          {
+            "id": "Orianna",
+            "wr": 0.5737,
+            "games": 312
+          },
+          {
+            "id": "Malzahar",
+            "wr": 0.5631,
+            "games": 531
+          },
+          {
+            "id": "Mel",
+            "wr": 0.5563,
+            "games": 284
+          }
+        ],
+        "hard": [
+          {
+            "id": "Akali",
+            "wr": 0.4318,
+            "games": 359
+          },
+          {
+            "id": "Locke",
+            "wr": 0.4452,
+            "games": 566
+          },
+          {
+            "id": "Akshan",
+            "wr": 0.4416,
+            "games": 197
+          }
+        ]
+      }
+    },
+    "XinZhao": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "Diana",
+            "wr": 0.603,
+            "games": 199
+          },
+          {
+            "id": "Briar",
+            "wr": 0.6012,
+            "games": 168
+          },
+          {
+            "id": "Vi",
+            "wr": 0.5683,
+            "games": 183
+          }
+        ],
+        "hard": [
+          {
+            "id": "MonkeyKing",
+            "wr": 0.4279,
+            "games": 430
+          },
+          {
+            "id": "Udyr",
+            "wr": 0.2727,
+            "games": 44
+          },
+          {
+            "id": "Volibear",
+            "wr": 0.3509,
+            "games": 57
+          }
+        ]
+      }
+    },
+    "Yasuo": {
+      "mid": {
+        "easy": [
+          {
+            "id": "Ryze",
+            "wr": 0.5935,
+            "games": 337
+          },
+          {
+            "id": "Sylas",
+            "wr": 0.556,
+            "games": 1286
+          },
+          {
+            "id": "Akshan",
+            "wr": 0.5683,
+            "games": 278
+          }
+        ],
+        "hard": [
+          {
+            "id": "Veigar",
+            "wr": 0.4008,
+            "games": 529
+          },
+          {
+            "id": "Vladimir",
+            "wr": 0.439,
+            "games": 1009
+          },
+          {
+            "id": "Malzahar",
+            "wr": 0.4395,
+            "games": 992
+          }
+        ]
+      },
+      "top": {
+        "easy": [
+          {
+            "id": "Mordekaiser",
+            "wr": 0.5852,
+            "games": 352
+          },
+          {
+            "id": "Aatrox",
+            "wr": 0.5741,
+            "games": 432
+          },
+          {
+            "id": "Illaoi",
+            "wr": 0.5871,
+            "games": 155
+          }
+        ],
+        "hard": [
+          {
+            "id": "Renekton",
+            "wr": 0.4193,
+            "games": 725
+          },
+          {
+            "id": "Tryndamere",
+            "wr": 0.3967,
+            "games": 242
+          },
+          {
+            "id": "Camille",
+            "wr": 0.4089,
+            "games": 291
+          }
+        ]
+      },
+      "adc": {
+        "easy": [
+          {
+            "id": "Ezreal",
+            "wr": 0.6075,
+            "games": 530
+          },
+          {
+            "id": "Varus",
+            "wr": 0.6339,
+            "games": 112
+          },
+          {
+            "id": "Ashe",
+            "wr": 0.588,
+            "games": 233
+          }
+        ],
+        "hard": [
+          {
+            "id": "Nilah",
+            "wr": 0.4111,
+            "games": 90
+          },
+          {
+            "id": "Swain",
+            "wr": 0.4268,
+            "games": 82
+          },
+          {
+            "id": "Samira",
+            "wr": 0.463,
+            "games": 162
+          }
+        ]
+      }
+    },
+    "Yone": {
+      "mid": {
+        "easy": [
+          {
+            "id": "Lucian",
+            "wr": 0.625,
+            "games": 144
+          },
+          {
+            "id": "Velkoz",
+            "wr": 0.5931,
+            "games": 145
+          },
+          {
+            "id": "Malzahar",
+            "wr": 0.5525,
+            "games": 733
+          }
+        ],
+        "hard": [
+          {
+            "id": "Annie",
+            "wr": 0.4228,
+            "games": 324
+          },
+          {
+            "id": "Ekko",
+            "wr": 0.4599,
+            "games": 835
+          },
+          {
+            "id": "Leblanc",
+            "wr": 0.4689,
+            "games": 885
+          }
+        ]
+      },
+      "top": {
+        "easy": [
+          {
+            "id": "Rumble",
+            "wr": 0.5907,
+            "games": 281
+          },
+          {
+            "id": "Ryze",
+            "wr": 0.6325,
+            "games": 117
+          },
+          {
+            "id": "KSante",
+            "wr": 0.5605,
+            "games": 744
+          }
+        ],
+        "hard": [
+          {
+            "id": "Zaahen",
+            "wr": 0.4545,
+            "games": 528
+          },
+          {
+            "id": "Fiora",
+            "wr": 0.4681,
+            "games": 878
+          },
+          {
+            "id": "Poppy",
+            "wr": 0.4444,
+            "games": 135
+          }
+        ]
+      }
+    },
+    "Yorick": {
+      "top": {
+        "easy": [
+          {
+            "id": "Aatrox",
+            "wr": 0.5543,
+            "games": 341
+          },
+          {
+            "id": "KSante",
+            "wr": 0.563,
+            "games": 238
+          },
+          {
+            "id": "Garen",
+            "wr": 0.5411,
+            "games": 292
+          }
+        ],
+        "hard": [
+          {
+            "id": "Volibear",
+            "wr": 0.3852,
+            "games": 283
+          },
+          {
+            "id": "Sion",
+            "wr": 0.3904,
+            "games": 187
+          },
+          {
+            "id": "Fiora",
+            "wr": 0.4082,
+            "games": 245
+          }
+        ]
+      }
+    },
+    "Yunara": {
+      "adc": {
+        "easy": [
+          {
+            "id": "Ezreal",
+            "wr": 0.5392,
+            "games": 2396
+          },
+          {
+            "id": "Kalista",
+            "wr": 0.5377,
+            "games": 902
+          },
+          {
+            "id": "Vayne",
+            "wr": 0.5287,
+            "games": 766
+          }
+        ],
+        "hard": [
+          {
+            "id": "Ziggs",
+            "wr": 0.4052,
+            "games": 306
+          },
+          {
+            "id": "Swain",
+            "wr": 0.4394,
+            "games": 289
+          },
+          {
+            "id": "KogMaw",
+            "wr": 0.45,
+            "games": 580
+          }
+        ]
+      }
+    },
+    "Yuumi": {
+      "support": {
+        "easy": [
+          {
+            "id": "Xerath",
+            "wr": 0.5545,
+            "games": 312
+          },
+          {
+            "id": "Swain",
+            "wr": 0.5442,
+            "games": 283
+          },
+          {
+            "id": "Karma",
+            "wr": 0.5163,
+            "games": 798
+          }
+        ],
+        "hard": [
+          {
+            "id": "Rakan",
+            "wr": 0.3906,
+            "games": 448
+          },
+          {
+            "id": "Braum",
+            "wr": 0.4071,
+            "games": 533
+          },
+          {
+            "id": "Nautilus",
+            "wr": 0.4301,
+            "games": 1367
+          }
+        ]
+      }
+    },
+    "Zaahen": {
+      "top": {
+        "easy": [
+          {
+            "id": "Irelia",
+            "wr": 0.6122,
+            "games": 263
+          },
+          {
+            "id": "Jayce",
+            "wr": 0.5772,
+            "games": 246
+          },
+          {
+            "id": "Trundle",
+            "wr": 0.618,
+            "games": 89
+          }
+        ],
+        "hard": [
+          {
+            "id": "DrMundo",
+            "wr": 0.4085,
+            "games": 164
+          },
+          {
+            "id": "Singed",
+            "wr": 0.4054,
+            "games": 148
+          },
+          {
+            "id": "Heimerdinger",
+            "wr": 0.3333,
+            "games": 45
+          }
+        ]
+      }
+    },
+    "Zac": {
+      "jungle": {
+        "easy": [
+          {
+            "id": "Elise",
+            "wr": 0.5721,
+            "games": 215
+          },
+          {
+            "id": "Rengar",
+            "wr": 0.5628,
+            "games": 183
+          },
+          {
+            "id": "Zed",
+            "wr": 0.5726,
+            "games": 117
+          }
+        ],
+        "hard": [
+          {
+            "id": "Lillia",
+            "wr": 0.4276,
+            "games": 428
+          },
+          {
+            "id": "Rammus",
+            "wr": 0.3924,
+            "games": 79
+          },
+          {
+            "id": "Shyvana",
+            "wr": 0.4514,
+            "games": 288
+          }
+        ]
+      },
+      "top": {
+        "easy": [
+          {
+            "id": "Ambessa",
+            "wr": 0.7222,
+            "games": 36
+          },
+          {
+            "id": "Gangplank",
+            "wr": 0.6234,
+            "games": 77
+          },
+          {
+            "id": "Jayce",
+            "wr": 0.6346,
+            "games": 52
+          }
+        ],
+        "hard": [
+          {
+            "id": "Gwen",
+            "wr": 0.3636,
+            "games": 44
+          },
+          {
+            "id": "Teemo",
+            "wr": 0.4,
+            "games": 35
+          },
+          {
+            "id": "Sett",
+            "wr": 0.4462,
+            "games": 65
+          }
+        ]
+      }
+    },
+    "Zed": {
+      "mid": {
+        "easy": [
+          {
+            "id": "TwistedFate",
+            "wr": 0.5397,
+            "games": 769
+          },
+          {
+            "id": "Veigar",
+            "wr": 0.5375,
+            "games": 493
+          },
+          {
+            "id": "Swain",
+            "wr": 0.5645,
+            "games": 124
+          }
+        ],
+        "hard": [
+          {
+            "id": "Malphite",
+            "wr": 0.4433,
+            "games": 485
+          },
+          {
+            "id": "Vex",
+            "wr": 0.4529,
+            "games": 499
+          },
+          {
+            "id": "Sylas",
+            "wr": 0.4625,
+            "games": 1280
+          }
+        ]
+      },
+      "jungle": {
+        "easy": [
+          {
+            "id": "Lillia",
+            "wr": 0.548,
+            "games": 250
+          },
+          {
+            "id": "Graves",
+            "wr": 0.5157,
+            "games": 479
+          },
+          {
+            "id": "Ekko",
+            "wr": 0.5116,
+            "games": 215
+          }
+        ],
+        "hard": [
+          {
+            "id": "MasterYi",
+            "wr": 0.39,
+            "games": 341
+          },
+          {
+            "id": "Karthus",
+            "wr": 0.3562,
+            "games": 73
+          },
+          {
+            "id": "Rengar",
+            "wr": 0.4138,
+            "games": 174
+          }
+        ]
+      }
+    },
+    "Zeri": {
+      "adc": {
+        "easy": [
+          {
+            "id": "Vayne",
+            "wr": 0.6038,
+            "games": 313
+          },
+          {
+            "id": "Ezreal",
+            "wr": 0.5783,
+            "games": 920
+          },
+          {
+            "id": "Varus",
+            "wr": 0.5888,
+            "games": 214
+          }
+        ],
+        "hard": [
+          {
+            "id": "Ashe",
+            "wr": 0.4497,
+            "games": 507
+          },
+          {
+            "id": "Xayah",
+            "wr": 0.4604,
+            "games": 543
+          },
+          {
+            "id": "Draven",
+            "wr": 0.4582,
+            "games": 419
+          }
+        ]
+      }
+    },
+    "Ziggs": {
+      "adc": {
+        "easy": [
+          {
+            "id": "Yunara",
+            "wr": 0.5948,
+            "games": 306
+          },
+          {
+            "id": "Aphelios",
+            "wr": 0.5845,
+            "games": 296
+          },
+          {
+            "id": "Varus",
+            "wr": 0.617,
+            "games": 94
+          }
+        ],
+        "hard": [
+          {
+            "id": "Smolder",
+            "wr": 0.4581,
+            "games": 227
+          },
+          {
+            "id": "Sivir",
+            "wr": 0.4641,
+            "games": 153
+          },
+          {
+            "id": "Jhin",
+            "wr": 0.4911,
+            "games": 615
+          }
+        ]
+      },
+      "mid": {
+        "easy": [
+          {
+            "id": "Orianna",
+            "wr": 0.625,
+            "games": 32
+          },
+          {
+            "id": "Diana",
+            "wr": 0.6,
+            "games": 30
+          },
+          {
+            "id": "Sylas",
+            "wr": 0.5429,
+            "games": 70
+          }
+        ],
+        "hard": [
+          {
+            "id": "Ahri",
+            "wr": 0.4224,
+            "games": 116
+          },
+          {
+            "id": "Xerath",
+            "wr": 0.4194,
+            "games": 93
+          },
+          {
+            "id": "Veigar",
+            "wr": 0.4091,
+            "games": 66
+          }
+        ]
+      }
+    },
+    "Zilean": {
+      "support": {
+        "easy": [
+          {
+            "id": "Velkoz",
+            "wr": 0.6209,
+            "games": 182
+          },
+          {
+            "id": "Swain",
+            "wr": 0.6242,
+            "games": 149
+          },
+          {
+            "id": "Yuumi",
+            "wr": 0.5781,
+            "games": 365
+          }
+        ],
+        "hard": [
+          {
+            "id": "Sona",
+            "wr": 0.4141,
+            "games": 227
+          },
+          {
+            "id": "Pyke",
+            "wr": 0.466,
+            "games": 294
+          },
+          {
+            "id": "Xerath",
+            "wr": 0.4681,
+            "games": 141
+          }
+        ]
+      }
+    },
+    "Zoe": {
+      "mid": {
+        "easy": [
+          {
+            "id": "Lucian",
+            "wr": 0.75,
+            "games": 72
+          },
+          {
+            "id": "Ryze",
+            "wr": 0.5984,
+            "games": 122
+          },
+          {
+            "id": "Orianna",
+            "wr": 0.5722,
+            "games": 180
+          }
+        ],
+        "hard": [
+          {
+            "id": "Malzahar",
+            "wr": 0.4452,
+            "games": 310
+          },
+          {
+            "id": "Annie",
+            "wr": 0.4308,
+            "games": 130
+          },
+          {
+            "id": "Lux",
+            "wr": 0.4664,
+            "games": 298
+          }
+        ]
+      }
+    },
+    "Zyra": {
+      "support": {
+        "easy": [
+          {
+            "id": "Lulu",
+            "wr": 0.525,
+            "games": 659
+          },
+          {
+            "id": "Swain",
+            "wr": 0.5474,
+            "games": 137
+          },
+          {
+            "id": "Braum",
+            "wr": 0.5342,
+            "games": 219
+          }
+        ],
+        "hard": [
+          {
+            "id": "Blitzcrank",
+            "wr": 0.4507,
+            "games": 284
+          },
+          {
+            "id": "Leona",
+            "wr": 0.455,
+            "games": 367
+          },
+          {
+            "id": "Zilean",
+            "wr": 0.4392,
+            "games": 148
+          }
+        ]
+      },
+      "jungle": {
+        "easy": [
+          {
+            "id": "Qiyana",
+            "wr": 0.5722,
+            "games": 180
+          },
+          {
+            "id": "Khazix",
+            "wr": 0.5706,
+            "games": 170
+          },
+          {
+            "id": "Nidalee",
+            "wr": 0.576,
+            "games": 125
+          }
+        ],
+        "hard": [
+          {
+            "id": "Rammus",
+            "wr": 0.2564,
+            "games": 39
+          },
+          {
+            "id": "Karthus",
+            "wr": 0.3542,
+            "games": 48
+          },
+          {
+            "id": "Talon",
+            "wr": 0.4452,
+            "games": 155
+          }
+        ]
+      }
+    }
+  },
+  "missing": [
+    "Akshan/top",
+    "Ambessa/mid",
+    "Annie/support",
+    "Brand/jungle",
+    "Cassiopeia/top",
+    "Corki/mid",
+    "DrMundo/jungle",
+    "Gragas/support",
+    "Heimerdinger/support",
+    "Heimerdinger/mid",
+    "Kalista/top",
+    "Karma/mid",
+    "Karma/top",
+    "Kennen/mid",
+    "Lillia/top",
+    "Malphite/support",
+    "Maokai/top",
+    "Mordekaiser/jungle",
+    "Morgana/jungle",
+    "Neeko/mid",
+    "Olaf/jungle",
+    "Poppy/jungle",
+    "Rengar/top",
+    "Rumble/mid",
+    "Rumble/jungle",
+    "Sejuani/top",
+    "Senna/adc",
+    "Seraphine/mid",
+    "Sett/support",
+    "Skarner/top",
+    "Smolder/top",
+    "Tristana/mid",
+    "TwistedFate/adc",
+    "TwistedFate/top",
+    "Twitch/support",
+    "Varus/mid",
+    "Veigar/support",
+    "Zaahen/jungle",
+    "Zac/support",
+    "Zilean/mid"
+  ]
+}

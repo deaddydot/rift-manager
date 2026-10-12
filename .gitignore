@@ -1,0 +1,9 @@
+node_modules
+dist
+data-raw/cache
+.DS_Store
+# raw data sources (145 MB) — only the data scripts read them; the site uses public/data
+data-raw/
+# TypeScript incremental build info and local editor/tool config
+tsconfig.tsbuildinfo
+.claude/

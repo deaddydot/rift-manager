@@ -1,0 +1,1283 @@
+{
+  "Faker": {
+    "attributes": {
+      "mechanics": 23,
+      "laning": 16,
+      "farming": 14,
+      "teamfight": 35,
+      "macro": 22,
+      "vision": 12,
+      "consistency": 19,
+      "clutch": 27
+    },
+    "set": {
+      "shotcalling": 91,
+      "aggression": 50
+    },
+    "hidden": {
+      "potential": 86,
+      "farsight": 95,
+      "mistakes": 18,
+      "composure": 97,
+      "resilience": 92,
+      "workEthic": 99,
+      "professionalism": 99,
+      "ego": 35,
+      "loyalty": 99
+    },
+    "traits": [
+      "shotcaller",
+      "ice_veins",
+      "teamfight_maestro",
+      "champion_ocean",
+      "game_ender",
+      "comeback_king",
+      "mentor",
+      "fan_favorite"
+    ],
+    "champions": {
+      "Azir": 95,
+      "Orianna": 94,
+      "Ryze": 94,
+      "Galio": 93,
+      "Leblanc": 91,
+      "Sylas": 91
+    }
+  },
+  "Doran (Choi Hyeon-jun)": {
+    "attributes": {
+      "mechanics": 3,
+      "laning": 5,
+      "teamfight": 9,
+      "macro": 7,
+      "consistency": -3
+    },
+    "hidden": {
+      "potential": 76,
+      "farsight": 66
+    },
+    "traits": [
+      "weakside_hero"
+    ]
+  },
+  "Oner": {
+    "attributes": {
+      "mechanics": 6,
+      "teamfight": 9,
+      "macro": 3,
+      "clutch": 15
+    },
+    "set": {
+      "shotcalling": 78,
+      "aggression": 68
+    },
+    "hidden": {
+      "potential": 84,
+      "farsight": 78
+    },
+    "traits": [
+      "ice_veins",
+      "snowballer"
+    ],
+    "removeTraits": [
+      "shotcaller"
+    ],
+    "champions": {
+      "LeeSin": 94
+    }
+  },
+  "Peyz": {
+    "attributes": {
+      "mechanics": 3,
+      "laning": 5
+    },
+    "hidden": {
+      "potential": 91
+    },
+    "traits": [
+      "lane_kingdom",
+      "carry_mentality"
+    ],
+    "champions": {
+      "Zeri": 92,
+      "Ezreal": 90
+    }
+  },
+  "Keria": {
+    "attributes": {
+      "mechanics": 9,
+      "laning": 9,
+      "teamfight": 7,
+      "macro": 6,
+      "vision": 4,
+      "consistency": 3,
+      "clutch": 8
+    },
+    "set": {
+      "shotcalling": 88,
+      "aggression": 55
+    },
+    "hidden": {
+      "potential": 89,
+      "composure": 84,
+      "workEthic": 94,
+      "professionalism": 92
+    },
+    "traits": [
+      "shotcaller",
+      "ice_veins",
+      "lane_kingdom",
+      "roaming_menace",
+      "hook_master",
+      "fan_favorite"
+    ],
+    "champions": {
+      "Thresh": 93,
+      "Bard": 93,
+      "Rakan": 92,
+      "Renata": 91,
+      "Rell": 91,
+      "Pyke": 89
+    }
+  },
+  "Kiin": {
+    "attributes": {
+      "mechanics": -6,
+      "laning": 1,
+      "teamfight": -4,
+      "consistency": 2
+    },
+    "hidden": {
+      "potential": 89,
+      "mistakes": 26,
+      "composure": 80,
+      "professionalism": 90
+    },
+    "traits": [
+      "lane_kingdom",
+      "champion_ocean"
+    ],
+    "champions": {
+      "Jax": 92,
+      "KSante": 92,
+      "Aatrox": 91,
+      "Jayce": 90
+    }
+  },
+  "Canyon": {
+    "attributes": {
+      "mechanics": 4,
+      "teamfight": 8,
+      "macro": 4,
+      "vision": -4
+    },
+    "set": {
+      "shotcalling": 84,
+      "aggression": 64
+    },
+    "hidden": {
+      "potential": 88,
+      "farsight": 88,
+      "composure": 75,
+      "snowball": 82,
+      "workEthic": 90
+    },
+    "traits": [
+      "flash_wizard",
+      "snowballer",
+      "baron_thief"
+    ],
+    "removeTraits": [
+      "shotcaller"
+    ],
+    "champions": {
+      "Nidalee": 93,
+      "Graves": 92,
+      "Kindred": 91
+    }
+  },
+  "Chovy": {
+    "attributes": {
+      "mechanics": -2,
+      "laning": -3,
+      "farming": -2,
+      "teamfight": -1,
+      "vision": -15,
+      "clutch": -2
+    },
+    "set": {
+      "shotcalling": 78
+    },
+    "hidden": {
+      "potential": 95,
+      "mistakes": 15,
+      "composure": 82,
+      "workEthic": 97,
+      "professionalism": 95
+    },
+    "traits": [
+      "lane_kingdom",
+      "grinder",
+      "fan_favorite"
+    ],
+    "removeTraits": [
+      "shotcaller",
+      "game_ender",
+      "vision_wizard"
+    ],
+    "champions": {
+      "Azir": 95,
+      "Yone": 93,
+      "Taliyah": 92,
+      "Sylas": 92
+    }
+  },
+  "Ruler": {
+    "attributes": {
+      "mechanics": 5,
+      "laning": 1,
+      "teamfight": 13,
+      "macro": 5,
+      "vision": -11,
+      "clutch": 14
+    },
+    "set": {
+      "shotcalling": 86,
+      "aggression": 45
+    },
+    "hidden": {
+      "potential": 87,
+      "farsight": 93,
+      "composure": 90,
+      "professionalism": 92
+    },
+    "traits": [
+      "teamfight_maestro",
+      "ice_veins"
+    ],
+    "champions": {
+      "Varus": 92,
+      "Kalista": 92,
+      "Jinx": 91
+    }
+  },
+  "Duro": {
+    "set": {
+      "shotcalling": 80
+    },
+    "removeTraits": [
+      "shotcaller"
+    ]
+  },
+  "Zeus": {
+    "attributes": {
+      "mechanics": 7,
+      "laning": 12,
+      "farming": 9,
+      "teamfight": 4,
+      "consistency": -1
+    },
+    "hidden": {
+      "potential": 91,
+      "mistakes": 32,
+      "composure": 62
+    },
+    "traits": [
+      "lane_kingdom",
+      "carry_mentality",
+      "flash_wizard"
+    ],
+    "removeTraits": [
+      "weakside_hero"
+    ],
+    "champions": {
+      "Yone": 92,
+      "Aatrox": 90,
+      "Gwen": 88
+    }
+  },
+  "Kanavi": {
+    "attributes": {
+      "teamfight": 5,
+      "macro": 5
+    },
+    "hidden": {
+      "potential": 84,
+      "mistakes": 44,
+      "farsight": 74,
+      "snowball": 86
+    },
+    "traits": [
+      "snowballer",
+      "dive_bomber"
+    ],
+    "removeTraits": [
+      "throw_merchant"
+    ],
+    "champions": {
+      "LeeSin": 91,
+      "XinZhao": 90
+    }
+  },
+  "Zeka (Kim Geon-woo)": {
+    "attributes": {
+      "clutch": 8
+    },
+    "hidden": {
+      "potential": 87,
+      "mistakes": 24,
+      "composure": 70
+    },
+    "traits": [
+      "ice_veins",
+      "flash_wizard"
+    ],
+    "champions": {
+      "Akali": 93,
+      "Sylas": 91,
+      "Yone": 89
+    }
+  },
+  "Gumayusi": {
+    "attributes": {
+      "mechanics": 13,
+      "laning": 14,
+      "farming": 5,
+      "teamfight": 17,
+      "macro": 7,
+      "consistency": 8,
+      "clutch": 15
+    },
+    "hidden": {
+      "potential": 85,
+      "farsight": 76,
+      "mistakes": 30,
+      "composure": 82,
+      "ego": 72
+    },
+    "traits": [
+      "ice_veins",
+      "teamfight_maestro"
+    ],
+    "champions": {
+      "Varus": 93,
+      "Jinx": 91,
+      "Ezreal": 90
+    }
+  },
+  "Delight": {
+    "attributes": {
+      "mechanics": 6
+    },
+    "set": {
+      "aggression": 68
+    },
+    "traits": [
+      "engage_lord"
+    ],
+    "champions": {
+      "Rell": 92,
+      "Rakan": 90
+    }
+  },
+  "ShowMaker": {
+    "attributes": {
+      "mechanics": 5,
+      "laning": 4,
+      "teamfight": 7,
+      "macro": 7
+    },
+    "set": {
+      "shotcalling": 88
+    },
+    "hidden": {
+      "potential": 79,
+      "farsight": 82,
+      "composure": 75
+    },
+    "traits": [
+      "mentor"
+    ],
+    "champions": {
+      "Syndra": 90,
+      "Leblanc": 90,
+      "Sylas": 88
+    }
+  },
+  "Lucid (Choi Yong-hyeok)": {
+    "set": {
+      "aggression": 64
+    }
+  },
+  "PerfecT (Lee Seung-min)": {
+    "attributes": {
+      "clutch": 5
+    },
+    "hidden": {
+      "potential": 72,
+      "composure": 58
+    }
+  },
+  "Bdd": {
+    "attributes": {
+      "mechanics": 4,
+      "laning": 7,
+      "teamfight": 5,
+      "macro": 6,
+      "clutch": 8
+    },
+    "hidden": {
+      "potential": 78,
+      "farsight": 78,
+      "composure": 80
+    },
+    "champions": {
+      "Azir": 88
+    }
+  },
+  "Cuzz": {
+    "attributes": {
+      "mechanics": 2,
+      "teamfight": 5,
+      "macro": 7,
+      "clutch": 13
+    },
+    "hidden": {
+      "potential": 67,
+      "farsight": 78
+    },
+    "removeTraits": [
+      "big_stage_nerves"
+    ]
+  },
+  "Kingen": {
+    "attributes": {
+      "laning": 6,
+      "teamfight": 4,
+      "macro": 5,
+      "clutch": 9
+    },
+    "hidden": {
+      "potential": 72,
+      "mistakes": 42
+    },
+    "traits": [
+      "ice_veins"
+    ],
+    "removeTraits": [
+      "throw_merchant"
+    ],
+    "champions": {
+      "Aatrox": 88,
+      "Camille": 86
+    }
+  },
+  "Scout": {
+    "attributes": {
+      "macro": 4
+    },
+    "set": {
+      "aggression": 60
+    },
+    "traits": [
+      "ice_veins"
+    ],
+    "champions": {
+      "Leblanc": 88
+    }
+  },
+  "Lehends": {
+    "attributes": {
+      "macro": 5
+    },
+    "set": {
+      "shotcalling": 84
+    },
+    "hidden": {
+      "potential": 67,
+      "farsight": 82
+    },
+    "traits": [
+      "shotcaller"
+    ],
+    "removeTraits": [
+      "throw_merchant"
+    ],
+    "champions": {
+      "Bard": 88
+    }
+  },
+  "Aiming": {
+    "set": {
+      "shotcalling": 66,
+      "aggression": 55
+    },
+    "traits": [
+      "lane_kingdom"
+    ],
+    "removeTraits": [
+      "shotcaller"
+    ]
+  },
+  "VicLa": {
+    "set": {
+      "aggression": 68
+    },
+    "traits": [
+      "flash_wizard"
+    ],
+    "champions": {
+      "Sylas": 88,
+      "Leblanc": 86
+    }
+  },
+  "DuDu (Lee Dong-ju)": {
+    "attributes": {
+      "mechanics": -6,
+      "laning": -4,
+      "teamfight": -3,
+      "macro": -2,
+      "vision": -12,
+      "clutch": -11
+    },
+    "set": {
+      "shotcalling": 68
+    },
+    "hidden": {
+      "potential": 83,
+      "farsight": 72,
+      "mistakes": 30
+    },
+    "removeTraits": [
+      "game_ender",
+      "shotcaller"
+    ]
+  },
+  "Clozer": {
+    "set": {
+      "aggression": 72
+    },
+    "traits": [
+      "flash_wizard"
+    ],
+    "champions": {
+      "Sylas": 87
+    }
+  },
+  "Bin (Chen Ze-Bin)": {
+    "attributes": {
+      "mechanics": 5,
+      "laning": 2,
+      "farming": -6,
+      "teamfight": 4,
+      "consistency": -12,
+      "clutch": -7
+    },
+    "set": {
+      "aggression": 80,
+      "shotcalling": 70
+    },
+    "hidden": {
+      "potential": 91,
+      "farsight": 76,
+      "mistakes": 42,
+      "composure": 55,
+      "snowball": 88,
+      "ego": 80
+    },
+    "traits": [
+      "lane_kingdom",
+      "splitpush_king",
+      "flash_wizard",
+      "carry_mentality",
+      "coinflip"
+    ],
+    "champions": {
+      "Jax": 94,
+      "Fiora": 92,
+      "Aatrox": 92,
+      "Camille": 91
+    }
+  },
+  "Knight (Zhuo Ding)": {
+    "attributes": {
+      "mechanics": -4,
+      "laning": -5,
+      "farming": -2,
+      "teamfight": -5,
+      "macro": 1,
+      "consistency": -9,
+      "clutch": -13
+    },
+    "set": {
+      "shotcalling": 74,
+      "aggression": 68
+    },
+    "hidden": {
+      "potential": 93,
+      "mistakes": 20,
+      "composure": 72,
+      "workEthic": 88
+    },
+    "traits": [
+      "lane_kingdom",
+      "flash_wizard"
+    ],
+    "removeTraits": [
+      "shotcaller"
+    ],
+    "champions": {
+      "Azir": 95,
+      "Ahri": 94,
+      "Taliyah": 94,
+      "Sylas": 92
+    }
+  },
+  "Viper (Park Do-hyeon)": {
+    "attributes": {
+      "mechanics": 3,
+      "laning": 4,
+      "teamfight": 8,
+      "vision": -10,
+      "consistency": -7,
+      "clutch": 3
+    },
+    "set": {
+      "shotcalling": 72
+    },
+    "hidden": {
+      "potential": 87,
+      "composure": 82,
+      "professionalism": 88
+    },
+    "traits": [
+      "teamfight_maestro"
+    ],
+    "removeTraits": [
+      "shotcaller",
+      "vision_wizard"
+    ],
+    "champions": {
+      "Kalista": 92,
+      "Draven": 90
+    }
+  },
+  "ON": {
+    "attributes": {
+      "macro": -4,
+      "consistency": -5
+    },
+    "set": {
+      "aggression": 78
+    },
+    "hidden": {
+      "mistakes": 44,
+      "farsight": 80
+    },
+    "traits": [
+      "engage_lord"
+    ],
+    "removeTraits": [
+      "game_ender"
+    ],
+    "champions": {
+      "Rell": 93,
+      "Rakan": 93,
+      "Nautilus": 90
+    }
+  },
+  "Tarzan (Lee Seung-yong)": {
+    "attributes": {
+      "mechanics": -9,
+      "laning": -5,
+      "farming": -1,
+      "teamfight": -11,
+      "macro": 3,
+      "consistency": -3,
+      "clutch": -8
+    },
+    "set": {
+      "shotcalling": 76,
+      "aggression": 55
+    },
+    "hidden": {
+      "potential": 89,
+      "farsight": 80,
+      "composure": 68
+    },
+    "traits": [
+      "farming_machine"
+    ],
+    "champions": {
+      "LeeSin": 92,
+      "Graves": 91
+    }
+  },
+  "Breathe": {
+    "traits": [
+      "weakside_hero"
+    ]
+  },
+  "TheShy": {
+    "attributes": {
+      "mechanics": 16,
+      "laning": 16,
+      "farming": 6,
+      "teamfight": 11,
+      "macro": -7,
+      "consistency": -5
+    },
+    "set": {
+      "aggression": 88,
+      "shotcalling": 50
+    },
+    "hidden": {
+      "potential": 72,
+      "farsight": 55,
+      "mistakes": 66,
+      "snowball": 86,
+      "resilience": 40,
+      "ego": 72,
+      "professionalism": 60
+    },
+    "traits": [
+      "coinflip",
+      "flash_wizard",
+      "splitpush_king",
+      "fan_favorite"
+    ],
+    "champions": {
+      "Jayce": 88,
+      "Aatrox": 88,
+      "Camille": 87,
+      "Jax": 86,
+      "Irelia": 86
+    }
+  },
+  "Rookie": {
+    "attributes": {
+      "macro": 3
+    },
+    "set": {
+      "shotcalling": 80
+    },
+    "hidden": {
+      "potential": 77,
+      "farsight": 80,
+      "professionalism": 88
+    },
+    "traits": [
+      "mentor"
+    ],
+    "champions": {
+      "Leblanc": 88,
+      "Syndra": 88
+    }
+  },
+  "Meiko": {
+    "attributes": {
+      "mechanics": -5,
+      "vision": 7
+    },
+    "set": {
+      "shotcalling": 92
+    },
+    "hidden": {
+      "farsight": 84
+    },
+    "removeTraits": [
+      "carry_mentality"
+    ],
+    "champions": {
+      "Thresh": 88
+    }
+  },
+  "JackeyLove": {
+    "attributes": {
+      "mechanics": 9,
+      "laning": 8,
+      "teamfight": 6,
+      "consistency": -4,
+      "clutch": 6
+    },
+    "set": {
+      "aggression": 84,
+      "shotcalling": 68
+    },
+    "hidden": {
+      "potential": 77,
+      "mistakes": 52,
+      "snowball": 82,
+      "ego": 80
+    },
+    "traits": [
+      "coinflip",
+      "flash_wizard",
+      "fan_favorite"
+    ],
+    "removeTraits": [
+      "shotcaller"
+    ],
+    "champions": {
+      "Draven": 90,
+      "Kaisa": 90
+    }
+  },
+  "Tian": {
+    "set": {
+      "aggression": 68
+    },
+    "champions": {
+      "LeeSin": 88,
+      "Gragas": 86
+    }
+  },
+  "Zhuo": {
+    "hidden": {
+      "farsight": 86
+    }
+  },
+  "Xiaohu": {
+    "attributes": {
+      "mechanics": 8,
+      "laning": 8,
+      "farming": 6,
+      "teamfight": 9,
+      "macro": 10,
+      "consistency": 4,
+      "clutch": 4
+    },
+    "set": {
+      "shotcalling": 85
+    },
+    "hidden": {
+      "potential": 69,
+      "farsight": 78,
+      "composure": 82,
+      "professionalism": 88
+    },
+    "traits": [
+      "shotcaller",
+      "mentor"
+    ],
+    "champions": {
+      "Azir": 86
+    }
+  },
+  "Elk": {
+    "attributes": {
+      "mechanics": 9,
+      "laning": 7,
+      "farming": 7,
+      "teamfight": 6,
+      "macro": 4
+    },
+    "set": {
+      "aggression": 74
+    },
+    "hidden": {
+      "potential": 79,
+      "farsight": 64,
+      "ego": 78
+    },
+    "traits": [
+      "carry_mentality"
+    ],
+    "champions": {
+      "Kalista": 88,
+      "Varus": 88,
+      "Zeri": 87
+    }
+  },
+  "Crisp": {
+    "set": {
+      "aggression": 60
+    },
+    "traits": [
+      "roaming_menace"
+    ],
+    "champions": {
+      "Rakan": 85,
+      "Thresh": 84
+    }
+  },
+  "Caps": {
+    "attributes": {
+      "mechanics": 2,
+      "laning": 3,
+      "teamfight": 5,
+      "macro": 5,
+      "clutch": -1
+    },
+    "set": {
+      "aggression": 74
+    },
+    "hidden": {
+      "potential": 83,
+      "farsight": 85,
+      "mistakes": 42,
+      "ego": 70
+    },
+    "traits": [
+      "champion_ocean",
+      "roaming_menace",
+      "flash_wizard",
+      "fan_favorite"
+    ],
+    "champions": {
+      "Leblanc": 93,
+      "Sylas": 92,
+      "Azir": 89
+    }
+  },
+  "BrokenBlade": {
+    "attributes": {
+      "mechanics": 3,
+      "laning": 4,
+      "farming": 5,
+      "teamfight": 5
+    },
+    "hidden": {
+      "potential": 76
+    },
+    "champions": {
+      "Gwen": 90
+    }
+  },
+  "SkewMond": {
+    "attributes": {
+      "mechanics": -5,
+      "laning": -9,
+      "farming": -2,
+      "teamfight": -3,
+      "vision": -8,
+      "consistency": -6,
+      "clutch": -9
+    },
+    "hidden": {
+      "potential": 86
+    }
+  },
+  "Hans Sama": {
+    "attributes": {
+      "mechanics": 12,
+      "laning": 9,
+      "teamfight": 10
+    },
+    "set": {
+      "aggression": 64
+    },
+    "hidden": {
+      "potential": 77
+    },
+    "traits": [
+      "lane_kingdom"
+    ],
+    "champions": {
+      "Kalista": 88,
+      "Draven": 87,
+      "Xayah": 87
+    }
+  },
+  "Labrov": {
+    "set": {
+      "shotcalling": 85
+    },
+    "hidden": {
+      "farsight": 80
+    },
+    "traits": [
+      "engage_lord"
+    ],
+    "removeTraits": [
+      "game_ender"
+    ],
+    "champions": {
+      "Rell": 88,
+      "Rakan": 87
+    }
+  },
+  "Caliste": {
+    "attributes": {
+      "laning": 3
+    },
+    "hidden": {
+      "potential": 89
+    },
+    "traits": [
+      "carry_mentality"
+    ]
+  },
+  "Upset": {
+    "attributes": {
+      "mechanics": 7,
+      "laning": 4,
+      "farming": 8,
+      "teamfight": 3,
+      "macro": 5
+    },
+    "hidden": {
+      "potential": 74
+    }
+  },
+  "Razork": {
+    "attributes": {
+      "mechanics": 8,
+      "laning": 9,
+      "farming": 7,
+      "teamfight": 7,
+      "macro": 6,
+      "consistency": 6
+    },
+    "set": {
+      "aggression": 70
+    },
+    "hidden": {
+      "potential": 62
+    }
+  },
+  "Elyoya": {
+    "set": {
+      "aggression": 60
+    }
+  },
+  "Jojopyun": {
+    "set": {
+      "aggression": 76
+    },
+    "traits": [
+      "roaming_menace",
+      "flash_wizard"
+    ],
+    "champions": {
+      "Leblanc": 87,
+      "Sylas": 86
+    }
+  },
+  "Myrwn": {
+    "traits": [
+      "champion_ocean"
+    ]
+  },
+  "Wunder": {
+    "attributes": {
+      "mechanics": 5,
+      "laning": 4,
+      "teamfight": 5,
+      "macro": 8
+    },
+    "hidden": {
+      "potential": 61
+    },
+    "traits": [
+      "champion_ocean"
+    ]
+  },
+  "Mikyx": {
+    "attributes": {
+      "mechanics": 9,
+      "laning": 7,
+      "teamfight": 8,
+      "macro": 11,
+      "vision": 5,
+      "consistency": 11
+    },
+    "set": {
+      "shotcalling": 72
+    },
+    "hidden": {
+      "potential": 58,
+      "farsight": 66
+    },
+    "traits": [
+      "hook_master",
+      "engage_lord"
+    ],
+    "champions": {
+      "Thresh": 82,
+      "Rakan": 82,
+      "Alistar": 80
+    }
+  },
+  "CoreJJ": {
+    "set": {
+      "shotcalling": 95
+    },
+    "hidden": {
+      "farsight": 86,
+      "composure": 92,
+      "workEthic": 92,
+      "professionalism": 95
+    },
+    "traits": [
+      "mentor"
+    ],
+    "champions": {
+      "Thresh": 88
+    }
+  },
+  "Josedeodo": {
+    "set": {
+      "shotcalling": 72
+    },
+    "hidden": {
+      "farsight": 74
+    },
+    "removeTraits": [
+      "shotcaller",
+      "game_ender"
+    ]
+  },
+  "Inspired": {
+    "attributes": {
+      "mechanics": 8,
+      "teamfight": 8,
+      "macro": 7,
+      "clutch": 5
+    },
+    "set": {
+      "aggression": 48
+    },
+    "hidden": {
+      "potential": 72,
+      "farsight": 80
+    }
+  },
+  "Berserker (Kim Min-cheol)": {
+    "attributes": {
+      "laning": 2
+    },
+    "traits": [
+      "carry_mentality"
+    ]
+  },
+  "Massu": {
+    "attributes": {
+      "mechanics": 9,
+      "laning": 10,
+      "farming": 7,
+      "teamfight": 8
+    },
+    "set": {
+      "aggression": 76
+    },
+    "hidden": {
+      "potential": 62
+    }
+  },
+  "Blaber": {
+    "attributes": {
+      "mechanics": 4
+    },
+    "set": {
+      "aggression": 80
+    },
+    "hidden": {
+      "mistakes": 55,
+      "composure": 52
+    },
+    "traits": [
+      "coinflip",
+      "dive_bomber"
+    ]
+  },
+  "Vulcan (Philippe Laflamme)": {
+    "hidden": {
+      "composure": 62
+    },
+    "traits": [
+      "engage_lord"
+    ]
+  },
+  "Impact": {
+    "attributes": {
+      "mechanics": 5,
+      "laning": 8,
+      "farming": 9,
+      "teamfight": 6,
+      "macro": 7,
+      "consistency": 4
+    },
+    "set": {
+      "shotcalling": 66
+    },
+    "hidden": {
+      "potential": 56,
+      "mistakes": 36,
+      "farsight": 70,
+      "professionalism": 92
+    },
+    "traits": [
+      "mentor",
+      "weakside_hero"
+    ],
+    "removeTraits": [
+      "throw_merchant"
+    ]
+  },
+  "Dardoch": {
+    "hidden": {
+      "composure": 30,
+      "professionalism": 35,
+      "ego": 85,
+      "loyalty": 25
+    },
+    "traits": [
+      "hot_headed",
+      "tilter"
+    ]
+  },
+  "Hizto": {
+    "attributes": {
+      "mechanics": -6,
+      "laning": -9,
+      "farming": -5,
+      "teamfight": -2,
+      "macro": -3,
+      "consistency": -9
+    },
+    "hidden": {
+      "potential": 86
+    }
+  },
+  "Bie": {
+    "attributes": {
+      "mechanics": -9,
+      "laning": -7,
+      "farming": -7,
+      "macro": -4,
+      "vision": -5
+    },
+    "hidden": {
+      "potential": 72,
+      "farsight": 78
+    },
+    "removeTraits": [
+      "game_ender"
+    ]
+  },
+  "Zest (Kim Dong-min)": {
+    "attributes": {
+      "mechanics": -8,
+      "laning": -9,
+      "farming": -7,
+      "teamfight": -4,
+      "macro": -6
+    },
+    "hidden": {
+      "potential": 72
+    }
+  },
+  "Ackerman (Gabriel Aparicio)": {
+    "attributes": {
+      "mechanics": -9,
+      "laning": -8,
+      "farming": -7,
+      "teamfight": -6,
+      "macro": -5
+    },
+    "hidden": {
+      "potential": 70
+    }
+  }
+}

@@ -1,0 +1,8371 @@
+{
+  "source": "op.gg",
+  "patch": "16.20",
+  "fetched": "2026-10-10",
+  "aliases": {
+    "Seraph's Embrace": "3003",
+    "Muramana": "3004",
+    "Fimbulwinter": "3119"
+  },
+  "builds": {
+    "Aatrox": {
+      "top": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "6692",
+          "6610",
+          "6333"
+        ],
+        "late": [
+          "3053",
+          "3026",
+          "2517"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Eclipse",
+            "Sundered Sky",
+            "Death's Dance"
+          ],
+          "late": [
+            "Sterak's Gage",
+            "Guardian Angel",
+            "Endless Hunger"
+          ]
+        }
+      }
+    },
+    "Ahri": {
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "3118",
+          "4645",
+          "3157"
+        ],
+        "late": [
+          "3089",
+          "3135",
+          "4629"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Malignance",
+            "Shadowflame",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Void Staff",
+            "Cosmic Drive"
+          ]
+        }
+      }
+    },
+    "Akali": {
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "3146",
+          "4645",
+          "3157"
+        ],
+        "late": [
+          "3089",
+          "3135",
+          "3102"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Hextech Gunblade",
+            "Shadowflame",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Void Staff",
+            "Banshee's Veil"
+          ]
+        }
+      },
+      "top": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "3146",
+          "4645",
+          "3157"
+        ],
+        "late": [
+          "3089",
+          "3135",
+          "3100"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Hextech Gunblade",
+            "Shadowflame",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Void Staff",
+            "Lich Bane"
+          ]
+        }
+      }
+    },
+    "Akshan": {
+      "mid": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3006",
+        "core": [
+          "6676",
+          "3031",
+          "3036"
+        ],
+        "late": [
+          "3094",
+          "3026",
+          "3072"
+        ],
+        "names": {
+          "boots": "Berserker's Greaves",
+          "core": [
+            "The Collector",
+            "Infinity Edge",
+            "Lord Dominik's Regards"
+          ],
+          "late": [
+            "Rapid Firecannon",
+            "Guardian Angel",
+            "Bloodthirster"
+          ]
+        }
+      },
+      "top": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "6676",
+          "3031",
+          "3036"
+        ],
+        "late": [
+          "3094",
+          "3026",
+          "3072"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "The Collector",
+            "Infinity Edge",
+            "Lord Dominik's Regards"
+          ],
+          "late": [
+            "Rapid Firecannon",
+            "Guardian Angel",
+            "Bloodthirster"
+          ]
+        }
+      }
+    },
+    "Alistar": {
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3009",
+        "core": [
+          "3190",
+          "3050",
+          "3109"
+        ],
+        "late": [
+          "2525",
+          "3742",
+          "3075"
+        ],
+        "names": {
+          "boots": "Boots of Swiftness",
+          "core": [
+            "Locket of the Iron Solari",
+            "Zeke's Convergence",
+            "Knight's Vow"
+          ],
+          "late": [
+            "Protoplasm Harness",
+            "Dead Man's Plate",
+            "Thornmail"
+          ]
+        }
+      }
+    },
+    "Ambessa": {
+      "top": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "6692",
+          "3161",
+          "6333"
+        ],
+        "late": [
+          "2517",
+          "3026",
+          "6694"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Eclipse",
+            "Spear of Shojin",
+            "Death's Dance"
+          ],
+          "late": [
+            "Endless Hunger",
+            "Guardian Angel",
+            "Serylda's Grudge"
+          ]
+        }
+      },
+      "mid": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3111",
+        "core": [
+          "6698",
+          "6699",
+          "6333"
+        ],
+        "late": [
+          "2517",
+          "3156",
+          "6665"
+        ],
+        "names": {
+          "boots": "Mercury's Treads",
+          "bootsOpggTop": "Gluttonous Greaves",
+          "core": [
+            "Profane Hydra",
+            "Voltaic Cyclosword",
+            "Death's Dance"
+          ],
+          "late": [
+            "Endless Hunger",
+            "Maw of Malmortius",
+            "Jak'Sho, The Protean"
+          ]
+        }
+      },
+      "jungle": {
+        "start": [
+          "Scorchclaw Pup",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "6698",
+          "6699",
+          "6333"
+        ],
+        "late": [
+          "2517",
+          "3026",
+          "3161"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Profane Hydra",
+            "Voltaic Cyclosword",
+            "Death's Dance"
+          ],
+          "late": [
+            "Endless Hunger",
+            "Guardian Angel",
+            "Spear of Shojin"
+          ]
+        }
+      }
+    },
+    "Amumu": {
+      "jungle": {
+        "start": [
+          "Mosstomper Seedling",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "6653",
+          "3068",
+          "8020"
+        ],
+        "late": [
+          "6665",
+          "3075",
+          "3143"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Liandry's Torment",
+            "Sunfire Aegis",
+            "Abyssal Mask"
+          ],
+          "late": [
+            "Jak'Sho, The Protean",
+            "Thornmail",
+            "Randuin's Omen"
+          ]
+        }
+      },
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3050",
+          "3190",
+          "3075"
+        ],
+        "late": [
+          "8020",
+          "2525",
+          "4005"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Zeke's Convergence",
+            "Locket of the Iron Solari",
+            "Thornmail"
+          ],
+          "late": [
+            "Abyssal Mask",
+            "Protoplasm Harness",
+            "Imperial Mandate"
+          ]
+        }
+      }
+    },
+    "Anivia": {
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "6657",
+          "3003",
+          "3157"
+        ],
+        "late": [
+          "6653",
+          "3089",
+          "3116"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Rod of Ages",
+            "Archangel's Staff",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Liandry's Torment",
+            "Rabadon's Deathcap",
+            "Rylai's Crystal Scepter"
+          ]
+        }
+      }
+    },
+    "Annie": {
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "3118",
+          "3152",
+          "4645"
+        ],
+        "late": [
+          "3157",
+          "3089",
+          "2510"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Malignance",
+            "Hextech Rocketbelt",
+            "Shadowflame"
+          ],
+          "late": [
+            "Zhonya's Hourglass",
+            "Rabadon's Deathcap",
+            "Dusk and Dawn"
+          ]
+        }
+      },
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "3118",
+          "4646",
+          "4645"
+        ],
+        "late": [
+          "3157",
+          "3089",
+          "3116"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Malignance",
+            "Stormsurge",
+            "Shadowflame"
+          ],
+          "late": [
+            "Zhonya's Hourglass",
+            "Rabadon's Deathcap",
+            "Rylai's Crystal Scepter"
+          ]
+        }
+      }
+    },
+    "Aphelios": {
+      "adc": {
+        "start": [
+          "Doran's Bow",
+          "Health Potion"
+        ],
+        "boots": "3006",
+        "core": [
+          "6676",
+          "3031",
+          "3036"
+        ],
+        "late": [
+          "3085",
+          "3026",
+          "3072"
+        ],
+        "names": {
+          "boots": "Berserker's Greaves",
+          "bootsOpggTop": "Gluttonous Greaves",
+          "core": [
+            "The Collector",
+            "Infinity Edge",
+            "Lord Dominik's Regards"
+          ],
+          "late": [
+            "Runaan's Hurricane",
+            "Guardian Angel",
+            "Bloodthirster"
+          ]
+        }
+      }
+    },
+    "Ashe": {
+      "adc": {
+        "start": [
+          "Doran's Bow",
+          "Health Potion",
+          "Health Potion"
+        ],
+        "boots": "3006",
+        "core": [
+          "2523",
+          "3046",
+          "3031"
+        ],
+        "late": [
+          "3036",
+          "3026",
+          "3072"
+        ],
+        "names": {
+          "boots": "Berserker's Greaves",
+          "core": [
+            "Hexoptics C44",
+            "Phantom Dancer",
+            "Infinity Edge"
+          ],
+          "late": [
+            "Lord Dominik's Regards",
+            "Guardian Angel",
+            "Bloodthirster"
+          ]
+        }
+      },
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "3118",
+          "4005",
+          "6696"
+        ],
+        "late": [
+          "4646",
+          "3089",
+          "6653"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Malignance",
+            "Imperial Mandate",
+            "Axiom Arc"
+          ],
+          "late": [
+            "Stormsurge",
+            "Rabadon's Deathcap",
+            "Liandry's Torment"
+          ]
+        }
+      }
+    },
+    "AurelionSol": {
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "2503",
+          "3116",
+          "6653"
+        ],
+        "late": [
+          "3157",
+          "3089",
+          "4645"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Blackfire Torch",
+            "Rylai's Crystal Scepter",
+            "Liandry's Torment"
+          ],
+          "late": [
+            "Zhonya's Hourglass",
+            "Rabadon's Deathcap",
+            "Shadowflame"
+          ]
+        }
+      }
+    },
+    "Aurora": {
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "4646",
+          "4645",
+          "3089"
+        ],
+        "late": [
+          "3135",
+          "3157",
+          "4629"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Stormsurge",
+            "Shadowflame",
+            "Rabadon's Deathcap"
+          ],
+          "late": [
+            "Void Staff",
+            "Zhonya's Hourglass",
+            "Cosmic Drive"
+          ]
+        }
+      },
+      "top": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "6655",
+          "4645",
+          "3089"
+        ],
+        "late": [
+          "3135",
+          "3157",
+          "4646"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Luden's Echo",
+            "Shadowflame",
+            "Rabadon's Deathcap"
+          ],
+          "late": [
+            "Void Staff",
+            "Zhonya's Hourglass",
+            "Stormsurge"
+          ]
+        }
+      }
+    },
+    "Azir": {
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "3115",
+          "4645",
+          "3089"
+        ],
+        "late": [
+          "3157",
+          "3135",
+          "4629"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Nashor's Tooth",
+            "Shadowflame",
+            "Rabadon's Deathcap"
+          ],
+          "late": [
+            "Zhonya's Hourglass",
+            "Void Staff",
+            "Cosmic Drive"
+          ]
+        }
+      }
+    },
+    "Bard": {
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3009",
+        "core": [
+          "3742",
+          "3190",
+          "2524"
+        ],
+        "late": [
+          "3107",
+          "3110",
+          "3222"
+        ],
+        "names": {
+          "boots": "Boots of Swiftness",
+          "core": [
+            "Dead Man's Plate",
+            "Locket of the Iron Solari",
+            "Bandlepipes"
+          ],
+          "late": [
+            "Redemption",
+            "Frozen Heart",
+            "Mikael's Blessing"
+          ]
+        }
+      }
+    },
+    "Belveth": {
+      "jungle": {
+        "start": [
+          "Gustwalker Hatchling",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "6672",
+          "3153",
+          "6333"
+        ],
+        "late": [
+          "3302",
+          "6665",
+          "3026"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Kraken Slayer",
+            "Blade of The Ruined King",
+            "Death's Dance"
+          ],
+          "late": [
+            "Terminus",
+            "Jak'Sho, The Protean",
+            "Guardian Angel"
+          ]
+        }
+      }
+    },
+    "Blitzcrank": {
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3009",
+        "core": [
+          "3190",
+          "3050",
+          "2524"
+        ],
+        "late": [
+          "3109",
+          "2065",
+          "3075"
+        ],
+        "names": {
+          "boots": "Boots of Swiftness",
+          "core": [
+            "Locket of the Iron Solari",
+            "Zeke's Convergence",
+            "Bandlepipes"
+          ],
+          "late": [
+            "Knight's Vow",
+            "Shurelya's Battlesong",
+            "Thornmail"
+          ]
+        }
+      }
+    },
+    "Brand": {
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "3116",
+          "6653",
+          "3165"
+        ],
+        "late": [
+          "3157",
+          "3089",
+          "3135"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Rylai's Crystal Scepter",
+            "Liandry's Torment",
+            "Morellonomicon"
+          ],
+          "late": [
+            "Zhonya's Hourglass",
+            "Rabadon's Deathcap",
+            "Void Staff"
+          ]
+        }
+      },
+      "jungle": {
+        "start": [
+          "Scorchclaw Pup",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "6653",
+          "3116",
+          "3157"
+        ],
+        "late": [
+          "4645",
+          "3089",
+          "8010"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Liandry's Torment",
+            "Rylai's Crystal Scepter",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Shadowflame",
+            "Rabadon's Deathcap",
+            "Bloodletter's Curse"
+          ]
+        }
+      },
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "2503",
+          "3116",
+          "6653"
+        ],
+        "late": [
+          "3157",
+          "3089",
+          "4646"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Blackfire Torch",
+            "Rylai's Crystal Scepter",
+            "Liandry's Torment"
+          ],
+          "late": [
+            "Zhonya's Hourglass",
+            "Rabadon's Deathcap",
+            "Stormsurge"
+          ]
+        }
+      }
+    },
+    "Braum": {
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3190",
+          "3109",
+          "2524"
+        ],
+        "late": [
+          "3075",
+          "3143",
+          "2504"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Locket of the Iron Solari",
+            "Knight's Vow",
+            "Bandlepipes"
+          ],
+          "late": [
+            "Thornmail",
+            "Randuin's Omen",
+            "Kaenic Rookern"
+          ]
+        }
+      }
+    },
+    "Briar": {
+      "jungle": {
+        "start": [
+          "Scorchclaw Pup"
+        ],
+        "boots": "3047",
+        "core": [
+          "6676",
+          "3748",
+          "3036"
+        ],
+        "late": [
+          "6333",
+          "3026",
+          "3031"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "The Collector",
+            "Titanic Hydra",
+            "Lord Dominik's Regards"
+          ],
+          "late": [
+            "Death's Dance",
+            "Guardian Angel",
+            "Infinity Edge"
+          ]
+        }
+      }
+    },
+    "Caitlyn": {
+      "adc": {
+        "start": [
+          "Doran's Bow",
+          "Health Potion"
+        ],
+        "boots": "3006",
+        "core": [
+          "2523",
+          "3031",
+          "3094"
+        ],
+        "late": [
+          "3036",
+          "3026",
+          "3072"
+        ],
+        "names": {
+          "boots": "Berserker's Greaves",
+          "core": [
+            "Hexoptics C44",
+            "Infinity Edge",
+            "Rapid Firecannon"
+          ],
+          "late": [
+            "Lord Dominik's Regards",
+            "Guardian Angel",
+            "Bloodthirster"
+          ]
+        }
+      }
+    },
+    "Camille": {
+      "top": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3078",
+          "3074",
+          "6333"
+        ],
+        "late": [
+          "3053",
+          "3026",
+          "4401"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Trinity Force",
+            "Ravenous Hydra",
+            "Death's Dance"
+          ],
+          "late": [
+            "Sterak's Gage",
+            "Guardian Angel",
+            "Force of Nature"
+          ]
+        }
+      },
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "6692",
+          "6610",
+          "3053"
+        ],
+        "late": [
+          "3026",
+          "6333",
+          "6699"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Eclipse",
+            "Sundered Sky",
+            "Sterak's Gage"
+          ],
+          "late": [
+            "Guardian Angel",
+            "Death's Dance",
+            "Voltaic Cyclosword"
+          ]
+        }
+      }
+    },
+    "Cassiopeia": {
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion",
+          "Health Potion"
+        ],
+        "boots": "3009",
+        "core": [
+          "6657",
+          "3003",
+          "3116"
+        ],
+        "late": [
+          "3157",
+          "3089",
+          "6653"
+        ],
+        "names": {
+          "boots": "Boots of Swiftness",
+          "core": [
+            "Rod of Ages",
+            "Archangel's Staff",
+            "Rylai's Crystal Scepter"
+          ],
+          "late": [
+            "Zhonya's Hourglass",
+            "Rabadon's Deathcap",
+            "Liandry's Torment"
+          ]
+        }
+      },
+      "top": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion",
+          "Health Potion"
+        ],
+        "boots": "3009",
+        "core": [
+          "6657",
+          "3003",
+          "3116"
+        ],
+        "late": [
+          "6653",
+          "3157",
+          "3089"
+        ],
+        "names": {
+          "boots": "Boots of Swiftness",
+          "core": [
+            "Rod of Ages",
+            "Archangel's Staff",
+            "Rylai's Crystal Scepter"
+          ],
+          "late": [
+            "Liandry's Torment",
+            "Zhonya's Hourglass",
+            "Rabadon's Deathcap"
+          ]
+        }
+      }
+    },
+    "Chogath": {
+      "top": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3152",
+          "4633",
+          "3742"
+        ],
+        "late": [
+          "6665",
+          "3075",
+          "2504"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Hextech Rocketbelt",
+            "Riftmaker",
+            "Dead Man's Plate"
+          ],
+          "late": [
+            "Jak'Sho, The Protean",
+            "Thornmail",
+            "Kaenic Rookern"
+          ]
+        }
+      }
+    },
+    "Corki": {
+      "mid": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3111",
+        "core": [
+          "3508",
+          "6676",
+          "3031"
+        ],
+        "late": [
+          "3036",
+          "3026",
+          "3072"
+        ],
+        "names": {
+          "boots": "Mercury's Treads",
+          "core": [
+            "Essence Reaver",
+            "The Collector",
+            "Infinity Edge"
+          ],
+          "late": [
+            "Lord Dominik's Regards",
+            "Guardian Angel",
+            "Bloodthirster"
+          ]
+        }
+      },
+      "adc": {
+        "start": [
+          "Doran's Bow",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3508",
+          "6676",
+          "3031"
+        ],
+        "late": [
+          "3036",
+          "3026",
+          "3072"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Essence Reaver",
+            "The Collector",
+            "Infinity Edge"
+          ],
+          "late": [
+            "Lord Dominik's Regards",
+            "Guardian Angel",
+            "Bloodthirster"
+          ]
+        }
+      }
+    },
+    "Darius": {
+      "top": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3142",
+          "3742",
+          "6333"
+        ],
+        "late": [
+          "4401",
+          "3053",
+          "3026"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Youmuu's Ghostblade",
+            "Dead Man's Plate",
+            "Death's Dance"
+          ],
+          "late": [
+            "Force of Nature",
+            "Sterak's Gage",
+            "Guardian Angel"
+          ]
+        }
+      }
+    },
+    "Diana": {
+      "jungle": {
+        "start": [
+          "Scorchclaw Pup",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "2510",
+          "4633",
+          "3157"
+        ],
+        "late": [
+          "3089",
+          "3135",
+          "4645"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Dusk and Dawn",
+            "Riftmaker",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Void Staff",
+            "Shadowflame"
+          ]
+        }
+      },
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "4646",
+          "4645",
+          "3157"
+        ],
+        "late": [
+          "3089",
+          "3135",
+          "3100"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Stormsurge",
+            "Shadowflame",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Void Staff",
+            "Lich Bane"
+          ]
+        }
+      }
+    },
+    "DrMundo": {
+      "top": {
+        "start": [
+          "Doran's Shield",
+          "Health Potion"
+        ],
+        "boots": "3009",
+        "core": [
+          "3083",
+          "3084",
+          "3748"
+        ],
+        "late": [
+          "3065",
+          "2501",
+          "3143"
+        ],
+        "names": {
+          "boots": "Boots of Swiftness",
+          "core": [
+            "Warmog's Armor",
+            "Heartsteel",
+            "Titanic Hydra"
+          ],
+          "late": [
+            "Spirit Visage",
+            "Overlord's Bloodmail",
+            "Randuin's Omen"
+          ]
+        }
+      },
+      "jungle": {
+        "start": [
+          "Gustwalker Hatchling"
+        ],
+        "boots": "3009",
+        "core": [
+          "3084",
+          "3742",
+          "3065"
+        ],
+        "late": [
+          "3075",
+          "3748",
+          "2502"
+        ],
+        "names": {
+          "boots": "Boots of Swiftness",
+          "core": [
+            "Heartsteel",
+            "Dead Man's Plate",
+            "Spirit Visage"
+          ],
+          "late": [
+            "Thornmail",
+            "Titanic Hydra",
+            "Unending Despair"
+          ]
+        }
+      }
+    },
+    "Draven": {
+      "adc": {
+        "start": [
+          "Doran's Bow",
+          "Health Potion"
+        ],
+        "boots": "3006",
+        "core": [
+          "6697",
+          "2523",
+          "3031"
+        ],
+        "late": [
+          "3036",
+          "6673",
+          "3026"
+        ],
+        "names": {
+          "boots": "Berserker's Greaves",
+          "bootsOpggTop": "Gluttonous Greaves",
+          "core": [
+            "Hubris",
+            "Hexoptics C44",
+            "Infinity Edge"
+          ],
+          "late": [
+            "Lord Dominik's Regards",
+            "Immortal Shieldbow",
+            "Guardian Angel"
+          ]
+        }
+      }
+    },
+    "Ekko": {
+      "jungle": {
+        "start": [
+          "Scorchclaw Pup",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "2510",
+          "4645",
+          "3089"
+        ],
+        "late": [
+          "3157",
+          "3135",
+          "4646"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Dusk and Dawn",
+            "Shadowflame",
+            "Rabadon's Deathcap"
+          ],
+          "late": [
+            "Zhonya's Hourglass",
+            "Void Staff",
+            "Stormsurge"
+          ]
+        }
+      },
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "2510",
+          "4645",
+          "3089"
+        ],
+        "late": [
+          "3157",
+          "3135",
+          "4646"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Dusk and Dawn",
+            "Shadowflame",
+            "Rabadon's Deathcap"
+          ],
+          "late": [
+            "Zhonya's Hourglass",
+            "Void Staff",
+            "Stormsurge"
+          ]
+        }
+      }
+    },
+    "Elise": {
+      "jungle": {
+        "start": [
+          "Scorchclaw Pup",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "3100",
+          "4645",
+          "3157"
+        ],
+        "late": [
+          "3089",
+          "3135",
+          "3102"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Lich Bane",
+            "Shadowflame",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Void Staff",
+            "Banshee's Veil"
+          ]
+        }
+      }
+    },
+    "Evelynn": {
+      "jungle": {
+        "start": [
+          "Gustwalker Hatchling",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "3100",
+          "3089",
+          "3135"
+        ],
+        "late": [
+          "3102",
+          "4645",
+          "4646"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Lich Bane",
+            "Rabadon's Deathcap",
+            "Void Staff"
+          ],
+          "late": [
+            "Banshee's Veil",
+            "Shadowflame",
+            "Stormsurge"
+          ]
+        }
+      }
+    },
+    "Ezreal": {
+      "adc": {
+        "start": [
+          "Doran's Bow",
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "3078",
+          "3004",
+          "3161"
+        ],
+        "late": [
+          "6694",
+          "2517",
+          "3026"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Trinity Force",
+            "Manamune",
+            "Spear of Shojin"
+          ],
+          "late": [
+            "Serylda's Grudge",
+            "Endless Hunger",
+            "Guardian Angel"
+          ]
+        }
+      }
+    },
+    "Fiddlesticks": {
+      "jungle": {
+        "start": [
+          "Gustwalker Hatchling"
+        ],
+        "boots": "3020",
+        "core": [
+          "3152",
+          "4645",
+          "3157"
+        ],
+        "late": [
+          "3089",
+          "3135",
+          "4646"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Hextech Rocketbelt",
+            "Shadowflame",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Void Staff",
+            "Stormsurge"
+          ]
+        }
+      }
+    },
+    "Fiora": {
+      "top": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3074",
+          "3078",
+          "6333"
+        ],
+        "late": [
+          "2517",
+          "3026",
+          "3181"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Ravenous Hydra",
+            "Trinity Force",
+            "Death's Dance"
+          ],
+          "late": [
+            "Endless Hunger",
+            "Guardian Angel",
+            "Hullbreaker"
+          ]
+        }
+      }
+    },
+    "Fizz": {
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "3100",
+          "3157",
+          "4645"
+        ],
+        "late": [
+          "3089",
+          "3135",
+          "4646"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Lich Bane",
+            "Zhonya's Hourglass",
+            "Shadowflame"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Void Staff",
+            "Stormsurge"
+          ]
+        }
+      }
+    },
+    "Galio": {
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3111",
+        "core": [
+          "3152",
+          "4005",
+          "3157"
+        ],
+        "late": [
+          "3075",
+          "3089",
+          "3110"
+        ],
+        "names": {
+          "boots": "Mercury's Treads",
+          "core": [
+            "Hextech Rocketbelt",
+            "Imperial Mandate",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Thornmail",
+            "Rabadon's Deathcap",
+            "Frozen Heart"
+          ]
+        }
+      },
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3190",
+          "4005",
+          "3075"
+        ],
+        "late": [
+          "3109",
+          "3110",
+          "3143"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Locket of the Iron Solari",
+            "Imperial Mandate",
+            "Thornmail"
+          ],
+          "late": [
+            "Knight's Vow",
+            "Frozen Heart",
+            "Randuin's Omen"
+          ]
+        }
+      }
+    },
+    "Gangplank": {
+      "top": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3508",
+          "6676",
+          "3031"
+        ],
+        "late": [
+          "3036",
+          "6699",
+          "3142"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Essence Reaver",
+            "The Collector",
+            "Infinity Edge"
+          ],
+          "late": [
+            "Lord Dominik's Regards",
+            "Voltaic Cyclosword",
+            "Youmuu's Ghostblade"
+          ]
+        }
+      }
+    },
+    "Garen": {
+      "top": {
+        "start": [
+          "Doran's Shield",
+          "Health Potion"
+        ],
+        "boots": "3006",
+        "core": [
+          "6631",
+          "3046",
+          "3033"
+        ],
+        "late": [
+          "3742",
+          "4401",
+          "3142"
+        ],
+        "names": {
+          "boots": "Berserker's Greaves",
+          "core": [
+            "Stridebreaker",
+            "Phantom Dancer",
+            "Mortal Reminder"
+          ],
+          "late": [
+            "Dead Man's Plate",
+            "Force of Nature",
+            "Youmuu's Ghostblade"
+          ]
+        }
+      }
+    },
+    "Gnar": {
+      "top": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3078",
+          "3071",
+          "3053"
+        ],
+        "late": [
+          "3143",
+          "6665",
+          "3075"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Trinity Force",
+            "Black Cleaver",
+            "Sterak's Gage"
+          ],
+          "late": [
+            "Randuin's Omen",
+            "Jak'Sho, The Protean",
+            "Thornmail"
+          ]
+        }
+      }
+    },
+    "Gragas": {
+      "top": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "6657",
+          "3119",
+          "4629"
+        ],
+        "late": [
+          "3157",
+          "3089",
+          "4646"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Rod of Ages",
+            "Winter's Approach",
+            "Cosmic Drive"
+          ],
+          "late": [
+            "Zhonya's Hourglass",
+            "Rabadon's Deathcap",
+            "Stormsurge"
+          ]
+        }
+      },
+      "jungle": {
+        "start": [
+          "Gustwalker Hatchling",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "3100",
+          "4645",
+          "3157"
+        ],
+        "late": [
+          "3089",
+          "3135",
+          "3152"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Lich Bane",
+            "Shadowflame",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Void Staff",
+            "Hextech Rocketbelt"
+          ]
+        }
+      },
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "3100",
+          "4645",
+          "3089"
+        ],
+        "late": [
+          "3157",
+          "3135",
+          "4629"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Lich Bane",
+            "Shadowflame",
+            "Rabadon's Deathcap"
+          ],
+          "late": [
+            "Zhonya's Hourglass",
+            "Void Staff",
+            "Cosmic Drive"
+          ]
+        }
+      },
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "4005",
+          "3152",
+          "3157"
+        ],
+        "late": [
+          "3089",
+          "3165",
+          "3065"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Imperial Mandate",
+            "Hextech Rocketbelt",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Morellonomicon",
+            "Spirit Visage"
+          ]
+        }
+      }
+    },
+    "Graves": {
+      "jungle": {
+        "start": [
+          "Scorchclaw Pup",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "6697",
+          "6676",
+          "3036"
+        ],
+        "late": [
+          "6673",
+          "3026",
+          "3072"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Hubris",
+            "The Collector",
+            "Lord Dominik's Regards"
+          ],
+          "late": [
+            "Immortal Shieldbow",
+            "Guardian Angel",
+            "Bloodthirster"
+          ]
+        }
+      }
+    },
+    "Gwen": {
+      "top": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "2510",
+          "4645",
+          "3089"
+        ],
+        "late": [
+          "3157",
+          "3135",
+          "4646"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Dusk and Dawn",
+            "Shadowflame",
+            "Rabadon's Deathcap"
+          ],
+          "late": [
+            "Zhonya's Hourglass",
+            "Void Staff",
+            "Stormsurge"
+          ]
+        }
+      },
+      "jungle": {
+        "start": [
+          "Scorchclaw Pup"
+        ],
+        "boots": "3020",
+        "core": [
+          "2510",
+          "4645",
+          "3089"
+        ],
+        "late": [
+          "3135",
+          "3157",
+          "4646"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Dusk and Dawn",
+            "Shadowflame",
+            "Rabadon's Deathcap"
+          ],
+          "late": [
+            "Void Staff",
+            "Zhonya's Hourglass",
+            "Stormsurge"
+          ]
+        }
+      }
+    },
+    "Hecarim": {
+      "jungle": {
+        "start": [
+          "Gustwalker Hatchling"
+        ],
+        "boots": "3158",
+        "core": [
+          "3161",
+          "6333",
+          "2517"
+        ],
+        "late": [
+          "3156",
+          "3053",
+          "3142"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Spear of Shojin",
+            "Death's Dance",
+            "Endless Hunger"
+          ],
+          "late": [
+            "Maw of Malmortius",
+            "Sterak's Gage",
+            "Youmuu's Ghostblade"
+          ]
+        }
+      }
+    },
+    "Heimerdinger": {
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "3116",
+          "6653",
+          "3157"
+        ],
+        "late": [
+          "3089",
+          "3102",
+          "3118"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Rylai's Crystal Scepter",
+            "Liandry's Torment",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Banshee's Veil",
+            "Malignance"
+          ]
+        }
+      },
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "2503",
+          "6653",
+          "3157"
+        ],
+        "late": [
+          "3089",
+          "3135",
+          "3102"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Blackfire Torch",
+            "Liandry's Torment",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Void Staff",
+            "Banshee's Veil"
+          ]
+        }
+      },
+      "top": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "2503",
+          "6653",
+          "3157"
+        ],
+        "late": [
+          "3089",
+          "3135",
+          "4646"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Blackfire Torch",
+            "Liandry's Torment",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Void Staff",
+            "Stormsurge"
+          ]
+        }
+      }
+    },
+    "Hwei": {
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "2503",
+          "6653",
+          "4645"
+        ],
+        "late": [
+          "3089",
+          "3157",
+          "4629"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Blackfire Torch",
+            "Liandry's Torment",
+            "Shadowflame"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Zhonya's Hourglass",
+            "Cosmic Drive"
+          ]
+        }
+      },
+      "support": {
+        "start": [
+          "Health Potion",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "2503",
+          "6653",
+          "4645"
+        ],
+        "late": [
+          "3165",
+          "3089",
+          "3157"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Blackfire Torch",
+            "Liandry's Torment",
+            "Shadowflame"
+          ],
+          "late": [
+            "Morellonomicon",
+            "Rabadon's Deathcap",
+            "Zhonya's Hourglass"
+          ]
+        }
+      }
+    },
+    "Illaoi": {
+      "top": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3071",
+          "6662",
+          "3053"
+        ],
+        "late": [
+          "3065",
+          "6333",
+          "3026"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Black Cleaver",
+            "Iceborn Gauntlet",
+            "Sterak's Gage"
+          ],
+          "late": [
+            "Spirit Visage",
+            "Death's Dance",
+            "Guardian Angel"
+          ]
+        }
+      }
+    },
+    "Irelia": {
+      "top": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3153",
+          "3181",
+          "3091"
+        ],
+        "late": [
+          "6333",
+          "3026",
+          "3143"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Blade of The Ruined King",
+            "Hullbreaker",
+            "Wit's End"
+          ],
+          "late": [
+            "Death's Dance",
+            "Guardian Angel",
+            "Randuin's Omen"
+          ]
+        }
+      },
+      "mid": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3111",
+        "core": [
+          "3153",
+          "6672",
+          "6333"
+        ],
+        "late": [
+          "3026",
+          "2517",
+          "3053"
+        ],
+        "names": {
+          "boots": "Mercury's Treads",
+          "core": [
+            "Blade of The Ruined King",
+            "Kraken Slayer",
+            "Death's Dance"
+          ],
+          "late": [
+            "Guardian Angel",
+            "Endless Hunger",
+            "Sterak's Gage"
+          ]
+        }
+      }
+    },
+    "Ivern": {
+      "jungle": {
+        "start": [
+          "Gustwalker Hatchling"
+        ],
+        "boots": "3158",
+        "core": [
+          "3107",
+          "6617",
+          "3504"
+        ],
+        "late": [
+          "6621",
+          "2065",
+          "3089"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Redemption",
+            "Moonstone Renewer",
+            "Ardent Censer"
+          ],
+          "late": [
+            "Dawncore",
+            "Shurelya's Battlesong",
+            "Rabadon's Deathcap"
+          ]
+        }
+      }
+    },
+    "Janna": {
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3009",
+        "core": [
+          "6617",
+          "3107",
+          "2065"
+        ],
+        "late": [
+          "6621",
+          "6620",
+          "3190"
+        ],
+        "names": {
+          "boots": "Boots of Swiftness",
+          "core": [
+            "Moonstone Renewer",
+            "Redemption",
+            "Shurelya's Battlesong"
+          ],
+          "late": [
+            "Dawncore",
+            "Echoes of Helia",
+            "Locket of the Iron Solari"
+          ]
+        }
+      }
+    },
+    "JarvanIV": {
+      "jungle": {
+        "start": [
+          "Scorchclaw Pup",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "6698",
+          "6699",
+          "2520"
+        ],
+        "late": [
+          "3026",
+          "6333",
+          "3142"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Profane Hydra",
+            "Voltaic Cyclosword",
+            "Bastionbreaker"
+          ],
+          "late": [
+            "Guardian Angel",
+            "Death's Dance",
+            "Youmuu's Ghostblade"
+          ]
+        }
+      }
+    },
+    "Jax": {
+      "top": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3078",
+          "6610",
+          "3157"
+        ],
+        "late": [
+          "6333",
+          "3053",
+          "3026"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Trinity Force",
+            "Sundered Sky",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Death's Dance",
+            "Sterak's Gage",
+            "Guardian Angel"
+          ]
+        }
+      },
+      "jungle": {
+        "start": [
+          "Gustwalker Hatchling",
+          "Health Potion"
+        ],
+        "boots": "3111",
+        "core": [
+          "3078",
+          "6610",
+          "3157"
+        ],
+        "late": [
+          "6333",
+          "3026",
+          "3143"
+        ],
+        "names": {
+          "boots": "Mercury's Treads",
+          "core": [
+            "Trinity Force",
+            "Sundered Sky",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Death's Dance",
+            "Guardian Angel",
+            "Randuin's Omen"
+          ]
+        }
+      }
+    },
+    "Jayce": {
+      "top": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "3142",
+          "3004",
+          "6699"
+        ],
+        "late": [
+          "6694",
+          "3814",
+          "3026"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Youmuu's Ghostblade",
+            "Manamune",
+            "Voltaic Cyclosword"
+          ],
+          "late": [
+            "Serylda's Grudge",
+            "Edge of Night",
+            "Guardian Angel"
+          ]
+        }
+      },
+      "mid": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "3142",
+          "3004",
+          "6699"
+        ],
+        "late": [
+          "6694",
+          "3814",
+          "3026"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Youmuu's Ghostblade",
+            "Manamune",
+            "Voltaic Cyclosword"
+          ],
+          "late": [
+            "Serylda's Grudge",
+            "Edge of Night",
+            "Guardian Angel"
+          ]
+        }
+      }
+    },
+    "Jhin": {
+      "adc": {
+        "start": [
+          "Doran's Helm",
+          "Health Potion"
+        ],
+        "boots": "3009",
+        "core": [
+          "6697",
+          "6676",
+          "3031"
+        ],
+        "late": [
+          "3036",
+          "3094",
+          "3026"
+        ],
+        "names": {
+          "boots": "Boots of Swiftness",
+          "core": [
+            "Hubris",
+            "The Collector",
+            "Infinity Edge"
+          ],
+          "late": [
+            "Lord Dominik's Regards",
+            "Rapid Firecannon",
+            "Guardian Angel"
+          ]
+        }
+      }
+    },
+    "Jinx": {
+      "adc": {
+        "start": [
+          "Doran's Bow",
+          "Health Potion"
+        ],
+        "boots": "3006",
+        "core": [
+          "2523",
+          "3085",
+          "3031"
+        ],
+        "late": [
+          "3036",
+          "3026",
+          "3072"
+        ],
+        "names": {
+          "boots": "Berserker's Greaves",
+          "core": [
+            "Hexoptics C44",
+            "Runaan's Hurricane",
+            "Infinity Edge"
+          ],
+          "late": [
+            "Lord Dominik's Regards",
+            "Guardian Angel",
+            "Bloodthirster"
+          ]
+        }
+      }
+    },
+    "KSante": {
+      "top": {
+        "start": [
+          "Doran's Helm",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "6662",
+          "2502",
+          "6665"
+        ],
+        "late": [
+          "3143",
+          "3075",
+          "3050"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Iceborn Gauntlet",
+            "Unending Despair",
+            "Jak'Sho, The Protean"
+          ],
+          "late": [
+            "Randuin's Omen",
+            "Thornmail",
+            "Zeke's Convergence"
+          ]
+        }
+      }
+    },
+    "Kaisa": {
+      "adc": {
+        "start": [
+          "Doran's Bow",
+          "Health Potion"
+        ],
+        "boots": "3006",
+        "core": [
+          "6672",
+          "3124",
+          "3302"
+        ],
+        "late": [
+          "3157",
+          "3089",
+          "3026"
+        ],
+        "names": {
+          "boots": "Berserker's Greaves",
+          "core": [
+            "Kraken Slayer",
+            "Guinsoo's Rageblade",
+            "Terminus"
+          ],
+          "late": [
+            "Zhonya's Hourglass",
+            "Rabadon's Deathcap",
+            "Guardian Angel"
+          ]
+        }
+      }
+    },
+    "Kalista": {
+      "adc": {
+        "start": [
+          "Doran's Bow",
+          "Health Potion",
+          "Health Potion"
+        ],
+        "boots": "3006",
+        "core": [
+          "3087",
+          "3124",
+          "3302"
+        ],
+        "late": [
+          "6665",
+          "3143",
+          "3026"
+        ],
+        "names": {
+          "boots": "Berserker's Greaves",
+          "bootsOpggTop": "Gluttonous Greaves",
+          "core": [
+            "Statikk Shiv",
+            "Guinsoo's Rageblade",
+            "Terminus"
+          ],
+          "late": [
+            "Jak'Sho, The Protean",
+            "Randuin's Omen",
+            "Guardian Angel"
+          ]
+        }
+      },
+      "top": {
+        "start": [
+          "Doran's Bow",
+          "Health Potion"
+        ],
+        "boots": "3006",
+        "core": [
+          "3087",
+          "3124",
+          "3302"
+        ],
+        "late": [
+          "6665",
+          "3143",
+          "3072"
+        ],
+        "names": {
+          "boots": "Berserker's Greaves",
+          "core": [
+            "Statikk Shiv",
+            "Guinsoo's Rageblade",
+            "Terminus"
+          ],
+          "late": [
+            "Jak'Sho, The Protean",
+            "Randuin's Omen",
+            "Bloodthirster"
+          ]
+        }
+      }
+    },
+    "Karma": {
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "6620",
+          "6617",
+          "3107"
+        ],
+        "late": [
+          "2065",
+          "3504",
+          "3222"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Echoes of Helia",
+            "Moonstone Renewer",
+            "Redemption"
+          ],
+          "late": [
+            "Shurelya's Battlesong",
+            "Ardent Censer",
+            "Mikael's Blessing"
+          ]
+        }
+      },
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "3118",
+          "4628",
+          "4645"
+        ],
+        "late": [
+          "3089",
+          "6617",
+          "4629"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Malignance",
+            "Horizon Focus",
+            "Shadowflame"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Moonstone Renewer",
+            "Cosmic Drive"
+          ]
+        }
+      },
+      "top": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion",
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "3118",
+          "4629",
+          "6653"
+        ],
+        "late": [
+          "3065",
+          "3089",
+          "3110"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Malignance",
+            "Cosmic Drive",
+            "Liandry's Torment"
+          ],
+          "late": [
+            "Spirit Visage",
+            "Rabadon's Deathcap",
+            "Frozen Heart"
+          ]
+        }
+      }
+    },
+    "Karthus": {
+      "jungle": {
+        "start": [
+          "Scorchclaw Pup"
+        ],
+        "boots": "3020",
+        "core": [
+          "2503",
+          "4645",
+          "3089"
+        ],
+        "late": [
+          "3135",
+          "3157",
+          "4646"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Blackfire Torch",
+            "Shadowflame",
+            "Rabadon's Deathcap"
+          ],
+          "late": [
+            "Void Staff",
+            "Zhonya's Hourglass",
+            "Stormsurge"
+          ]
+        }
+      },
+      "adc": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "2503",
+          "4645",
+          "3089"
+        ],
+        "late": [
+          "3135",
+          "3157",
+          "6653"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Blackfire Torch",
+            "Shadowflame",
+            "Rabadon's Deathcap"
+          ],
+          "late": [
+            "Void Staff",
+            "Zhonya's Hourglass",
+            "Liandry's Torment"
+          ]
+        }
+      }
+    },
+    "Kassadin": {
+      "mid": {
+        "start": [
+          "Dark Seal",
+          "Refillable Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "6657",
+          "3003",
+          "3118"
+        ],
+        "late": [
+          "3157",
+          "3089",
+          "3135"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Rod of Ages",
+            "Archangel's Staff",
+            "Malignance"
+          ],
+          "late": [
+            "Zhonya's Hourglass",
+            "Rabadon's Deathcap",
+            "Void Staff"
+          ]
+        }
+      }
+    },
+    "Katarina": {
+      "mid": {
+        "start": [
+          "Dark Seal",
+          "Refillable Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "6672",
+          "3153",
+          "3302"
+        ],
+        "late": [
+          "3089",
+          "3135",
+          "3102"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Kraken Slayer",
+            "Blade of The Ruined King",
+            "Terminus"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Void Staff",
+            "Banshee's Veil"
+          ]
+        }
+      }
+    },
+    "Kayle": {
+      "top": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3009",
+        "core": [
+          "3115",
+          "2510",
+          "3089"
+        ],
+        "late": [
+          "4645",
+          "3135",
+          "3046"
+        ],
+        "names": {
+          "boots": "Boots of Swiftness",
+          "core": [
+            "Nashor's Tooth",
+            "Dusk and Dawn",
+            "Rabadon's Deathcap"
+          ],
+          "late": [
+            "Shadowflame",
+            "Void Staff",
+            "Phantom Dancer"
+          ]
+        }
+      }
+    },
+    "Kayn": {
+      "jungle": {
+        "start": [
+          "Scorchclaw Pup",
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "6699",
+          "3071",
+          "6333"
+        ],
+        "late": [
+          "3814",
+          "3026",
+          "3142"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Voltaic Cyclosword",
+            "Black Cleaver",
+            "Death's Dance"
+          ],
+          "late": [
+            "Edge of Night",
+            "Guardian Angel",
+            "Youmuu's Ghostblade"
+          ]
+        }
+      }
+    },
+    "Kennen": {
+      "top": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "3152",
+          "4645",
+          "3157"
+        ],
+        "late": [
+          "3089",
+          "3135",
+          "4646"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Hextech Rocketbelt",
+            "Shadowflame",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Void Staff",
+            "Stormsurge"
+          ]
+        }
+      },
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "3152",
+          "4645",
+          "3157"
+        ],
+        "late": [
+          "3089",
+          "3135",
+          "3102"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Hextech Rocketbelt",
+            "Shadowflame",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Void Staff",
+            "Banshee's Veil"
+          ]
+        }
+      }
+    },
+    "Khazix": {
+      "jungle": {
+        "start": [
+          "Gustwalker Hatchling",
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "3179",
+          "6699",
+          "2520"
+        ],
+        "late": [
+          "6694",
+          "3026",
+          "3142"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Umbral Glaive",
+            "Voltaic Cyclosword",
+            "Bastionbreaker"
+          ],
+          "late": [
+            "Serylda's Grudge",
+            "Guardian Angel",
+            "Youmuu's Ghostblade"
+          ]
+        }
+      }
+    },
+    "Kindred": {
+      "jungle": {
+        "start": [
+          "Scorchclaw Pup",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "6672",
+          "6676",
+          "3036"
+        ],
+        "late": [
+          "3031",
+          "3026",
+          "3094"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Kraken Slayer",
+            "The Collector",
+            "Lord Dominik's Regards"
+          ],
+          "late": [
+            "Infinity Edge",
+            "Guardian Angel",
+            "Rapid Firecannon"
+          ]
+        }
+      }
+    },
+    "Kled": {
+      "top": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3748",
+          "3071",
+          "2501"
+        ],
+        "late": [
+          "3053",
+          "3026",
+          "2512"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Titanic Hydra",
+            "Black Cleaver",
+            "Overlord's Bloodmail"
+          ],
+          "late": [
+            "Sterak's Gage",
+            "Guardian Angel",
+            "Fiendhunter Bolts"
+          ]
+        }
+      }
+    },
+    "KogMaw": {
+      "adc": {
+        "start": [
+          "Doran's Bow",
+          "Health Potion"
+        ],
+        "boots": "3006",
+        "core": [
+          "3124",
+          "6675",
+          "3302"
+        ],
+        "late": [
+          "6665",
+          "3091",
+          "3153"
+        ],
+        "names": {
+          "boots": "Berserker's Greaves",
+          "core": [
+            "Guinsoo's Rageblade",
+            "Navori Flickerblade",
+            "Terminus"
+          ],
+          "late": [
+            "Jak'Sho, The Protean",
+            "Wit's End",
+            "Blade of The Ruined King"
+          ]
+        }
+      }
+    },
+    "Leblanc": {
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "6655",
+          "4645",
+          "3089"
+        ],
+        "late": [
+          "3157",
+          "3135",
+          "3102"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Luden's Echo",
+            "Shadowflame",
+            "Rabadon's Deathcap"
+          ],
+          "late": [
+            "Zhonya's Hourglass",
+            "Void Staff",
+            "Banshee's Veil"
+          ]
+        }
+      }
+    },
+    "LeeSin": {
+      "jungle": {
+        "start": [
+          "Scorchclaw Pup",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "6692",
+          "3071",
+          "6333"
+        ],
+        "late": [
+          "3026",
+          "3156",
+          "6695"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Eclipse",
+            "Black Cleaver",
+            "Death's Dance"
+          ],
+          "late": [
+            "Guardian Angel",
+            "Maw of Malmortius",
+            "Serpent's Fang"
+          ]
+        }
+      }
+    },
+    "Leona": {
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3190",
+          "3109",
+          "2524"
+        ],
+        "late": [
+          "3075",
+          "3110",
+          "2525"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Locket of the Iron Solari",
+            "Knight's Vow",
+            "Bandlepipes"
+          ],
+          "late": [
+            "Thornmail",
+            "Frozen Heart",
+            "Protoplasm Harness"
+          ]
+        }
+      }
+    },
+    "Lillia": {
+      "jungle": {
+        "start": [
+          "Gustwalker Hatchling",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "6653",
+          "4633",
+          "3157"
+        ],
+        "late": [
+          "3116",
+          "3089",
+          "4629"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Liandry's Torment",
+            "Riftmaker",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Rylai's Crystal Scepter",
+            "Rabadon's Deathcap",
+            "Cosmic Drive"
+          ]
+        }
+      },
+      "top": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3009",
+        "core": [
+          "2503",
+          "6653",
+          "3116"
+        ],
+        "late": [
+          "3157",
+          "3165",
+          "4633"
+        ],
+        "names": {
+          "boots": "Boots of Swiftness",
+          "core": [
+            "Blackfire Torch",
+            "Liandry's Torment",
+            "Rylai's Crystal Scepter"
+          ],
+          "late": [
+            "Zhonya's Hourglass",
+            "Morellonomicon",
+            "Riftmaker"
+          ]
+        }
+      }
+    },
+    "Lissandra": {
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "3118",
+          "4645",
+          "3157"
+        ],
+        "late": [
+          "3089",
+          "3135",
+          "3026"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Malignance",
+            "Shadowflame",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Void Staff",
+            "Guardian Angel"
+          ]
+        }
+      }
+    },
+    "Locke": {
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "3100",
+          "4645",
+          "3157"
+        ],
+        "late": [
+          "3089",
+          "3135",
+          "4646"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Lich Bane",
+            "Shadowflame",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Void Staff",
+            "Stormsurge"
+          ]
+        }
+      }
+    },
+    "Lucian": {
+      "adc": {
+        "start": [
+          "Doran's Bow",
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "3508",
+          "6675",
+          "3031"
+        ],
+        "late": [
+          "3036",
+          "3026",
+          "3072"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "bootsOpggTop": "Gluttonous Greaves",
+          "core": [
+            "Essence Reaver",
+            "Navori Flickerblade",
+            "Infinity Edge"
+          ],
+          "late": [
+            "Lord Dominik's Regards",
+            "Guardian Angel",
+            "Bloodthirster"
+          ]
+        }
+      },
+      "mid": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3006",
+        "core": [
+          "3508",
+          "6675",
+          "3031"
+        ],
+        "late": [
+          "3036",
+          "3026",
+          "6673"
+        ],
+        "names": {
+          "boots": "Berserker's Greaves",
+          "bootsOpggTop": "Gluttonous Greaves",
+          "core": [
+            "Essence Reaver",
+            "Navori Flickerblade",
+            "Infinity Edge"
+          ],
+          "late": [
+            "Lord Dominik's Regards",
+            "Guardian Angel",
+            "Immortal Shieldbow"
+          ]
+        }
+      }
+    },
+    "Lulu": {
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "3504",
+          "6617",
+          "2065"
+        ],
+        "late": [
+          "3107",
+          "3190",
+          "6621"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Ardent Censer",
+            "Moonstone Renewer",
+            "Shurelya's Battlesong"
+          ],
+          "late": [
+            "Redemption",
+            "Locket of the Iron Solari",
+            "Dawncore"
+          ]
+        }
+      }
+    },
+    "Lux": {
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "6655",
+          "4646",
+          "4645"
+        ],
+        "late": [
+          "3089",
+          "3135",
+          "3157"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Luden's Echo",
+            "Stormsurge",
+            "Shadowflame"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Void Staff",
+            "Zhonya's Hourglass"
+          ]
+        }
+      },
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "6655",
+          "4646",
+          "4645"
+        ],
+        "late": [
+          "3089",
+          "3157",
+          "3135"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Luden's Echo",
+            "Stormsurge",
+            "Shadowflame"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Zhonya's Hourglass",
+            "Void Staff"
+          ]
+        }
+      }
+    },
+    "Malphite": {
+      "top": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3068",
+          "3075",
+          "3110"
+        ],
+        "late": [
+          "6665",
+          "3143",
+          "4646"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Sunfire Aegis",
+            "Thornmail",
+            "Frozen Heart"
+          ],
+          "late": [
+            "Jak'Sho, The Protean",
+            "Randuin's Omen",
+            "Stormsurge"
+          ]
+        }
+      },
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "3118",
+          "4646",
+          "4645"
+        ],
+        "late": [
+          "3089",
+          "2525",
+          "2504"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Malignance",
+            "Stormsurge",
+            "Shadowflame"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Protoplasm Harness",
+            "Kaenic Rookern"
+          ]
+        }
+      },
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3118",
+          "4646",
+          "4645"
+        ],
+        "late": [
+          "3089",
+          "3157",
+          "3135"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Malignance",
+            "Stormsurge",
+            "Shadowflame"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Zhonya's Hourglass",
+            "Void Staff"
+          ]
+        }
+      }
+    },
+    "Malzahar": {
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "2503",
+          "6653",
+          "3116"
+        ],
+        "late": [
+          "3157",
+          "3089",
+          "3165"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Blackfire Torch",
+            "Liandry's Torment",
+            "Rylai's Crystal Scepter"
+          ],
+          "late": [
+            "Zhonya's Hourglass",
+            "Rabadon's Deathcap",
+            "Morellonomicon"
+          ]
+        }
+      }
+    },
+    "Maokai": {
+      "jungle": {
+        "start": [
+          "Scorchclaw Pup",
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "6653",
+          "4005",
+          "8010"
+        ],
+        "late": [
+          "3065",
+          "3143",
+          "4629"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Liandry's Torment",
+            "Imperial Mandate",
+            "Bloodletter's Curse"
+          ],
+          "late": [
+            "Spirit Visage",
+            "Randuin's Omen",
+            "Cosmic Drive"
+          ]
+        }
+      },
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3009",
+        "core": [
+          "3190",
+          "2524",
+          "3075"
+        ],
+        "late": [
+          "3065",
+          "3050",
+          "2502"
+        ],
+        "names": {
+          "boots": "Boots of Swiftness",
+          "core": [
+            "Locket of the Iron Solari",
+            "Bandlepipes",
+            "Thornmail"
+          ],
+          "late": [
+            "Spirit Visage",
+            "Zeke's Convergence",
+            "Unending Despair"
+          ]
+        }
+      },
+      "top": {
+        "start": [
+          "Doran's Shield",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "2502",
+          "3119",
+          "3065"
+        ],
+        "late": [
+          "3075",
+          "6665",
+          "3143"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Unending Despair",
+            "Winter's Approach",
+            "Spirit Visage"
+          ],
+          "late": [
+            "Thornmail",
+            "Jak'Sho, The Protean",
+            "Randuin's Omen"
+          ]
+        }
+      }
+    },
+    "MasterYi": {
+      "jungle": {
+        "start": [
+          "Gustwalker Hatchling",
+          "Health Potion"
+        ],
+        "boots": "3006",
+        "core": [
+          "6672",
+          "6676",
+          "3036"
+        ],
+        "late": [
+          "6333",
+          "3026",
+          "3073"
+        ],
+        "names": {
+          "boots": "Berserker's Greaves",
+          "core": [
+            "Kraken Slayer",
+            "The Collector",
+            "Lord Dominik's Regards"
+          ],
+          "late": [
+            "Death's Dance",
+            "Guardian Angel",
+            "Experimental Hexplate"
+          ]
+        }
+      }
+    },
+    "Mel": {
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "6655",
+          "4645",
+          "3157"
+        ],
+        "late": [
+          "3089",
+          "3135",
+          "4646"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Luden's Echo",
+            "Shadowflame",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Void Staff",
+            "Stormsurge"
+          ]
+        }
+      },
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "6655",
+          "4645",
+          "3157"
+        ],
+        "late": [
+          "3089",
+          "3135",
+          "3165"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Luden's Echo",
+            "Shadowflame",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Void Staff",
+            "Morellonomicon"
+          ]
+        }
+      }
+    },
+    "Milio": {
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "6620",
+          "6617",
+          "3504"
+        ],
+        "late": [
+          "3107",
+          "3222",
+          "3190"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Echoes of Helia",
+            "Moonstone Renewer",
+            "Ardent Censer"
+          ],
+          "late": [
+            "Redemption",
+            "Mikael's Blessing",
+            "Locket of the Iron Solari"
+          ]
+        }
+      }
+    },
+    "MissFortune": {
+      "adc": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3009",
+        "core": [
+          "6697",
+          "6676",
+          "3031"
+        ],
+        "late": [
+          "3036",
+          "3094",
+          "3026"
+        ],
+        "names": {
+          "boots": "Boots of Swiftness",
+          "core": [
+            "Hubris",
+            "The Collector",
+            "Infinity Edge"
+          ],
+          "late": [
+            "Lord Dominik's Regards",
+            "Rapid Firecannon",
+            "Guardian Angel"
+          ]
+        }
+      }
+    },
+    "MonkeyKing": {
+      "jungle": {
+        "start": [
+          "Scorchclaw Pup",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3078",
+          "3071",
+          "6333"
+        ],
+        "late": [
+          "3026",
+          "3053",
+          "3143"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Trinity Force",
+            "Black Cleaver",
+            "Death's Dance"
+          ],
+          "late": [
+            "Guardian Angel",
+            "Sterak's Gage",
+            "Randuin's Omen"
+          ]
+        }
+      },
+      "top": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3078",
+          "3071",
+          "6333"
+        ],
+        "late": [
+          "3156",
+          "3026",
+          "3142"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Trinity Force",
+            "Black Cleaver",
+            "Death's Dance"
+          ],
+          "late": [
+            "Maw of Malmortius",
+            "Guardian Angel",
+            "Youmuu's Ghostblade"
+          ]
+        }
+      }
+    },
+    "Mordekaiser": {
+      "top": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3116",
+          "4633",
+          "6653"
+        ],
+        "late": [
+          "3065",
+          "6665",
+          "3073"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Rylai's Crystal Scepter",
+            "Riftmaker",
+            "Liandry's Torment"
+          ],
+          "late": [
+            "Spirit Visage",
+            "Jak'Sho, The Protean",
+            "Experimental Hexplate"
+          ]
+        }
+      },
+      "jungle": {
+        "start": [
+          "Gustwalker Hatchling",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3116",
+          "4633",
+          "6653"
+        ],
+        "late": [
+          "3065",
+          "3143",
+          "3026"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Rylai's Crystal Scepter",
+            "Riftmaker",
+            "Liandry's Torment"
+          ],
+          "late": [
+            "Spirit Visage",
+            "Randuin's Omen",
+            "Guardian Angel"
+          ]
+        }
+      }
+    },
+    "Morgana": {
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "6653",
+          "3157",
+          "3116"
+        ],
+        "late": [
+          "3165",
+          "4005",
+          "3089"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Liandry's Torment",
+            "Zhonya's Hourglass",
+            "Rylai's Crystal Scepter"
+          ],
+          "late": [
+            "Morellonomicon",
+            "Imperial Mandate",
+            "Rabadon's Deathcap"
+          ]
+        }
+      },
+      "jungle": {
+        "start": [
+          "Scorchclaw Pup"
+        ],
+        "boots": "3020",
+        "core": [
+          "2503",
+          "6653",
+          "3157"
+        ],
+        "late": [
+          "3116",
+          "3089",
+          "4629"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Blackfire Torch",
+            "Liandry's Torment",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Rylai's Crystal Scepter",
+            "Rabadon's Deathcap",
+            "Cosmic Drive"
+          ]
+        }
+      }
+    },
+    "Naafiri": {
+      "mid": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "6699",
+          "6696",
+          "6694"
+        ],
+        "late": [
+          "3814",
+          "3026",
+          "3142"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "bootsOpggTop": "Gluttonous Greaves",
+          "core": [
+            "Voltaic Cyclosword",
+            "Axiom Arc",
+            "Serylda's Grudge"
+          ],
+          "late": [
+            "Edge of Night",
+            "Guardian Angel",
+            "Youmuu's Ghostblade"
+          ]
+        }
+      }
+    },
+    "Nami": {
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "6620",
+          "6617",
+          "3504"
+        ],
+        "late": [
+          "3107",
+          "2065",
+          "3222"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Echoes of Helia",
+            "Moonstone Renewer",
+            "Ardent Censer"
+          ],
+          "late": [
+            "Redemption",
+            "Shurelya's Battlesong",
+            "Mikael's Blessing"
+          ]
+        }
+      }
+    },
+    "Nasus": {
+      "top": {
+        "start": [
+          "Doran's Shield",
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "3078",
+          "3110",
+          "3065"
+        ],
+        "late": [
+          "6665",
+          "3075",
+          "3742"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Trinity Force",
+            "Frozen Heart",
+            "Spirit Visage"
+          ],
+          "late": [
+            "Jak'Sho, The Protean",
+            "Thornmail",
+            "Dead Man's Plate"
+          ]
+        }
+      }
+    },
+    "Nautilus": {
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3190",
+          "3109",
+          "2524"
+        ],
+        "late": [
+          "3075",
+          "3143",
+          "2504"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Locket of the Iron Solari",
+            "Knight's Vow",
+            "Bandlepipes"
+          ],
+          "late": [
+            "Thornmail",
+            "Randuin's Omen",
+            "Kaenic Rookern"
+          ]
+        }
+      }
+    },
+    "Neeko": {
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "3152",
+          "4646",
+          "3157"
+        ],
+        "late": [
+          "3089",
+          "3135",
+          "4645"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Hextech Rocketbelt",
+            "Stormsurge",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Void Staff",
+            "Shadowflame"
+          ]
+        }
+      },
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "3152",
+          "3157",
+          "4646"
+        ],
+        "late": [
+          "3165",
+          "3135",
+          "3089"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Hextech Rocketbelt",
+            "Zhonya's Hourglass",
+            "Stormsurge"
+          ],
+          "late": [
+            "Morellonomicon",
+            "Void Staff",
+            "Rabadon's Deathcap"
+          ]
+        }
+      }
+    },
+    "Nidalee": {
+      "jungle": {
+        "start": [
+          "Scorchclaw Pup",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "3100",
+          "3152",
+          "3157"
+        ],
+        "late": [
+          "3089",
+          "3135",
+          "4646"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Lich Bane",
+            "Hextech Rocketbelt",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Void Staff",
+            "Stormsurge"
+          ]
+        }
+      }
+    },
+    "Nilah": {
+      "adc": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "6676",
+          "3031",
+          "3036"
+        ],
+        "late": [
+          "6673",
+          "6333",
+          "3026"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "bootsOpggTop": "Gluttonous Greaves",
+          "core": [
+            "The Collector",
+            "Infinity Edge",
+            "Lord Dominik's Regards"
+          ],
+          "late": [
+            "Immortal Shieldbow",
+            "Death's Dance",
+            "Guardian Angel"
+          ]
+        }
+      }
+    },
+    "Nocturne": {
+      "jungle": {
+        "start": [
+          "Scorchclaw Pup",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "6698",
+          "6696",
+          "6699"
+        ],
+        "late": [
+          "3026",
+          "6333",
+          "6676"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Profane Hydra",
+            "Axiom Arc",
+            "Voltaic Cyclosword"
+          ],
+          "late": [
+            "Guardian Angel",
+            "Death's Dance",
+            "The Collector"
+          ]
+        }
+      }
+    },
+    "Nunu": {
+      "jungle": {
+        "start": [
+          "Gustwalker Hatchling"
+        ],
+        "boots": "3020",
+        "core": [
+          "6653",
+          "3742",
+          "3065"
+        ],
+        "late": [
+          "3157",
+          "3075",
+          "3100"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Liandry's Torment",
+            "Dead Man's Plate",
+            "Spirit Visage"
+          ],
+          "late": [
+            "Zhonya's Hourglass",
+            "Thornmail",
+            "Lich Bane"
+          ]
+        }
+      }
+    },
+    "Olaf": {
+      "top": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "6631",
+          "3073",
+          "6333"
+        ],
+        "late": [
+          "3053",
+          "2501",
+          "3742"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Stridebreaker",
+            "Experimental Hexplate",
+            "Death's Dance"
+          ],
+          "late": [
+            "Sterak's Gage",
+            "Overlord's Bloodmail",
+            "Dead Man's Plate"
+          ]
+        }
+      },
+      "jungle": {
+        "start": [
+          "Gustwalker Hatchling",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "6631",
+          "3073",
+          "6333"
+        ],
+        "late": [
+          "3053",
+          "3143",
+          "3142"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Stridebreaker",
+            "Experimental Hexplate",
+            "Death's Dance"
+          ],
+          "late": [
+            "Sterak's Gage",
+            "Randuin's Omen",
+            "Youmuu's Ghostblade"
+          ]
+        }
+      }
+    },
+    "Orianna": {
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "6655",
+          "4645",
+          "3157"
+        ],
+        "late": [
+          "3089",
+          "3135",
+          "4646"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Luden's Echo",
+            "Shadowflame",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Void Staff",
+            "Stormsurge"
+          ]
+        }
+      }
+    },
+    "Ornn": {
+      "top": {
+        "start": [
+          "Doran's Shield",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3068",
+          "3075",
+          "6665"
+        ],
+        "late": [
+          "3143",
+          "3110",
+          "2502"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Sunfire Aegis",
+            "Thornmail",
+            "Jak'Sho, The Protean"
+          ],
+          "late": [
+            "Randuin's Omen",
+            "Frozen Heart",
+            "Unending Despair"
+          ]
+        }
+      }
+    },
+    "Pantheon": {
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3179",
+          "6692",
+          "3071"
+        ],
+        "late": [
+          "6699",
+          "3142",
+          "3814"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Umbral Glaive",
+            "Eclipse",
+            "Black Cleaver"
+          ],
+          "late": [
+            "Voltaic Cyclosword",
+            "Youmuu's Ghostblade",
+            "Edge of Night"
+          ]
+        }
+      },
+      "top": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "6692",
+          "3071",
+          "6333"
+        ],
+        "late": [
+          "3814",
+          "3026",
+          "3142"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Eclipse",
+            "Black Cleaver",
+            "Death's Dance"
+          ],
+          "late": [
+            "Edge of Night",
+            "Guardian Angel",
+            "Youmuu's Ghostblade"
+          ]
+        }
+      },
+      "mid": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3111",
+        "core": [
+          "3142",
+          "6699",
+          "3814"
+        ],
+        "late": [
+          "6333",
+          "3026",
+          "6610"
+        ],
+        "names": {
+          "boots": "Mercury's Treads",
+          "core": [
+            "Youmuu's Ghostblade",
+            "Voltaic Cyclosword",
+            "Edge of Night"
+          ],
+          "late": [
+            "Death's Dance",
+            "Guardian Angel",
+            "Sundered Sky"
+          ]
+        }
+      },
+      "jungle": {
+        "start": [
+          "Scorchclaw Pup",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "6692",
+          "3071",
+          "6333"
+        ],
+        "late": [
+          "3026",
+          "3156",
+          "3142"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Eclipse",
+            "Black Cleaver",
+            "Death's Dance"
+          ],
+          "late": [
+            "Guardian Angel",
+            "Maw of Malmortius",
+            "Youmuu's Ghostblade"
+          ]
+        }
+      }
+    },
+    "Poppy": {
+      "jungle": {
+        "start": [
+          "Gustwalker Hatchling",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "6692",
+          "3742",
+          "4401"
+        ],
+        "late": [
+          "3075",
+          "3143",
+          "6694"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Eclipse",
+            "Dead Man's Plate",
+            "Force of Nature"
+          ],
+          "late": [
+            "Thornmail",
+            "Randuin's Omen",
+            "Serylda's Grudge"
+          ]
+        }
+      },
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3009",
+        "core": [
+          "3742",
+          "3190",
+          "2524"
+        ],
+        "late": [
+          "2525",
+          "4401",
+          "3075"
+        ],
+        "names": {
+          "boots": "Boots of Swiftness",
+          "core": [
+            "Dead Man's Plate",
+            "Locket of the Iron Solari",
+            "Bandlepipes"
+          ],
+          "late": [
+            "Protoplasm Harness",
+            "Force of Nature",
+            "Thornmail"
+          ]
+        }
+      },
+      "top": {
+        "start": [
+          "Doran's Shield",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "6610",
+          "3119",
+          "3075"
+        ],
+        "late": [
+          "3065",
+          "6665",
+          "3083"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Sundered Sky",
+            "Winter's Approach",
+            "Thornmail"
+          ],
+          "late": [
+            "Spirit Visage",
+            "Jak'Sho, The Protean",
+            "Warmog's Armor"
+          ]
+        }
+      }
+    },
+    "Pyke": {
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3009",
+        "core": [
+          "3179",
+          "3142",
+          "3814"
+        ],
+        "late": [
+          "6696",
+          "3026",
+          "2504"
+        ],
+        "names": {
+          "boots": "Boots of Swiftness",
+          "core": [
+            "Umbral Glaive",
+            "Youmuu's Ghostblade",
+            "Edge of Night"
+          ],
+          "late": [
+            "Axiom Arc",
+            "Guardian Angel",
+            "Kaenic Rookern"
+          ]
+        }
+      }
+    },
+    "Qiyana": {
+      "mid": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "6699",
+          "2520",
+          "6694"
+        ],
+        "late": [
+          "3814",
+          "3026",
+          "3142"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Voltaic Cyclosword",
+            "Bastionbreaker",
+            "Serylda's Grudge"
+          ],
+          "late": [
+            "Edge of Night",
+            "Guardian Angel",
+            "Youmuu's Ghostblade"
+          ]
+        }
+      },
+      "jungle": {
+        "start": [
+          "Gustwalker Hatchling",
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "6699",
+          "2520",
+          "3814"
+        ],
+        "late": [
+          "6694",
+          "3026",
+          "3142"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Voltaic Cyclosword",
+            "Bastionbreaker",
+            "Edge of Night"
+          ],
+          "late": [
+            "Serylda's Grudge",
+            "Guardian Angel",
+            "Youmuu's Ghostblade"
+          ]
+        }
+      }
+    },
+    "Quinn": {
+      "top": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3009",
+        "core": [
+          "6698",
+          "6676",
+          "3036"
+        ],
+        "late": [
+          "3031",
+          "3814",
+          "3026"
+        ],
+        "names": {
+          "boots": "Boots of Swiftness",
+          "core": [
+            "Profane Hydra",
+            "The Collector",
+            "Lord Dominik's Regards"
+          ],
+          "late": [
+            "Infinity Edge",
+            "Edge of Night",
+            "Guardian Angel"
+          ]
+        }
+      }
+    },
+    "Rakan": {
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "3050",
+          "3190",
+          "3109"
+        ],
+        "late": [
+          "3107",
+          "3075",
+          "2524"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Zeke's Convergence",
+            "Locket of the Iron Solari",
+            "Knight's Vow"
+          ],
+          "late": [
+            "Redemption",
+            "Thornmail",
+            "Bandlepipes"
+          ]
+        }
+      }
+    },
+    "Rammus": {
+      "jungle": {
+        "start": [
+          "Gustwalker Hatchling",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3075",
+          "3068",
+          "6665"
+        ],
+        "late": [
+          "2525",
+          "3143",
+          "3742"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Thornmail",
+            "Sunfire Aegis",
+            "Jak'Sho, The Protean"
+          ],
+          "late": [
+            "Protoplasm Harness",
+            "Randuin's Omen",
+            "Dead Man's Plate"
+          ]
+        }
+      }
+    },
+    "RekSai": {
+      "jungle": {
+        "start": [
+          "Scorchclaw Pup",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3748",
+          "3161",
+          "6333"
+        ],
+        "late": [
+          "3026",
+          "3065",
+          "3742"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Titanic Hydra",
+            "Spear of Shojin",
+            "Death's Dance"
+          ],
+          "late": [
+            "Guardian Angel",
+            "Spirit Visage",
+            "Dead Man's Plate"
+          ]
+        }
+      }
+    },
+    "Rell": {
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3050",
+          "3190",
+          "3109"
+        ],
+        "late": [
+          "2525",
+          "2524",
+          "3075"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Zeke's Convergence",
+            "Locket of the Iron Solari",
+            "Knight's Vow"
+          ],
+          "late": [
+            "Protoplasm Harness",
+            "Bandlepipes",
+            "Thornmail"
+          ]
+        }
+      }
+    },
+    "Renata": {
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "3190",
+          "2065",
+          "3107"
+        ],
+        "late": [
+          "3109",
+          "3222",
+          "2524"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Locket of the Iron Solari",
+            "Shurelya's Battlesong",
+            "Redemption"
+          ],
+          "late": [
+            "Knight's Vow",
+            "Mikael's Blessing",
+            "Bandlepipes"
+          ]
+        }
+      }
+    },
+    "Renekton": {
+      "top": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "6692",
+          "3071",
+          "6333"
+        ],
+        "late": [
+          "3053",
+          "3026",
+          "6631"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Eclipse",
+            "Black Cleaver",
+            "Death's Dance"
+          ],
+          "late": [
+            "Sterak's Gage",
+            "Guardian Angel",
+            "Stridebreaker"
+          ]
+        }
+      }
+    },
+    "Rengar": {
+      "jungle": {
+        "start": [
+          "Gustwalker Hatchling",
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "3179",
+          "6698",
+          "3036"
+        ],
+        "late": [
+          "3814",
+          "3031",
+          "2512"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Umbral Glaive",
+            "Profane Hydra",
+            "Lord Dominik's Regards"
+          ],
+          "late": [
+            "Edge of Night",
+            "Infinity Edge",
+            "Fiendhunter Bolts"
+          ]
+        }
+      },
+      "top": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3074",
+          "6699",
+          "3036"
+        ],
+        "late": [
+          "3031",
+          "3814",
+          "3142"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Ravenous Hydra",
+            "Voltaic Cyclosword",
+            "Lord Dominik's Regards"
+          ],
+          "late": [
+            "Infinity Edge",
+            "Edge of Night",
+            "Youmuu's Ghostblade"
+          ]
+        }
+      }
+    },
+    "Riven": {
+      "top": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "6696",
+          "2517",
+          "6333"
+        ],
+        "late": [
+          "3156",
+          "3026",
+          "6692"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Axiom Arc",
+            "Endless Hunger",
+            "Death's Dance"
+          ],
+          "late": [
+            "Maw of Malmortius",
+            "Guardian Angel",
+            "Eclipse"
+          ]
+        }
+      }
+    },
+    "Rumble": {
+      "top": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "6653",
+          "8010",
+          "3157"
+        ],
+        "late": [
+          "3089",
+          "3165",
+          "3116"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Liandry's Torment",
+            "Bloodletter's Curse",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Morellonomicon",
+            "Rylai's Crystal Scepter"
+          ]
+        }
+      },
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "6653",
+          "4645",
+          "3157"
+        ],
+        "late": [
+          "3089",
+          "8010",
+          "3135"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Liandry's Torment",
+            "Shadowflame",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Bloodletter's Curse",
+            "Void Staff"
+          ]
+        }
+      },
+      "jungle": {
+        "start": [
+          "Scorchclaw Pup",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "6653",
+          "4645",
+          "3157"
+        ],
+        "late": [
+          "3089",
+          "3165",
+          "3135"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Liandry's Torment",
+            "Shadowflame",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Morellonomicon",
+            "Void Staff"
+          ]
+        }
+      }
+    },
+    "Ryze": {
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3111",
+        "core": [
+          "6657",
+          "3003",
+          "2522"
+        ],
+        "late": [
+          "3157",
+          "3089",
+          "3135"
+        ],
+        "names": {
+          "boots": "Mercury's Treads",
+          "core": [
+            "Rod of Ages",
+            "Archangel's Staff",
+            "Actualizer"
+          ],
+          "late": [
+            "Zhonya's Hourglass",
+            "Rabadon's Deathcap",
+            "Void Staff"
+          ]
+        }
+      },
+      "top": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "6657",
+          "3003",
+          "2522"
+        ],
+        "late": [
+          "3089",
+          "3157",
+          "3135"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Rod of Ages",
+            "Archangel's Staff",
+            "Actualizer"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Zhonya's Hourglass",
+            "Void Staff"
+          ]
+        }
+      }
+    },
+    "Samira": {
+      "adc": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "6676",
+          "3031",
+          "3036"
+        ],
+        "late": [
+          "6673",
+          "3072",
+          "3026"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "bootsOpggTop": "Gluttonous Greaves",
+          "core": [
+            "The Collector",
+            "Infinity Edge",
+            "Lord Dominik's Regards"
+          ],
+          "late": [
+            "Immortal Shieldbow",
+            "Bloodthirster",
+            "Guardian Angel"
+          ]
+        }
+      }
+    },
+    "Sejuani": {
+      "jungle": {
+        "start": [
+          "Mosstomper Seedling",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3084",
+          "2502",
+          "3075"
+        ],
+        "late": [
+          "6665",
+          "3110",
+          "2504"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Heartsteel",
+            "Unending Despair",
+            "Thornmail"
+          ],
+          "late": [
+            "Jak'Sho, The Protean",
+            "Frozen Heart",
+            "Kaenic Rookern"
+          ]
+        }
+      },
+      "top": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3084",
+          "2510",
+          "2502"
+        ],
+        "late": [
+          "2504",
+          "4633",
+          "3075"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Heartsteel",
+            "Dusk and Dawn",
+            "Unending Despair"
+          ],
+          "late": [
+            "Kaenic Rookern",
+            "Riftmaker",
+            "Thornmail"
+          ]
+        }
+      }
+    },
+    "Senna": {
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3009",
+        "core": [
+          "3071",
+          "3087",
+          "3094"
+        ],
+        "late": [
+          "3031",
+          "2523",
+          "3085"
+        ],
+        "names": {
+          "boots": "Boots of Swiftness",
+          "core": [
+            "Black Cleaver",
+            "Statikk Shiv",
+            "Rapid Firecannon"
+          ],
+          "late": [
+            "Infinity Edge",
+            "Hexoptics C44",
+            "Runaan's Hurricane"
+          ]
+        }
+      },
+      "adc": {
+        "start": [
+          "Doran's Helm",
+          "Health Potion"
+        ],
+        "boots": "3009",
+        "core": [
+          "3087",
+          "3071",
+          "2523"
+        ],
+        "late": [
+          "3031",
+          "3094",
+          "3026"
+        ],
+        "names": {
+          "boots": "Boots of Swiftness",
+          "core": [
+            "Statikk Shiv",
+            "Black Cleaver",
+            "Hexoptics C44"
+          ],
+          "late": [
+            "Infinity Edge",
+            "Rapid Firecannon",
+            "Guardian Angel"
+          ]
+        }
+      }
+    },
+    "Seraphine": {
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "6620",
+          "6617",
+          "3165"
+        ],
+        "late": [
+          "3107",
+          "2065",
+          "3157"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Echoes of Helia",
+            "Moonstone Renewer",
+            "Morellonomicon"
+          ],
+          "late": [
+            "Redemption",
+            "Shurelya's Battlesong",
+            "Zhonya's Hourglass"
+          ]
+        }
+      },
+      "adc": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "2503",
+          "3003",
+          "3116"
+        ],
+        "late": [
+          "4005",
+          "3089",
+          "3157"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Blackfire Torch",
+            "Archangel's Staff",
+            "Rylai's Crystal Scepter"
+          ],
+          "late": [
+            "Imperial Mandate",
+            "Rabadon's Deathcap",
+            "Zhonya's Hourglass"
+          ]
+        }
+      },
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "3003",
+          "3116",
+          "4005"
+        ],
+        "late": [
+          "3157",
+          "3102",
+          "6617"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Archangel's Staff",
+            "Rylai's Crystal Scepter",
+            "Imperial Mandate"
+          ],
+          "late": [
+            "Zhonya's Hourglass",
+            "Banshee's Veil",
+            "Moonstone Renewer"
+          ]
+        }
+      }
+    },
+    "Sett": {
+      "top": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "6631",
+          "3071",
+          "2501"
+        ],
+        "late": [
+          "3053",
+          "3161",
+          "3742"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Stridebreaker",
+            "Black Cleaver",
+            "Overlord's Bloodmail"
+          ],
+          "late": [
+            "Sterak's Gage",
+            "Spear of Shojin",
+            "Dead Man's Plate"
+          ]
+        }
+      },
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3009",
+        "core": [
+          "6631",
+          "2501",
+          "3053"
+        ],
+        "late": [
+          "3083",
+          "3031",
+          "6665"
+        ],
+        "names": {
+          "boots": "Boots of Swiftness",
+          "core": [
+            "Stridebreaker",
+            "Overlord's Bloodmail",
+            "Sterak's Gage"
+          ],
+          "late": [
+            "Warmog's Armor",
+            "Infinity Edge",
+            "Jak'Sho, The Protean"
+          ]
+        }
+      }
+    },
+    "Shaco": {
+      "jungle": {
+        "start": [
+          "Gustwalker Hatchling",
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "2503",
+          "6653",
+          "4005"
+        ],
+        "late": [
+          "3036",
+          "3031",
+          "3142"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Blackfire Torch",
+            "Liandry's Torment",
+            "Imperial Mandate"
+          ],
+          "late": [
+            "Lord Dominik's Regards",
+            "Infinity Edge",
+            "Youmuu's Ghostblade"
+          ]
+        }
+      },
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "2503",
+          "4005",
+          "6653"
+        ],
+        "late": [
+          "3031",
+          "3089",
+          "3508"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Blackfire Torch",
+            "Imperial Mandate",
+            "Liandry's Torment"
+          ],
+          "late": [
+            "Infinity Edge",
+            "Rabadon's Deathcap",
+            "Essence Reaver"
+          ]
+        }
+      }
+    },
+    "Shen": {
+      "top": {
+        "start": [
+          "Doran's Shield",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3748",
+          "2510",
+          "3075"
+        ],
+        "late": [
+          "2504",
+          "3143",
+          "3742"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Titanic Hydra",
+            "Dusk and Dawn",
+            "Thornmail"
+          ],
+          "late": [
+            "Kaenic Rookern",
+            "Randuin's Omen",
+            "Dead Man's Plate"
+          ]
+        }
+      },
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "2525",
+          "3190",
+          "3050"
+        ],
+        "late": [
+          "3075",
+          "6665",
+          "2524"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Protoplasm Harness",
+            "Locket of the Iron Solari",
+            "Zeke's Convergence"
+          ],
+          "late": [
+            "Thornmail",
+            "Jak'Sho, The Protean",
+            "Bandlepipes"
+          ]
+        }
+      }
+    },
+    "Shyvana": {
+      "jungle": {
+        "start": [
+          "Scorchclaw Pup",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3078",
+          "3161",
+          "6333"
+        ],
+        "late": [
+          "6665",
+          "3053",
+          "3073"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Trinity Force",
+            "Spear of Shojin",
+            "Death's Dance"
+          ],
+          "late": [
+            "Jak'Sho, The Protean",
+            "Sterak's Gage",
+            "Experimental Hexplate"
+          ]
+        }
+      }
+    },
+    "Singed": {
+      "top": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3009",
+        "core": [
+          "6653",
+          "3116",
+          "2525"
+        ],
+        "late": [
+          "6665",
+          "4633",
+          "4401"
+        ],
+        "names": {
+          "boots": "Boots of Swiftness",
+          "core": [
+            "Liandry's Torment",
+            "Rylai's Crystal Scepter",
+            "Protoplasm Harness"
+          ],
+          "late": [
+            "Jak'Sho, The Protean",
+            "Riftmaker",
+            "Force of Nature"
+          ]
+        }
+      }
+    },
+    "Sion": {
+      "top": {
+        "start": [
+          "Doran's Shield",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "6664",
+          "2502",
+          "6665"
+        ],
+        "late": [
+          "3075",
+          "3143",
+          "2501"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Hollow Radiance",
+            "Unending Despair",
+            "Jak'Sho, The Protean"
+          ],
+          "late": [
+            "Thornmail",
+            "Randuin's Omen",
+            "Overlord's Bloodmail"
+          ]
+        }
+      }
+    },
+    "Sivir": {
+      "adc": {
+        "start": [
+          "Doran's Bow",
+          "Health Potion"
+        ],
+        "boots": "3006",
+        "core": [
+          "3032",
+          "3031",
+          "6675"
+        ],
+        "late": [
+          "3036",
+          "3072",
+          "3026"
+        ],
+        "names": {
+          "boots": "Berserker's Greaves",
+          "core": [
+            "Yun Tal Wildarrows",
+            "Infinity Edge",
+            "Navori Flickerblade"
+          ],
+          "late": [
+            "Lord Dominik's Regards",
+            "Bloodthirster",
+            "Guardian Angel"
+          ]
+        }
+      }
+    },
+    "Skarner": {
+      "jungle": {
+        "start": [
+          "Mosstomper Seedling",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3084",
+          "2502",
+          "3065"
+        ],
+        "late": [
+          "6665",
+          "3143",
+          "2501"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Heartsteel",
+            "Unending Despair",
+            "Spirit Visage"
+          ],
+          "late": [
+            "Jak'Sho, The Protean",
+            "Randuin's Omen",
+            "Overlord's Bloodmail"
+          ]
+        }
+      },
+      "top": {
+        "start": [
+          "Doran's Helm",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3084",
+          "3119",
+          "2502"
+        ],
+        "late": [
+          "3075",
+          "6665",
+          "3065"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Heartsteel",
+            "Winter's Approach",
+            "Unending Despair"
+          ],
+          "late": [
+            "Thornmail",
+            "Jak'Sho, The Protean",
+            "Spirit Visage"
+          ]
+        }
+      }
+    },
+    "Smolder": {
+      "adc": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "3508",
+          "3071",
+          "3161"
+        ],
+        "late": [
+          "3094",
+          "3026",
+          "2517"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "bootsOpggTop": "Gluttonous Greaves",
+          "core": [
+            "Essence Reaver",
+            "Black Cleaver",
+            "Spear of Shojin"
+          ],
+          "late": [
+            "Rapid Firecannon",
+            "Guardian Angel",
+            "Endless Hunger"
+          ]
+        }
+      },
+      "mid": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "3508",
+          "3071",
+          "3161"
+        ],
+        "late": [
+          "3031",
+          "3026",
+          "3046"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Essence Reaver",
+            "Black Cleaver",
+            "Spear of Shojin"
+          ],
+          "late": [
+            "Infinity Edge",
+            "Guardian Angel",
+            "Phantom Dancer"
+          ]
+        }
+      },
+      "top": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3009",
+        "core": [
+          "3508",
+          "3071",
+          "3161"
+        ],
+        "late": [
+          "3094",
+          "3026",
+          "2517"
+        ],
+        "names": {
+          "boots": "Boots of Swiftness",
+          "core": [
+            "Essence Reaver",
+            "Black Cleaver",
+            "Spear of Shojin"
+          ],
+          "late": [
+            "Rapid Firecannon",
+            "Guardian Angel",
+            "Endless Hunger"
+          ]
+        }
+      }
+    },
+    "Sona": {
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "6620",
+          "6617",
+          "6621"
+        ],
+        "late": [
+          "6616",
+          "3504",
+          "3107"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Echoes of Helia",
+            "Moonstone Renewer",
+            "Dawncore"
+          ],
+          "late": [
+            "Staff of Flowing Water",
+            "Ardent Censer",
+            "Redemption"
+          ]
+        }
+      }
+    },
+    "Soraka": {
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "6617",
+          "3107",
+          "6621"
+        ],
+        "late": [
+          "3504",
+          "3109",
+          "3222"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Moonstone Renewer",
+            "Redemption",
+            "Dawncore"
+          ],
+          "late": [
+            "Ardent Censer",
+            "Knight's Vow",
+            "Mikael's Blessing"
+          ]
+        }
+      }
+    },
+    "Swain": {
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3116",
+          "6653",
+          "3157"
+        ],
+        "late": [
+          "3065",
+          "2502",
+          "3089"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Rylai's Crystal Scepter",
+            "Liandry's Torment",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Spirit Visage",
+            "Unending Despair",
+            "Rabadon's Deathcap"
+          ]
+        }
+      },
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3111",
+        "core": [
+          "2503",
+          "3116",
+          "3157"
+        ],
+        "late": [
+          "6653",
+          "3165",
+          "3065"
+        ],
+        "names": {
+          "boots": "Mercury's Treads",
+          "core": [
+            "Blackfire Torch",
+            "Rylai's Crystal Scepter",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Liandry's Torment",
+            "Morellonomicon",
+            "Spirit Visage"
+          ]
+        }
+      },
+      "adc": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3118",
+          "3116",
+          "3157"
+        ],
+        "late": [
+          "6653",
+          "4633",
+          "3065"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Malignance",
+            "Rylai's Crystal Scepter",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Liandry's Torment",
+            "Riftmaker",
+            "Spirit Visage"
+          ]
+        }
+      }
+    },
+    "Sylas": {
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "3152",
+          "4633",
+          "3157"
+        ],
+        "late": [
+          "3089",
+          "3135",
+          "3143"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Hextech Rocketbelt",
+            "Riftmaker",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Void Staff",
+            "Randuin's Omen"
+          ]
+        }
+      },
+      "top": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "3152",
+          "4633",
+          "3157"
+        ],
+        "late": [
+          "3089",
+          "4645",
+          "3137"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Hextech Rocketbelt",
+            "Riftmaker",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Shadowflame",
+            "Cryptbloom"
+          ]
+        }
+      }
+    },
+    "Syndra": {
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "6655",
+          "4645",
+          "3089"
+        ],
+        "late": [
+          "3157",
+          "3135",
+          "4629"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Luden's Echo",
+            "Shadowflame",
+            "Rabadon's Deathcap"
+          ],
+          "late": [
+            "Zhonya's Hourglass",
+            "Void Staff",
+            "Cosmic Drive"
+          ]
+        }
+      }
+    },
+    "TahmKench": {
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3084",
+          "3075",
+          "3065"
+        ],
+        "late": [
+          "2502",
+          "2525",
+          "2510"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Heartsteel",
+            "Thornmail",
+            "Spirit Visage"
+          ],
+          "late": [
+            "Unending Despair",
+            "Protoplasm Harness",
+            "Dusk and Dawn"
+          ]
+        }
+      },
+      "top": {
+        "start": [
+          "Doran's Shield",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3084",
+          "2510",
+          "4633"
+        ],
+        "late": [
+          "3065",
+          "3075",
+          "2502"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Heartsteel",
+            "Dusk and Dawn",
+            "Riftmaker"
+          ],
+          "late": [
+            "Spirit Visage",
+            "Thornmail",
+            "Unending Despair"
+          ]
+        }
+      }
+    },
+    "Taliyah": {
+      "jungle": {
+        "start": [
+          "Scorchclaw Pup",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "2503",
+          "4645",
+          "3157"
+        ],
+        "late": [
+          "3089",
+          "3135",
+          "3102"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Blackfire Torch",
+            "Shadowflame",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Void Staff",
+            "Banshee's Veil"
+          ]
+        }
+      },
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "2503",
+          "3116",
+          "3157"
+        ],
+        "late": [
+          "3089",
+          "3137",
+          "4629"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Blackfire Torch",
+            "Rylai's Crystal Scepter",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Cryptbloom",
+            "Cosmic Drive"
+          ]
+        }
+      }
+    },
+    "Talon": {
+      "jungle": {
+        "start": [
+          "Gustwalker Hatchling",
+          "Health Potion"
+        ],
+        "boots": "3009",
+        "core": [
+          "3179",
+          "2520",
+          "6699"
+        ],
+        "late": [
+          "3036",
+          "3814",
+          "3142"
+        ],
+        "names": {
+          "boots": "Boots of Swiftness",
+          "core": [
+            "Umbral Glaive",
+            "Bastionbreaker",
+            "Voltaic Cyclosword"
+          ],
+          "late": [
+            "Lord Dominik's Regards",
+            "Edge of Night",
+            "Youmuu's Ghostblade"
+          ]
+        }
+      },
+      "mid": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "3179",
+          "2520",
+          "3814"
+        ],
+        "late": [
+          "6694",
+          "3026",
+          "3142"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Umbral Glaive",
+            "Bastionbreaker",
+            "Edge of Night"
+          ],
+          "late": [
+            "Serylda's Grudge",
+            "Guardian Angel",
+            "Youmuu's Ghostblade"
+          ]
+        }
+      }
+    },
+    "Taric": {
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3190",
+          "3119",
+          "3109"
+        ],
+        "late": [
+          "3075",
+          "2524",
+          "6662"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Locket of the Iron Solari",
+            "Winter's Approach",
+            "Knight's Vow"
+          ],
+          "late": [
+            "Thornmail",
+            "Bandlepipes",
+            "Iceborn Gauntlet"
+          ]
+        }
+      }
+    },
+    "Teemo": {
+      "top": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3009",
+        "core": [
+          "3087",
+          "6653",
+          "3118"
+        ],
+        "late": [
+          "4645",
+          "3089",
+          "3135"
+        ],
+        "names": {
+          "boots": "Boots of Swiftness",
+          "core": [
+            "Statikk Shiv",
+            "Liandry's Torment",
+            "Malignance"
+          ],
+          "late": [
+            "Shadowflame",
+            "Rabadon's Deathcap",
+            "Void Staff"
+          ]
+        }
+      }
+    },
+    "Thresh": {
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3009",
+        "core": [
+          "3190",
+          "3109",
+          "3050"
+        ],
+        "late": [
+          "3075",
+          "2524",
+          "3110"
+        ],
+        "names": {
+          "boots": "Boots of Swiftness",
+          "core": [
+            "Locket of the Iron Solari",
+            "Knight's Vow",
+            "Zeke's Convergence"
+          ],
+          "late": [
+            "Thornmail",
+            "Bandlepipes",
+            "Frozen Heart"
+          ]
+        }
+      }
+    },
+    "Tristana": {
+      "adc": {
+        "start": [
+          "Doran's Bow",
+          "Health Potion"
+        ],
+        "boots": "3006",
+        "core": [
+          "3032",
+          "3031",
+          "6675"
+        ],
+        "late": [
+          "3036",
+          "3072",
+          "3026"
+        ],
+        "names": {
+          "boots": "Berserker's Greaves",
+          "core": [
+            "Yun Tal Wildarrows",
+            "Infinity Edge",
+            "Navori Flickerblade"
+          ],
+          "late": [
+            "Lord Dominik's Regards",
+            "Bloodthirster",
+            "Guardian Angel"
+          ]
+        }
+      },
+      "mid": {
+        "start": [
+          "Doran's Bow",
+          "Health Potion"
+        ],
+        "boots": "3006",
+        "core": [
+          "3032",
+          "3031",
+          "6675"
+        ],
+        "late": [
+          "3036",
+          "3026",
+          "3153"
+        ],
+        "names": {
+          "boots": "Berserker's Greaves",
+          "core": [
+            "Yun Tal Wildarrows",
+            "Infinity Edge",
+            "Navori Flickerblade"
+          ],
+          "late": [
+            "Lord Dominik's Regards",
+            "Guardian Angel",
+            "Blade of The Ruined King"
+          ]
+        }
+      }
+    },
+    "Trundle": {
+      "jungle": {
+        "start": [
+          "Gustwalker Hatchling",
+          "Health Potion"
+        ],
+        "boots": "3111",
+        "core": [
+          "3078",
+          "3742",
+          "3065"
+        ],
+        "late": [
+          "3075",
+          "3143",
+          "6333"
+        ],
+        "names": {
+          "boots": "Mercury's Treads",
+          "core": [
+            "Trinity Force",
+            "Dead Man's Plate",
+            "Spirit Visage"
+          ],
+          "late": [
+            "Thornmail",
+            "Randuin's Omen",
+            "Death's Dance"
+          ]
+        }
+      },
+      "top": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3074",
+          "3078",
+          "3181"
+        ],
+        "late": [
+          "6333",
+          "3065",
+          "3143"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Ravenous Hydra",
+            "Trinity Force",
+            "Hullbreaker"
+          ],
+          "late": [
+            "Death's Dance",
+            "Spirit Visage",
+            "Randuin's Omen"
+          ]
+        }
+      }
+    },
+    "Tryndamere": {
+      "top": {
+        "start": [
+          "Doran's Bow",
+          "Health Potion"
+        ],
+        "boots": "3006",
+        "core": [
+          "3074",
+          "3046",
+          "3031"
+        ],
+        "late": [
+          "3036",
+          "2517",
+          "6675"
+        ],
+        "names": {
+          "boots": "Berserker's Greaves",
+          "core": [
+            "Ravenous Hydra",
+            "Phantom Dancer",
+            "Infinity Edge"
+          ],
+          "late": [
+            "Lord Dominik's Regards",
+            "Endless Hunger",
+            "Navori Flickerblade"
+          ]
+        }
+      }
+    },
+    "TwistedFate": {
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3009",
+        "core": [
+          "6657",
+          "3100",
+          "3094"
+        ],
+        "late": [
+          "3157",
+          "3089",
+          "3152"
+        ],
+        "names": {
+          "boots": "Boots of Swiftness",
+          "core": [
+            "Rod of Ages",
+            "Lich Bane",
+            "Rapid Firecannon"
+          ],
+          "late": [
+            "Zhonya's Hourglass",
+            "Rabadon's Deathcap",
+            "Hextech Rocketbelt"
+          ]
+        }
+      },
+      "adc": {
+        "start": [
+          "Doran's Bow",
+          "Health Potion"
+        ],
+        "boots": "3006",
+        "core": [
+          "6672",
+          "3032",
+          "3124"
+        ],
+        "late": [
+          "3302",
+          "3094",
+          "3031"
+        ],
+        "names": {
+          "boots": "Berserker's Greaves",
+          "core": [
+            "Kraken Slayer",
+            "Yun Tal Wildarrows",
+            "Guinsoo's Rageblade"
+          ],
+          "late": [
+            "Terminus",
+            "Rapid Firecannon",
+            "Infinity Edge"
+          ]
+        }
+      },
+      "top": {
+        "start": [
+          "Doran's Bow",
+          "Health Potion"
+        ],
+        "boots": "3009",
+        "core": [
+          "6672",
+          "3032",
+          "3094"
+        ],
+        "late": [
+          "3031",
+          "3026",
+          "3157"
+        ],
+        "names": {
+          "boots": "Boots of Swiftness",
+          "core": [
+            "Kraken Slayer",
+            "Yun Tal Wildarrows",
+            "Rapid Firecannon"
+          ],
+          "late": [
+            "Infinity Edge",
+            "Guardian Angel",
+            "Zhonya's Hourglass"
+          ]
+        }
+      }
+    },
+    "Twitch": {
+      "adc": {
+        "start": [
+          "Doran's Bow",
+          "Health Potion"
+        ],
+        "boots": "3006",
+        "core": [
+          "6676",
+          "2512",
+          "3031"
+        ],
+        "late": [
+          "3036",
+          "3072",
+          "3026"
+        ],
+        "names": {
+          "boots": "Berserker's Greaves",
+          "core": [
+            "The Collector",
+            "Fiendhunter Bolts",
+            "Infinity Edge"
+          ],
+          "late": [
+            "Lord Dominik's Regards",
+            "Bloodthirster",
+            "Guardian Angel"
+          ]
+        }
+      },
+      "support": {
+        "start": [
+          "Health Potion",
+          "Health Potion"
+        ],
+        "boots": "3006",
+        "core": [
+          "6676",
+          "2512",
+          "3031"
+        ],
+        "late": [
+          "3036",
+          "3085",
+          "3072"
+        ],
+        "names": {
+          "boots": "Berserker's Greaves",
+          "core": [
+            "The Collector",
+            "Fiendhunter Bolts",
+            "Infinity Edge"
+          ],
+          "late": [
+            "Lord Dominik's Regards",
+            "Runaan's Hurricane",
+            "Bloodthirster"
+          ]
+        }
+      }
+    },
+    "Udyr": {
+      "jungle": {
+        "start": [
+          "Gustwalker Hatchling",
+          "Health Potion"
+        ],
+        "boots": "3009",
+        "core": [
+          "3161",
+          "3073",
+          "6333"
+        ],
+        "late": [
+          "3065",
+          "3143",
+          "3742"
+        ],
+        "names": {
+          "boots": "Boots of Swiftness",
+          "core": [
+            "Spear of Shojin",
+            "Experimental Hexplate",
+            "Death's Dance"
+          ],
+          "late": [
+            "Spirit Visage",
+            "Randuin's Omen",
+            "Dead Man's Plate"
+          ]
+        }
+      },
+      "top": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "6653",
+          "3119",
+          "3065"
+        ],
+        "late": [
+          "3089",
+          "6665",
+          "3026"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Liandry's Torment",
+            "Winter's Approach",
+            "Spirit Visage"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Jak'Sho, The Protean",
+            "Guardian Angel"
+          ]
+        }
+      }
+    },
+    "Urgot": {
+      "top": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3071",
+          "3053",
+          "6665"
+        ],
+        "late": [
+          "2501",
+          "3143",
+          "3742"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Black Cleaver",
+            "Sterak's Gage",
+            "Jak'Sho, The Protean"
+          ],
+          "late": [
+            "Overlord's Bloodmail",
+            "Randuin's Omen",
+            "Dead Man's Plate"
+          ]
+        }
+      }
+    },
+    "Varus": {
+      "adc": {
+        "start": [
+          "Doran's Bow",
+          "Health Potion"
+        ],
+        "boots": "3006",
+        "core": [
+          "3087",
+          "3124",
+          "3302"
+        ],
+        "late": [
+          "6665",
+          "3157",
+          "3026"
+        ],
+        "names": {
+          "boots": "Berserker's Greaves",
+          "bootsOpggTop": "Gluttonous Greaves",
+          "core": [
+            "Statikk Shiv",
+            "Guinsoo's Rageblade",
+            "Terminus"
+          ],
+          "late": [
+            "Jak'Sho, The Protean",
+            "Zhonya's Hourglass",
+            "Guardian Angel"
+          ]
+        }
+      },
+      "mid": {
+        "start": [
+          "Doran's Bow",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "3087",
+          "2510",
+          "3157"
+        ],
+        "late": [
+          "3089",
+          "4645",
+          "3135"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Statikk Shiv",
+            "Dusk and Dawn",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Shadowflame",
+            "Void Staff"
+          ]
+        }
+      }
+    },
+    "Vayne": {
+      "adc": {
+        "start": [
+          "Doran's Bow",
+          "Health Potion"
+        ],
+        "boots": "3006",
+        "core": [
+          "3153",
+          "3124",
+          "3302"
+        ],
+        "late": [
+          "6665",
+          "3073",
+          "3026"
+        ],
+        "names": {
+          "boots": "Berserker's Greaves",
+          "core": [
+            "Blade of The Ruined King",
+            "Guinsoo's Rageblade",
+            "Terminus"
+          ],
+          "late": [
+            "Jak'Sho, The Protean",
+            "Experimental Hexplate",
+            "Guardian Angel"
+          ]
+        }
+      },
+      "top": {
+        "start": [
+          "Doran's Bow",
+          "Health Potion"
+        ],
+        "boots": "3006",
+        "core": [
+          "3153",
+          "3124",
+          "3302"
+        ],
+        "late": [
+          "6665",
+          "3139",
+          "3046"
+        ],
+        "names": {
+          "boots": "Berserker's Greaves",
+          "core": [
+            "Blade of The Ruined King",
+            "Guinsoo's Rageblade",
+            "Terminus"
+          ],
+          "late": [
+            "Jak'Sho, The Protean",
+            "Mercurial Scimitar",
+            "Phantom Dancer"
+          ]
+        }
+      }
+    },
+    "Veigar": {
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "6657",
+          "3003",
+          "3089"
+        ],
+        "late": [
+          "3157",
+          "3102",
+          "3135"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Rod of Ages",
+            "Archangel's Staff",
+            "Rabadon's Deathcap"
+          ],
+          "late": [
+            "Zhonya's Hourglass",
+            "Banshee's Veil",
+            "Void Staff"
+          ]
+        }
+      },
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "6655",
+          "4646",
+          "4645"
+        ],
+        "late": [
+          "3089",
+          "3157",
+          "3083"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Luden's Echo",
+            "Stormsurge",
+            "Shadowflame"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Zhonya's Hourglass",
+            "Warmog's Armor"
+          ]
+        }
+      }
+    },
+    "Velkoz": {
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "6655",
+          "4645",
+          "3157"
+        ],
+        "late": [
+          "3165",
+          "3089",
+          "3102"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Luden's Echo",
+            "Shadowflame",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Morellonomicon",
+            "Rabadon's Deathcap",
+            "Banshee's Veil"
+          ]
+        }
+      },
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "6655",
+          "4645",
+          "3157"
+        ],
+        "late": [
+          "3089",
+          "3102",
+          "3135"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Luden's Echo",
+            "Shadowflame",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Banshee's Veil",
+            "Void Staff"
+          ]
+        }
+      }
+    },
+    "Vex": {
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "6655",
+          "4645",
+          "3157"
+        ],
+        "late": [
+          "3089",
+          "3135",
+          "4646"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Luden's Echo",
+            "Shadowflame",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Void Staff",
+            "Stormsurge"
+          ]
+        }
+      }
+    },
+    "Vi": {
+      "jungle": {
+        "start": [
+          "Gustwalker Hatchling",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3078",
+          "3071",
+          "6333"
+        ],
+        "late": [
+          "3026",
+          "3031",
+          "3142"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Trinity Force",
+            "Black Cleaver",
+            "Death's Dance"
+          ],
+          "late": [
+            "Guardian Angel",
+            "Infinity Edge",
+            "Youmuu's Ghostblade"
+          ]
+        }
+      }
+    },
+    "Viego": {
+      "jungle": {
+        "start": [
+          "Gustwalker Hatchling",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "6672",
+          "6676",
+          "6673"
+        ],
+        "late": [
+          "3036",
+          "3026",
+          "6333"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Kraken Slayer",
+            "The Collector",
+            "Immortal Shieldbow"
+          ],
+          "late": [
+            "Lord Dominik's Regards",
+            "Guardian Angel",
+            "Death's Dance"
+          ]
+        }
+      }
+    },
+    "Viktor": {
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "2503",
+          "3100",
+          "3157"
+        ],
+        "late": [
+          "3089",
+          "3135",
+          "4629"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Blackfire Torch",
+            "Lich Bane",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Void Staff",
+            "Cosmic Drive"
+          ]
+        }
+      }
+    },
+    "Vladimir": {
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "4646",
+          "3089",
+          "4633"
+        ],
+        "late": [
+          "3157",
+          "3135",
+          "4629"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Stormsurge",
+            "Rabadon's Deathcap",
+            "Riftmaker"
+          ],
+          "late": [
+            "Zhonya's Hourglass",
+            "Void Staff",
+            "Cosmic Drive"
+          ]
+        }
+      },
+      "top": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "3152",
+          "4633",
+          "3089"
+        ],
+        "late": [
+          "3135",
+          "3157",
+          "4629"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Hextech Rocketbelt",
+            "Riftmaker",
+            "Rabadon's Deathcap"
+          ],
+          "late": [
+            "Void Staff",
+            "Zhonya's Hourglass",
+            "Cosmic Drive"
+          ]
+        }
+      }
+    },
+    "Volibear": {
+      "top": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "2510",
+          "6675",
+          "3065"
+        ],
+        "late": [
+          "3075",
+          "3143",
+          "4629"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Dusk and Dawn",
+            "Navori Flickerblade",
+            "Spirit Visage"
+          ],
+          "late": [
+            "Thornmail",
+            "Randuin's Omen",
+            "Cosmic Drive"
+          ]
+        }
+      },
+      "jungle": {
+        "start": [
+          "Gustwalker Hatchling",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "2510",
+          "6675",
+          "3065"
+        ],
+        "late": [
+          "3075",
+          "3143",
+          "4401"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Dusk and Dawn",
+            "Navori Flickerblade",
+            "Spirit Visage"
+          ],
+          "late": [
+            "Thornmail",
+            "Randuin's Omen",
+            "Force of Nature"
+          ]
+        }
+      }
+    },
+    "Warwick": {
+      "jungle": {
+        "start": [
+          "Gustwalker Hatchling"
+        ],
+        "boots": "3047",
+        "core": [
+          "6631",
+          "3153",
+          "6333"
+        ],
+        "late": [
+          "3065",
+          "3075",
+          "3026"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Stridebreaker",
+            "Blade of The Ruined King",
+            "Death's Dance"
+          ],
+          "late": [
+            "Spirit Visage",
+            "Thornmail",
+            "Guardian Angel"
+          ]
+        }
+      },
+      "top": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3153",
+          "6631",
+          "6333"
+        ],
+        "late": [
+          "3065",
+          "3075",
+          "3742"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Blade of The Ruined King",
+            "Stridebreaker",
+            "Death's Dance"
+          ],
+          "late": [
+            "Spirit Visage",
+            "Thornmail",
+            "Dead Man's Plate"
+          ]
+        }
+      }
+    },
+    "Xayah": {
+      "adc": {
+        "start": [
+          "Doran's Bow",
+          "Health Potion"
+        ],
+        "boots": "3006",
+        "core": [
+          "3032",
+          "6675",
+          "3031"
+        ],
+        "late": [
+          "3036",
+          "3026",
+          "3072"
+        ],
+        "names": {
+          "boots": "Berserker's Greaves",
+          "core": [
+            "Yun Tal Wildarrows",
+            "Navori Flickerblade",
+            "Infinity Edge"
+          ],
+          "late": [
+            "Lord Dominik's Regards",
+            "Guardian Angel",
+            "Bloodthirster"
+          ]
+        }
+      }
+    },
+    "Xerath": {
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "6655",
+          "4628",
+          "4645"
+        ],
+        "late": [
+          "3089",
+          "3135",
+          "3157"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Luden's Echo",
+            "Horizon Focus",
+            "Shadowflame"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Void Staff",
+            "Zhonya's Hourglass"
+          ]
+        }
+      },
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "6655",
+          "4645",
+          "3089"
+        ],
+        "late": [
+          "3135",
+          "3157",
+          "4646"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Luden's Echo",
+            "Shadowflame",
+            "Rabadon's Deathcap"
+          ],
+          "late": [
+            "Void Staff",
+            "Zhonya's Hourglass",
+            "Stormsurge"
+          ]
+        }
+      }
+    },
+    "XinZhao": {
+      "jungle": {
+        "start": [
+          "Gustwalker Hatchling",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3748",
+          "3071",
+          "6333"
+        ],
+        "late": [
+          "3026",
+          "3065",
+          "4401"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Titanic Hydra",
+            "Black Cleaver",
+            "Death's Dance"
+          ],
+          "late": [
+            "Guardian Angel",
+            "Spirit Visage",
+            "Force of Nature"
+          ]
+        }
+      }
+    },
+    "Yasuo": {
+      "mid": {
+        "start": [
+          "Doran's Bow",
+          "Health Potion"
+        ],
+        "boots": "3006",
+        "core": [
+          "6673",
+          "3031",
+          "6333"
+        ],
+        "late": [
+          "3026",
+          "3072",
+          "3046"
+        ],
+        "names": {
+          "boots": "Berserker's Greaves",
+          "core": [
+            "Immortal Shieldbow",
+            "Infinity Edge",
+            "Death's Dance"
+          ],
+          "late": [
+            "Guardian Angel",
+            "Bloodthirster",
+            "Phantom Dancer"
+          ]
+        }
+      },
+      "top": {
+        "start": [
+          "Doran's Bow",
+          "Health Potion"
+        ],
+        "boots": "3006",
+        "core": [
+          "3153",
+          "6673",
+          "3031"
+        ],
+        "late": [
+          "6333",
+          "3026",
+          "3046"
+        ],
+        "names": {
+          "boots": "Berserker's Greaves",
+          "core": [
+            "Blade of The Ruined King",
+            "Immortal Shieldbow",
+            "Infinity Edge"
+          ],
+          "late": [
+            "Death's Dance",
+            "Guardian Angel",
+            "Phantom Dancer"
+          ]
+        }
+      },
+      "adc": {
+        "start": [
+          "Doran's Bow",
+          "Health Potion"
+        ],
+        "boots": "3006",
+        "core": [
+          "6673",
+          "3031",
+          "6333"
+        ],
+        "late": [
+          "3072",
+          "3026",
+          "3139"
+        ],
+        "names": {
+          "boots": "Berserker's Greaves",
+          "core": [
+            "Immortal Shieldbow",
+            "Infinity Edge",
+            "Death's Dance"
+          ],
+          "late": [
+            "Bloodthirster",
+            "Guardian Angel",
+            "Mercurial Scimitar"
+          ]
+        }
+      }
+    },
+    "Yone": {
+      "mid": {
+        "start": [
+          "Doran's Bow",
+          "Health Potion"
+        ],
+        "boots": "3006",
+        "core": [
+          "3153",
+          "6673",
+          "3031"
+        ],
+        "late": [
+          "6333",
+          "3026",
+          "3072"
+        ],
+        "names": {
+          "boots": "Berserker's Greaves",
+          "core": [
+            "Blade of The Ruined King",
+            "Immortal Shieldbow",
+            "Infinity Edge"
+          ],
+          "late": [
+            "Death's Dance",
+            "Guardian Angel",
+            "Bloodthirster"
+          ]
+        }
+      },
+      "top": {
+        "start": [
+          "Doran's Bow",
+          "Health Potion"
+        ],
+        "boots": "3006",
+        "core": [
+          "3153",
+          "6673",
+          "3031"
+        ],
+        "late": [
+          "6333",
+          "3026",
+          "3046"
+        ],
+        "names": {
+          "boots": "Berserker's Greaves",
+          "core": [
+            "Blade of The Ruined King",
+            "Immortal Shieldbow",
+            "Infinity Edge"
+          ],
+          "late": [
+            "Death's Dance",
+            "Guardian Angel",
+            "Phantom Dancer"
+          ]
+        }
+      }
+    },
+    "Yorick": {
+      "top": {
+        "start": [
+          "Doran's Shield",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3078",
+          "3161",
+          "6694"
+        ],
+        "late": [
+          "3053",
+          "3075",
+          "3026"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Trinity Force",
+            "Spear of Shojin",
+            "Serylda's Grudge"
+          ],
+          "late": [
+            "Sterak's Gage",
+            "Thornmail",
+            "Guardian Angel"
+          ]
+        }
+      }
+    },
+    "Yunara": {
+      "adc": {
+        "start": [
+          "Doran's Bow",
+          "Health Potion"
+        ],
+        "boots": "3006",
+        "core": [
+          "6672",
+          "3085",
+          "3031"
+        ],
+        "late": [
+          "3036",
+          "3026",
+          "3072"
+        ],
+        "names": {
+          "boots": "Berserker's Greaves",
+          "bootsOpggTop": "Gluttonous Greaves",
+          "core": [
+            "Kraken Slayer",
+            "Runaan's Hurricane",
+            "Infinity Edge"
+          ],
+          "late": [
+            "Lord Dominik's Regards",
+            "Guardian Angel",
+            "Bloodthirster"
+          ]
+        }
+      }
+    },
+    "Yuumi": {
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "3222",
+          "3504",
+          "6617"
+        ],
+        "late": [
+          "3109",
+          "6621",
+          "2065"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Mikael's Blessing",
+            "Ardent Censer",
+            "Moonstone Renewer"
+          ],
+          "late": [
+            "Knight's Vow",
+            "Dawncore",
+            "Shurelya's Battlesong"
+          ]
+        }
+      }
+    },
+    "Zaahen": {
+      "top": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3078",
+          "6631",
+          "6333"
+        ],
+        "late": [
+          "2517",
+          "3026",
+          "6665"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Trinity Force",
+            "Stridebreaker",
+            "Death's Dance"
+          ],
+          "late": [
+            "Endless Hunger",
+            "Guardian Angel",
+            "Jak'Sho, The Protean"
+          ]
+        }
+      },
+      "jungle": {
+        "start": [
+          "Scorchclaw Pup"
+        ],
+        "boots": "3047",
+        "core": [
+          "3078",
+          "6610",
+          "6333"
+        ],
+        "late": [
+          "2517",
+          "3026",
+          "6631"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Trinity Force",
+            "Sundered Sky",
+            "Death's Dance"
+          ],
+          "late": [
+            "Endless Hunger",
+            "Guardian Angel",
+            "Stridebreaker"
+          ]
+        }
+      }
+    },
+    "Zac": {
+      "jungle": {
+        "start": [
+          "Scorchclaw Pup",
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "3152",
+          "3068",
+          "3065"
+        ],
+        "late": [
+          "3143",
+          "6665",
+          "2502"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Hextech Rocketbelt",
+            "Sunfire Aegis",
+            "Spirit Visage"
+          ],
+          "late": [
+            "Randuin's Omen",
+            "Jak'Sho, The Protean",
+            "Unending Despair"
+          ]
+        }
+      },
+      "top": {
+        "start": [
+          "Doran's Shield",
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3068",
+          "3065",
+          "3075"
+        ],
+        "late": [
+          "3143",
+          "6665",
+          "4005"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Sunfire Aegis",
+            "Spirit Visage",
+            "Thornmail"
+          ],
+          "late": [
+            "Randuin's Omen",
+            "Jak'Sho, The Protean",
+            "Imperial Mandate"
+          ]
+        }
+      },
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3047",
+        "core": [
+          "3068",
+          "3065",
+          "3075"
+        ],
+        "late": [
+          "3143",
+          "6665",
+          "4645"
+        ],
+        "names": {
+          "boots": "Plated Steelcaps",
+          "core": [
+            "Sunfire Aegis",
+            "Spirit Visage",
+            "Thornmail"
+          ],
+          "late": [
+            "Randuin's Omen",
+            "Jak'Sho, The Protean",
+            "Shadowflame"
+          ]
+        }
+      }
+    },
+    "Zed": {
+      "mid": {
+        "start": [
+          "Doran's Blade",
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "6699",
+          "2520",
+          "3036"
+        ],
+        "late": [
+          "6694",
+          "3814",
+          "3142"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Voltaic Cyclosword",
+            "Bastionbreaker",
+            "Lord Dominik's Regards"
+          ],
+          "late": [
+            "Serylda's Grudge",
+            "Edge of Night",
+            "Youmuu's Ghostblade"
+          ]
+        }
+      },
+      "jungle": {
+        "start": [
+          "Scorchclaw Pup",
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "6699",
+          "2520",
+          "6696"
+        ],
+        "late": [
+          "3814",
+          "3026",
+          "3142"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Voltaic Cyclosword",
+            "Bastionbreaker",
+            "Axiom Arc"
+          ],
+          "late": [
+            "Edge of Night",
+            "Guardian Angel",
+            "Youmuu's Ghostblade"
+          ]
+        }
+      }
+    },
+    "Zeri": {
+      "adc": {
+        "start": [
+          "Doran's Bow",
+          "Health Potion"
+        ],
+        "boots": "3006",
+        "core": [
+          "3032",
+          "3085",
+          "3031"
+        ],
+        "late": [
+          "3036",
+          "3026",
+          "3072"
+        ],
+        "names": {
+          "boots": "Berserker's Greaves",
+          "bootsOpggTop": "Gluttonous Greaves",
+          "core": [
+            "Yun Tal Wildarrows",
+            "Runaan's Hurricane",
+            "Infinity Edge"
+          ],
+          "late": [
+            "Lord Dominik's Regards",
+            "Guardian Angel",
+            "Bloodthirster"
+          ]
+        }
+      }
+    },
+    "Ziggs": {
+      "adc": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "6655",
+          "4645",
+          "3089"
+        ],
+        "late": [
+          "3157",
+          "3135",
+          "4628"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Luden's Echo",
+            "Shadowflame",
+            "Rabadon's Deathcap"
+          ],
+          "late": [
+            "Zhonya's Hourglass",
+            "Void Staff",
+            "Horizon Focus"
+          ]
+        }
+      },
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "6655",
+          "4645",
+          "3089"
+        ],
+        "late": [
+          "3157",
+          "3135",
+          "3102"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Luden's Echo",
+            "Shadowflame",
+            "Rabadon's Deathcap"
+          ],
+          "late": [
+            "Zhonya's Hourglass",
+            "Void Staff",
+            "Banshee's Veil"
+          ]
+        }
+      }
+    },
+    "Zilean": {
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "2065",
+          "4005",
+          "2524"
+        ],
+        "late": [
+          "3190",
+          "3102",
+          "4629"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Shurelya's Battlesong",
+            "Imperial Mandate",
+            "Bandlepipes"
+          ],
+          "late": [
+            "Locket of the Iron Solari",
+            "Banshee's Veil",
+            "Cosmic Drive"
+          ]
+        }
+      },
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion",
+          "Health Potion"
+        ],
+        "boots": "3158",
+        "core": [
+          "3003",
+          "4629",
+          "4005"
+        ],
+        "late": [
+          "2065",
+          "3165",
+          "3137"
+        ],
+        "names": {
+          "boots": "Ionian Boots of Lucidity",
+          "core": [
+            "Archangel's Staff",
+            "Cosmic Drive",
+            "Imperial Mandate"
+          ],
+          "late": [
+            "Shurelya's Battlesong",
+            "Morellonomicon",
+            "Cryptbloom"
+          ]
+        }
+      }
+    },
+    "Zoe": {
+      "mid": {
+        "start": [
+          "Doran's Ring",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "6655",
+          "3100",
+          "4645"
+        ],
+        "late": [
+          "3089",
+          "3157",
+          "4629"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Luden's Echo",
+            "Lich Bane",
+            "Shadowflame"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Zhonya's Hourglass",
+            "Cosmic Drive"
+          ]
+        }
+      }
+    },
+    "Zyra": {
+      "support": {
+        "start": [
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "6653",
+          "3116",
+          "3157"
+        ],
+        "late": [
+          "3165",
+          "3089",
+          "2503"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Liandry's Torment",
+            "Rylai's Crystal Scepter",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Morellonomicon",
+            "Rabadon's Deathcap",
+            "Blackfire Torch"
+          ]
+        }
+      },
+      "jungle": {
+        "start": [
+          "Scorchclaw Pup",
+          "Health Potion"
+        ],
+        "boots": "3020",
+        "core": [
+          "6653",
+          "4645",
+          "3157"
+        ],
+        "late": [
+          "3089",
+          "3165",
+          "3116"
+        ],
+        "names": {
+          "boots": "Sorcerer's Shoes",
+          "core": [
+            "Liandry's Torment",
+            "Shadowflame",
+            "Zhonya's Hourglass"
+          ],
+          "late": [
+            "Rabadon's Deathcap",
+            "Morellonomicon",
+            "Rylai's Crystal Scepter"
+          ]
+        }
+      }
+    }
+  },
+  "unmapped": {
+    "Gluttonous Greaves": 36,
+    "Mejai's Soulstealer": 22,
+    "Diadem of Songs": 2,
+    "Dark Seal": 1
+  },
+  "missing": []
+}

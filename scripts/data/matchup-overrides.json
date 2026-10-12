@@ -1,0 +1,6 @@
+{
+  "_note": "Curated lane matchups that win over the op.gg data (champion/role -> champions it beats). Each pair is applied both ways: listed as easy for the first, hard for the opponent.",
+  "easy": {
+    "Fiora/top": [{ "id": "Sion", "wr": 0.6 }]
+  }
+}
