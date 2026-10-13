@@ -34,6 +34,14 @@ export const roomFactor = (room: number) => (room <= 0 ? 0 : Math.min(2.2, 0.05 
 /** Each point is harder to find the higher a player already is (1 up to 70; 90 → 0.75, 120 → 0.55, 150 → 0.43, 180 → 0.35). */
 export const levelFactor = (ovr: number) => 1 / (1 + Math.max(0, ovr - 70) / 60);
 /**
+ * AI clubs develop players more slowly than the user's club: a gentler overall rate and a cap on how much a
+ * sky-high ceiling speeds a player up (otherwise an AI club's 18-year-old prodigy gains 10–14 a year and passes
+ * established veterans within a season). The user's club keeps the full rates — good management is the edge.
+ */
+export const AI_DEV_RATE = 0.75, AI_ROOM_CAP = 1.25;
+const devRoom = (aiClub: boolean, room: number) => (aiClub ? Math.min(AI_ROOM_CAP, roomFactor(room)) : roomFactor(room));
+
+/**
  * The club's development environment: coaching quality (convex — great coaches are worth far more than average
  * ones) × training facility, on top of what players get from solo queue anyway. Typical tier-1 club ≈ 1.0,
  * tier-2/3 ≈ 0.6–0.7, the best staff + a level-5 facility ≈ 1.5 (×1.25 more on intense training).
@@ -60,7 +68,8 @@ function weekPlan(state: GameState, team: Team, p: Player, plan: TrainingPlan, c
   const room = p.hidden.potential - ovr;
   const curve = ageCurve(age);
   // typical tier-1 club, big room: ~+6 overall a year at 18–20, ~+4 at 21–23; elite management about doubles it
-  let rate = 0.037 * cx.intensity * cx.env * (0.6 + p.hidden.workEthic / 100 * 0.8);
+  const aiClub = team.id !== state.userTeamId;
+  let rate = 0.037 * cx.intensity * cx.env * (0.6 + p.hidden.workEthic / 100 * 0.8) * (aiClub ? AI_DEV_RATE : 1);
   if (p.traits.includes('grinder')) rate *= 1.25;
   if (p.traits.includes('party_animal')) rate *= 0.75;
   if (cx.mentors && age < 22 && !p.traits.includes('mentor')) rate *= 1 + 0.15 * cx.mentors;
@@ -68,7 +77,7 @@ function weekPlan(state: GameState, team: Team, p: Player, plan: TrainingPlan, c
   if (age < 22) rate *= 0.85 + cx.sb.development / 100 * 0.35;
   rate *= trainingMult(state, team, p, age, curve); // extended traits & personal profile (traitEffects.ts)
   // past ~28 the hands slow down: professionalism and a good environment soften it (~-0.7/yr at 28–29, ~-2/yr after 30)
-  const growth = curve > 0 ? rate * curve * roomFactor(room) * levelFactor(ovr) : 0.09 * curve * 0.8 * (1.3 - p.hidden.professionalism / 100 * 0.6) * (1.15 - cx.env * 0.15);
+  const growth = curve > 0 ? rate * curve * devRoom(aiClub, room) * levelFactor(ovr) : 0.09 * curve * 0.8 * (1.3 - p.hidden.professionalism / 100 * 0.6) * (1.15 - cx.env * 0.15);
   // distribute growth: focus attribute gets more, scrim/soloq/vod mix shapes the rest
   const weights: Partial<Record<keyof PlayerAttributes, number>> = {
     mechanics: plan.soloq * 1.2, laning: plan.soloq + plan.scrims * 0.5, farming: plan.soloq * 0.6, teamfight: plan.scrims,
@@ -173,9 +182,10 @@ export function gameExperience(state: GameState, p: Player, won: boolean, stage:
   const age = ageOn(p.birthdate, state.date) ?? 22;
   const ovr = overall(p.attributes, p.role);
   const ageF = age < 22 ? 1.2 : age < 26 ? 1 : age < 29 ? 0.7 : 0.45;
-  if (won) breakthrough(p, 0.025 * stage * ageF * (edge > -6 ? 1 : 0.4)); // ~+3/yr for a winning tier-1 starter at their ceiling
+  const aiClub = p.teamId !== state.userTeamId;
+  if (won) breakthrough(p, 0.025 * stage * ageF * (edge > -6 ? 1 : 0.4) * (aiClub ? AI_DEV_RATE : 1)); // ~+3/yr for a winning tier-1 starter at their ceiling
   // a tier-1 starter plays ~150–190 official games a year: ~+2–3 overall from the stage for a winning team with room
-  const g = 0.009 * stage * (won ? 1.35 : 0.75) * (mvp ? 1.4 : 1) * clamp(1 + edge / 40, 0.5, 1.6) * ageF * levelFactor(ovr) * roomFactor(p.hidden.potential - ovr);
+  const g = 0.009 * stage * (won ? 1.35 : 0.75) * (mvp ? 1.4 : 1) * clamp(1 + edge / 40, 0.5, 1.6) * ageF * levelFactor(ovr) * devRoom(aiClub, p.hidden.potential - ovr) * (aiClub ? AI_DEV_RATE : 1);
   if (g <= 0) return;
   // what a game on stage teaches: the attributes that make up the role's overall (+ big-match composure on big stages)
   for (const k of Object.keys(ROLE_WEIGHTS[p.role]) as (keyof PlayerAttributes)[]) p.attributes[k] = clampRating(p.attributes[k] + g * (0.6 + rng() * 0.8));
