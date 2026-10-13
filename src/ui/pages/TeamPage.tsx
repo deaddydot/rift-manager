@@ -59,6 +59,7 @@ function TeamView({ state, team }: { state: GameState; team: Team }) {
               <span>{REGION_LABEL[team.region]}</span>
               {team.country && <span>{flag(team.country)} {team.country}</span>}
               {team.franchise && <Pill color="#0ac8b9">Franchise</Pill>}
+              {team.brandDeal && <span title={`Naming-rights deal with ${team.brandDeal.brand} until ${team.brandDeal.until}`}><Pill color={team.brandDeal.color}>{team.brandDeal.brand} · formerly {team.brandDeal.originalName}</Pill></span>}
               {parent && <button className="hover:text-gold" onClick={() => nav('team', parent.id)}>Academy of <span className="text-text">{parent.name}</span></button>}
               {academy && <button className="hover:text-gold" onClick={() => nav('team', academy.id)}>Academy: <span className="text-text">{academy.name}</span></button>}
             </div>

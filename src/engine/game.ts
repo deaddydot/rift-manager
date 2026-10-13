@@ -13,6 +13,7 @@ import { inTransferWindow, processExpiries, expiryReminders, aiTransfers, resolv
 import { generateWindowFreeAgents } from './management/freeAgents';
 import { addInbox, addNews } from './management/news';
 import { listFranchiseSales, applyFranchiseMoves } from './management/franchise';
+import { applyAscensionMoves, ascensionDaily, reactToLeagueChange } from './management/ascension';
 import { reactionsDaily } from './management/reactions';
 import { peopleDaily } from './management/people';
 import { personaDaily } from './management/personaTick';
@@ -113,6 +114,7 @@ export function endDay(state: GameState) {
     const p = state.players[id];
     if (p && p.lastPlayed !== prev) p.fatigue = clamp(p.fatigue - 1.2, 0, 100);
   }
+  ascensionDaily(state); // big-chance brand offers expire
   ensureMasteryScale(state); // free agents / prospects generated today
   ensureRatingScale(state);
   reactionsDaily(state); // fan pulse & owner
@@ -185,24 +187,31 @@ function seasonRollover(state: GameState, rng: RNG) {
   state.history.push({ season: state.season, champions, awards: {} });
   // promotions / relegations
   const promos = (state as GameState & { promotions?: { promote: string; relegate?: string; league: string }[] }).promotions ?? [];
+  const moved = new Set<string>(); // teams that changed league this rollover (promotion series first, then buyouts and sales)
   for (const p of promos) {
     const up = state.teams[p.promote], down = p.relegate ? state.teams[p.relegate] : undefined;
-    if (!up) continue;
+    if (!up || moved.has(up.id)) continue;
     const oldLeague = up.leagueId;
     up.leagueId = p.league;
+    moved.add(up.id);
+    if (up.id === state.userTeamId) reactToLeagueChange(state, true, oldLeague, p.league);
     // the relegated team drops to the feeder league of its own country (a Japanese LCP team goes
     // to the LJL even if the promoted team came from the VCS); otherwise the promoted team's league
     if (down) {
-      const feeders = Object.values(state.leagues).filter((l) => l.parent === p.league && l.tier === 2);
+      const below = (state.leagues[p.league]?.tier ?? 1) + 1; // a tier-2 league relegates into its tier-3 feeder
+      const feeders = Object.values(state.leagues).filter((l) => l.parent === p.league && l.tier === below);
       const country = (down.country ?? '').toLowerCase();
       const home = (country ? feeders.find((l) => (l.country ?? '').toLowerCase().includes(country)) : undefined)
         ?? feeders.find((l) => /sea/i.test(l.country ?? '')); // e.g. an Oceanic team → the PCS
       down.leagueId = home?.id ?? oldLeague;
+      moved.add(down.id);
+      if (down.id === state.userTeamId) reactToLeagueChange(state, false, p.league, down.leagueId);
     }
     addNews(state, { headline: `${up.name} join the ${p.league}`, body: `${up.name} take their place in the ${p.league}${down ? `, replacing ${down.name}` : ''}.`, tags: ['promotion'] });
   }
   (state as GameState & { promotions?: unknown[] }).promotions = [];
-  applyFranchiseMoves(state, rng);
+  applyAscensionMoves(state, moved); // brand-brokered buyouts; naming deals that ran out (management/ascension.ts)
+  applyFranchiseMoves(state, rng, moved);
   yearlyAging(state, rng);
   // reset season stats, drop finished fixtures of old season to keep saves small
   for (const p of Object.values(state.players)) p.season = { games: 0, wins: 0, kills: 0, deaths: 0, assists: 0, cs: 0, gold: 0, damage: 0, vision: 0, minutes: 0, mvps: 0, champions: {} };

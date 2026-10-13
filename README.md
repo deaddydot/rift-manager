@@ -55,6 +55,13 @@ Saves are stored in your browser (IndexedDB, gzip-compressed) and can be exporte
   objectives, fans/hype/prestige (a die-hard core that sticks around win or lose — built by club history, long-serving,
   charismatic or streaming players and local heroes — and casual fans who follow results), AI clubs that renew sponsors,
   restock merch and reinvest surpluses in facilities, inbox & news.
+- **Paths up the pyramid** for tier-2/3 clubs (`src/engine/management/ascension.ts`, `franchise.ts`; the Boardroom's
+  "Path up the pyramid" panel shows them): promotion series (tier-3 champions vs the last-placed tier-2 club; tier-2
+  champions vs the last LCS/LCP/CBLOL club), league spots that struggling clubs sell every offseason — franchised
+  LCK/LPL/LEC partnerships, open tier-1 and tier-2 spots — with die-hard fans crowdfunding part of the price, and
+  **big-chance brand backing**: a club that dominates its league may be approached by a global brand offering a
+  naming-rights deal ("Monstar Wolves" / "Wolves Monstar") that funds most of a buyout of a spot in the league above.
+  AI clubs climb the same ways; brands walk away (and names revert) if a club is relegated.
 - **Editor**: create custom players, teams and staff (portraits/logos uploaded from your computer), edit anyone
   (including coaches, analysts and other staff), and keep a reusable custom library.
 

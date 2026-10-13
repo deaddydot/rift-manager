@@ -10,6 +10,7 @@ import { addLedger } from '../management/finance';
 import { checkSponsorBonuses } from '../management/sponsors';
 import { breakthrough } from '../management/potential';
 import { boostFans } from '../management/fanbase';
+import { onLowerLeagueTitle } from '../management/ascension';
 
 type CompExt = Competition & { specs?: StageSpec[]; qualifiesTo?: CompTemplate['qualifies']; direct?: Record<string, string[]>; template?: string; countsPoints?: boolean };
 
@@ -19,9 +20,9 @@ export function compKey(year: number, templateId: string) { return `${year}-${te
 
 export function createSeason(state: GameState, year: number) {
   const leagueIds = Object.keys(state.leagues);
-  const names: Record<string, string> = {};
-  for (const l of Object.values(state.leagues)) names[l.id] = l.name;
-  for (const tpl of seasonTemplates(leagueIds, names)) {
+  const names: Record<string, string> = {}, parents: Record<string, string | undefined> = {};
+  for (const l of Object.values(state.leagues)) { names[l.id] = l.name; parents[l.id] = l.parent; }
+  for (const tpl of seasonTemplates(leagueIds, names, parents)) {
     const id = compKey(year, tpl.id);
     const fix = (mmdd: string) => `${year}-${mmdd}`;
     const comp: CompExt = {
@@ -182,6 +183,7 @@ export function finishCompetition(state: GameState, comp: CompExt) {
       const car = p.career.find((c) => c.season === comp.season && c.teamId === champion.id);
       if (car) car.titles.push(comp.name);
     }
+    if (comp.kind === 'playoffs' && comp.tier >= 2) onLowerLeagueTitle(state, comp, champion.id); // a big brand may come knocking (ascension.ts)
     if (comp.tier <= 1 || champion.id === state.userTeamId) {
       addNews(state, { headline: `${champion.name} win the ${comp.name}!`, body: `${champion.name} are champions of the ${comp.name}.`, tags: ['title'], teamIds: [champion.id] });
     }

@@ -192,8 +192,8 @@ export function acceptSponsor(state: GameState, team: Team, offer: SponsorOffer)
   return deal;
 }
 
-/** Max sponsors a team can hold depends on its content studio. */
-export const sponsorSlots = (team: Team) => 3 + team.facilities.contentStudio;
+/** Max sponsors a team can hold depends on its content studio (a naming-rights partner comes on top). */
+export const sponsorSlots = (team: Team) => 3 + team.facilities.contentStudio + (team.brandDeal ? 1 : 0);
 
 function addDaysIso(d: string, n: number) { const x = new Date(d + 'T00:00:00Z'); x.setUTCDate(x.getUTCDate() + n); return x.toISOString().slice(0, 10); }
 

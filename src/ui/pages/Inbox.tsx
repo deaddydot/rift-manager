@@ -6,7 +6,8 @@ import { Empty, Pill, Portrait, TeamLogo, Rating, RoleIcon, money, fmtDate, ageO
 import { sponsorSlots } from '../../engine/management/sponsors';
 import { askingFee, playerOvr } from '../../engine/management/transfers';
 import { activeSponsors, acceptSponsorOffer, declineSponsorOffer, respondIncomingOffer, bonusText } from '../../engine/management/offerActions';
-import { sales, buyFranchise } from '../../engine/management/franchise';
+import { sales, userPrice } from '../../engine/management/franchise';
+import { offerLive, offerById, acceptAscension, declineAscension, buySpot } from '../../engine/management/ascension';
 import { ownerRequestLive } from '../../engine/management/owner';
 import { OwnerChoiceBox } from '../components/FanPulseWidget';
 import { PlayerChoiceBox } from '../components/PlayerTalk';
@@ -34,6 +35,7 @@ function actionLive(state: GameState, m: InboxMessage) {
     return !!o && o.status === 'pending' && state.players[o.playerId]?.teamId === state.userTeamId;
   }
   if (a.type === 'franchiseOffer') { const sale = sales(state).find((x) => x.id === a.payload); return !!sale && sale.status === 'open' && sale.expires >= state.date; }
+  if (a.type === 'ascensionOffer') return offerLive(state, offerById(state, String(a.payload)));
   if (a.type === 'openPlayer') return !!state.players[String(a.payload)]?.contract && state.players[String(a.payload)].teamId === state.userTeamId;
   if (a.type === 'ownerChoice') return ownerRequestLive(state, String(a.payload));
   if (a.type === 'playerChoice') return playerRequestLive(state, String(a.payload));
@@ -180,6 +182,7 @@ function ActionBox({ state, m }: { state: GameState; m: InboxMessage }) {
   if (a.type === 'sponsorOffer') return <SponsorAction state={state} m={m} />;
   if (a.type === 'incomingOffer') return <BidAction state={state} m={m} />;
   if (a.type === 'franchiseOffer') return <FranchiseAction state={state} m={m} />;
+  if (a.type === 'ascensionOffer') return <AscensionAction state={state} m={m} />;
   if (a.type === 'ownerChoice') return <OwnerChoiceBox state={state} reqId={String(a.payload)} />;
   if (a.type === 'playerChoice') return <PlayerChoiceBox state={state} reqId={String(a.payload)} />;
   if (a.type === 'openPlayer') return (
@@ -195,23 +198,86 @@ function FranchiseAction({ state, m }: { state: GameState; m: InboxMessage }) {
   const notify = useStore((s) => s.notify);
   const sale = sales(state).find((x) => x.id === String(m.action!.payload));
   const team = state.teams[state.userTeamId];
-  if (!sale) return <Shell title="Franchise slot" done><div className="text-sm text-muted">This sale is no longer available.</div></Shell>;
+  if (!sale) return <Shell title="League spot" done><div className="text-sm text-muted">This sale is no longer available.</div></Shell>;
   const seller = state.teams[sale.sellerId];
   const open = sale.status === 'open' && sale.expires >= state.date;
+  const pay = userPrice(sale);
+  const lname = state.leagues[sale.league]?.name ?? sale.league;
   return (
-    <Shell title={`${sale.league} franchise slot`} done={!open}>
+    <Shell title={`${lname} spot for sale`} done={!open}>
       <div className="flex items-center gap-4 mb-3">
         <TeamLogo team={seller} size={40} />
         <div className="text-sm">
-          <div><b>{seller?.name}</b> sell their {sale.league} slot</div>
-          <div className="text-muted">Price {money(sale.price)} · your balance {money(team.balance)} · open until {fmtDate(sale.expires)}</div>
+          <div><b>{seller?.name}</b> sell their place in the {lname}</div>
+          <div className="text-muted">Price {money(sale.price)}{sale.pledge ? <> · fans crowdfunded <span className="text-gold2">{money(sale.pledge)}</span> · you pay {money(pay)}</> : null} · your balance {money(team.balance)} · open until {fmtDate(sale.expires)}</div>
         </div>
       </div>
       {open ? (
-        <button className="btn btn-gold" disabled={team.balance < sale.price} onClick={() => { const r = buyFranchise(state, sale.id); notify(r.message); if (r.ok) m.action!.done = true; bump(); }}>
-          {team.balance < sale.price ? 'Not enough funds' : `Buy slot for ${money(sale.price)}`}
+        <button className="btn btn-gold" disabled={team.balance < pay} onClick={() => { const r = buySpot(state, sale.id); notify(r.message); if (r.ok) m.action!.done = true; bump(); }}>
+          {team.balance < pay ? 'Not enough funds' : `Buy the spot for ${money(pay)}`}
         </button>
       ) : <div className="text-sm text-muted">{sale.status === 'sold' ? (sale.buyerId === team.id ? 'You own this slot — you join the league next season.' : 'Sold to another organisation.') : 'Offer expired.'}</div>}
+    </Shell>
+  );
+}
+
+function AscensionAction({ state, m }: { state: GameState; m: InboxMessage }) {
+  const bump = useStore((s) => s.bump);
+  const notify = useStore((s) => s.notify);
+  const o = offerById(state, String(m.action!.payload));
+  if (!o) return <Shell title="Big-chance partnership" done><div className="text-sm text-muted">This offer no longer exists.</div></Shell>;
+  const team = state.teams[o.teamId];
+  const seller = state.teams[o.sellerId];
+  const live = offerLive(state, o);
+  const target = state.leagues[o.targetLeague]?.name ?? o.targetLeague;
+  const act = (style: 'title' | 'cobrand' | null) => {
+    const r = style ? acceptAscension(state, o.id, style) : declineAscension(state, o.id);
+    notify(r.message);
+    if (r.ok) m.action!.done = true;
+    bump();
+  };
+  return (
+    <Shell title="Big-chance partnership" done={!live}>
+      <div className="flex items-center gap-3 mb-3">
+        <div className="w-12 h-12 rounded-lg flex items-center justify-center font-display font-bold text-lg shrink-0" style={{ background: `linear-gradient(145deg, ${o.color}, ${o.color}99)`, color: '#0b0f19' }}>
+          {o.brand.split(/\s+/).slice(0, 2).map((w) => w[0]).join('').toUpperCase()}
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="font-semibold">{o.brand} <span className="text-xs text-muted font-normal">· {o.category}</span></div>
+          <div className="text-xs text-muted">Because {team?.name ?? 'the club'} {o.reason}.</div>
+        </div>
+        <div className="flex items-center gap-2 text-right shrink-0">
+          <div className="text-xs"><div className="text-dim">Buyout of</div><div className="font-semibold">{seller?.name ?? '—'}</div><div className="text-gold2 font-display font-bold">{money(o.price)}</div></div>
+          <TeamLogo team={seller} size={36} />
+        </div>
+      </div>
+      <div className="text-xs text-muted mb-3">Step up to the <b className="text-text">{target}</b> at the end of the season. If the club is relegated from the {target}, {o.brand} walk away and the name reverts.</div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+        {o.options.map((x) => {
+          const short = team && team.balance < x.teamPays;
+          return (
+            <div key={x.style} className="panel-flat p-3 flex flex-col gap-2" style={{ borderColor: x.style === 'title' ? `${o.color}88` : undefined }}>
+              <div className="text-[10px] uppercase tracking-wider font-bold text-dim">{x.style === 'title' ? 'Title naming' : 'Co-branding'} · {x.seasons} seasons</div>
+              <div className="font-display text-xl font-bold leading-tight" style={{ color: x.style === 'title' ? o.color : undefined }}>{x.name} <span className="text-xs text-muted font-normal">[{x.short}]</span></div>
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <Fact label={`${o.brand} pay`} value={`${Math.round(x.fund * 100)}% · ${money(x.brandPays)}`} />
+                <Fact label="You pay" value={money(x.teamPays)} warn={short} />
+                <Fact label="Per month" value={money(x.monthly)} />
+                <Fact label="Signing fee" value={money(x.signing)} />
+              </div>
+              {live && <button className={x.style === 'title' ? 'btn btn-gold mt-1' : 'btn mt-1'} disabled={short} onClick={() => act(x.style)}>{short ? `Need ${money(x.teamPays)}` : x.style === 'title' ? `Become ${x.name}` : `Sign as ${x.name}`}</button>}
+            </div>
+          );
+        })}
+      </div>
+      {live ? (
+        <div className="flex items-center gap-2 flex-wrap">
+          <button className="btn" onClick={() => act(null)}>Decline — keep our name</button>
+          <span className="text-xs text-muted ml-auto">Your balance {money(team?.balance ?? 0)} · offer open until {fmtDate(o.expires)}</span>
+        </div>
+      ) : (
+        <div className="text-sm text-muted">{o.status === 'accepted' ? `Signed (${o.accepted === 'title' ? 'title naming' : 'co-branding'}). The move to the ${target} happens at season rollover.` : o.status === 'declined' ? 'You declined this offer.' : 'This offer has expired.'}</div>
+      )}
     </Shell>
   );
 }

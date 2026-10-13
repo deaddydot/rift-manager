@@ -1,6 +1,7 @@
 import { useGame, nav } from '../../store/game';
 import { Panel, Empty, Bar, Pill, Stat, TeamLogo, fmtDate } from '../components/kit';
 import { OwnerChoiceBox } from '../components/FanPulseWidget';
+import PathUpPanel from '../components/PathUp';
 import { ownerMoodLabel, ownerRequestLive, TRAIT_INFO } from '../../engine/management/owner';
 
 const WARNING = ['No concerns', 'Concerned', 'Ultimatum issued', 'Final warning'];
@@ -43,6 +44,7 @@ export default function Boardroom(_props: { id?: string }) {
 
       <div className="grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-4">
         <div className="space-y-4 min-w-0">
+          <PathUpPanel state={state} />
           <Panel title={`Awaiting your answer (${pending.length})`}>
             {pending.length === 0 ? <div className="text-sm text-muted">Nothing on the table right now. Enjoy the quiet.</div> : (
               <div className="space-y-3">{pending.map((r) => (

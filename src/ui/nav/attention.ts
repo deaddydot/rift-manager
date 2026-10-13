@@ -3,6 +3,7 @@ import type { GameState, InboxMessage } from '../../engine/types';
 import { ROLES } from '../../engine/types';
 import { ownerRequestLive } from '../../engine/management/owner';
 import { sales } from '../../engine/management/franchise';
+import { offerLive, offerById } from '../../engine/management/ascension';
 
 /**
  * live  = pulsing red dot (something is happening right now, e.g. match day)
@@ -26,6 +27,7 @@ export function inboxActionLive(state: GameState, m: InboxMessage) {
     return !!o && o.status === 'pending' && state.players[o.playerId]?.teamId === state.userTeamId;
   }
   if (a.type === 'franchiseOffer') { const sale = sales(state).find((x) => x.id === a.payload); return !!sale && sale.status === 'open' && sale.expires >= state.date; }
+  if (a.type === 'ascensionOffer') return offerLive(state, offerById(state, String(a.payload)));
   if (a.type === 'openPlayer') { const p = state.players[String(a.payload)]; return !!p?.contract && p.teamId === state.userTeamId; }
   if (a.type === 'ownerChoice') return ownerRequestLive(state, String(a.payload));
   return true;

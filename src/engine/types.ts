@@ -294,6 +294,20 @@ export interface Team {
   realRecord?: { wins: number; losses: number; games: number };
   ticketPrice?: number;
   aiBudget: number;           // AI spending appetite multiplier
+  /** naming-rights partnership with a big brand that brokered a step up (management/ascension.ts) */
+  brandDeal?: BrandDeal;
+}
+
+/** A big brand's naming-rights deal: the club plays under a branded name and the brand funds a league-slot buyout. */
+export interface BrandDeal {
+  brandId: string; brand: string; color: string; category: string;
+  style: 'title' | 'cobrand';
+  originalName: string; originalShort: string;
+  start: string; until: string;   // the name reverts after `until` (a season's end)
+  monthly: number;
+  targetLeague: string;
+  /** the brokered buyout: done at season rollover */
+  slot?: { sellerId: string; price: number; brandPays: number; teamPays: number; status: 'pending' | 'done' | 'void' };
 }
 
 // ------------------------------------------------------------------ leagues & competitions

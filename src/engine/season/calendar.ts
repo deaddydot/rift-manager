@@ -133,7 +133,10 @@ const T3_SPLITS = [
 
 export const ERL_LEAGUES = ['LFL', 'PRM', 'LES', 'TCL', 'NLC', 'RL', 'LIT', 'ROL', 'HLL', 'EBL', 'HM', 'LPLOL', 'AL'];
 
-export function seasonTemplates(leagueIds: string[], leagueNames: Record<string, string>): CompTemplate[] {
+/** Leagues whose clubs are all academies of the league above (no promotion series or slot sales into them). */
+export const ACADEMY_LEAGUES = new Set(['LCKCL', 'LCKAS']);
+
+export function seasonTemplates(leagueIds: string[], leagueNames: Record<string, string>, parents: Record<string, string | undefined> = {}): CompTemplate[] {
   const t: CompTemplate[] = [...LCK, ...LPL, ...LEC, ...LCS, ...LCP, ...CBLOL, ...LCKCL];
   t.push(...regional('NACL', 2, 'NACL', TWO_SPLITS('LCS-promo'), { bo: 1, poSize: 6, prize: 50_000 }));
   t.push(...regional('CD', 2, 'Circuito Desafiante', TWO_SPLITS('CBLOL-promo'), { bo: 1, poSize: 6, prize: 30_000 }));
@@ -142,6 +145,12 @@ export function seasonTemplates(leagueIds: string[], leagueNames: Record<string,
   for (const l of leagueIds) {
     if (t.some((x) => x.league === l)) continue;
     t.push(...regional(l, 3, leagueNames[l] ?? l, T3_SPLITS, { bo: 1, poSize: 4, prize: 5_000 }));
+    // promotion series into the tier-2 league above: its last-placed team vs the top 3 of this league's summer playoffs
+    const up = parents[l];
+    if (up && leagueIds.includes(up) && !ACADEMY_LEAGUES.has(up) && !ACADEMY_LEAGUES.has(l)) {
+      t.push({ id: `${l}-promo`, name: `${leagueNames[up] ?? up} Promotion`, short: `${leagueNames[up] ?? up} Promo`, kind: 'qualifier', league: up, tier: 2, start: '10-14', end: '10-18',
+        stages: [DE('promo', 'Promotion', '10-14', '10-18', 3)], seedRule: `promotion:${up}:${l}`, prizePool: 0, tags: ['promotion'] });
+    }
   }
   // ---------------- internationals
   t.push(
