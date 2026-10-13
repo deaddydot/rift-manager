@@ -44,6 +44,8 @@ export class MatchSim {
   tickNo = 0;
   /** lore rules: the side that can't lose this game */
   destiny: Side | null = null;
+  /** cheat (the Settings easter egg): this side falls apart — see forceThrow */
+  throwSide: Side | null = null;
   private destinyNoticeAt = -999;
   /** lore: how much the side facing destiny has cracked (each time the Nexus refuses to fall) */
   curse = 0;
@@ -382,6 +384,25 @@ export class MatchSim {
    */
   redFirst(): boolean {
     return Math.imul(this.tickNo, 0x9e3779b1) >>> 31 === 1;
+  }
+
+  /**
+   * Cheat: `side` throws the game — comms die, everyone tilts, plays recklessly, forgets the map and makes mistakes
+   * all over it (hidden.ts reads throwSide for form and mistakes, ai.ts for team aggression). The lore rule wins:
+   * a side destiny protects can't be made to throw.
+   */
+  forceThrow(side: Side): boolean {
+    if (this.throwSide !== null || this.winner !== null || side === this.destiny) return false;
+    this.throwSide = side;
+    const tm = this.teams[side];
+    tm.macro = 12;
+    for (const c of this.champs) {
+      if (c.side !== side) continue;
+      c.input = { ...c.input, macro: 15, mistakes: 97, composure: 4, aggression: 95, consistency: 8, farsight: 5, shotcalling: 8, resilience: 5 };
+      c.tilt = Math.max(c.tilt, 0.25);
+    }
+    this.event('info', `${tm.input.name} are falling apart — their comms have gone completely silent`, side, { important: true });
+    return true;
   }
 
   step() {

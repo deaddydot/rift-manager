@@ -6,6 +6,7 @@ import { Panel, Modal, Pill, TeamLogo, Empty, fmtDate } from '../components/kit'
 // the AI chat isn't part of the online build (the literal env check lets the bundler drop it)
 const AiChatSettings = import.meta.env.VITE_HOSTED !== '1' ? lazy(() => import('../match/aiChat/AiChatSettings')) : null;
 import CasterSettings from '../match/broadcast/CasterSettings';
+import { armSecret } from '../cheats';
 
 type Confirm = { title: string; body: ReactNode; actions: { label: string; cls?: string; fn: () => void | Promise<void> }[] } | null;
 
@@ -215,7 +216,8 @@ export default function Settings(_props: { id?: string; tab?: string; kind?: str
           <Credit name="CommunityDragon" license="Community CDN" href="https://www.communitydragon.org">Additional game assets and map data used by the match viewer.</Credit>
         </div>
         <div className="text-[11px] text-dim mt-4 border-t hairline pt-3">
-          Rift Manager is a fan-made, non-commercial project. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. This project is not endorsed by or affiliated with Riot Games. Sponsors, staff free agents and generated prospects are fictional.
+          {/* easter egg (ui/cheats.ts): click the name, then type the word */}
+          <span onClick={() => armSecret((now) => notify(now ? '🐐 The Unkillable Demon King is watching. Your next live match has a new button.' : 'The Demon King goes back to sleep.'))}>Rift Manager</span> is a fan-made, non-commercial project. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. This project is not endorsed by or affiliated with Riot Games. Sponsors, staff free agents and generated prospects are fictional.
         </div>
       </Panel>
 

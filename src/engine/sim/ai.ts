@@ -414,7 +414,7 @@ function teamPlan(sim: MatchSim, side: Side) {
   const t = sim.t;
   {
     const w = compWindow(sim, side);
-    tm.aggression = clamp(tm.input.tactics.aggression + w * 10, 5, 95);
+    tm.aggression = sim.throwSide === side ? 95 : clamp(tm.input.tactics.aggression + w * 10, 5, 95); // a throwing team forces everything
     tm.compWindow = w;
   }
   const enemy = (1 - side) as Side;

@@ -68,7 +68,10 @@ export function updateForm(sim: MatchSim, c: SimChamp, dt: number) {
     if (c.side === sim.destiny) f += 0.05 + Math.max(0, -lead) * 0.16;
     else f -= 0.02 + sim.curse * 0.12;
   }
-  c.perf = clamp(c.basePerf * f * (1 - c.tilt), sim.destiny !== null ? 0.6 : 0.7, sim.destiny !== null ? 1.3 : 1.22);
+  // cheat: a throwing team stays tilted and plays far below itself
+  const throwing = sim.throwSide === c.side;
+  if (throwing) { f -= 0.3; c.tilt = Math.max(c.tilt, 0.2); }
+  c.perf = clamp(c.basePerf * f * (1 - c.tilt), throwing ? 0.45 : sim.destiny !== null ? 0.6 : 0.7, sim.destiny !== null ? 1.3 : 1.22);
 }
 
 export function onDeathTilt(c: SimChamp) {
@@ -90,6 +93,7 @@ export function maybeMistake(sim: MatchSim, c: SimChamp): boolean {
   if (has(c, 'throw_merchant') && t > 1680) p *= 2.5;
   if (has(c, 'coinflip')) p *= 1.4;
   if (has(c, 'survivor')) p *= 0.5;
+  if (sim.throwSide === c.side) p *= 3; // cheat: the throw is on
   p *= 1 - ascension(c.input.mastery) * 0.35; // fewer mistakes on a champion they know inside out
   if (!sim.rng.chance(p)) return false;
   const enemy = (1 - c.side) as Side;

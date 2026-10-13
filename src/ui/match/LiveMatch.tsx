@@ -15,6 +15,17 @@ import CasterDesk from './broadcast/CasterDesk';
 import { useCasterPrefs, subtitleHeight } from './broadcast/prefs';
 import { displayItems } from '../../engine/sim/champstats';
 import BroadcastHud, { hudHeight } from './BroadcastHud';
+import { useFakerMode } from '../cheats';
+import { pushChatLine } from './chatFeed';
+
+/** What chat says when the cheat kicks in (a few of these, in random order). */
+const THROW_CHAT: { text: string; persona: string }[] = [
+  { text: 'THROW THROW THROW THROW', persona: 'spammer' }, { text: 'is their jungler even on comms??', persona: 'backseat' },
+  { text: 'they are inting on purpose 💀', persona: 'memer' }, { text: '🐐🐐🐐 THE DEMON KING HAS ENTERED THE CHAT 🐐🐐🐐', persona: 'superfan' },
+  { text: 'gg go next', persona: 'doomer' }, { text: 'this is the biggest throw I have ever witnessed', persona: 'analyst' },
+  { text: 'REPORT THEIR WHOLE TEAM', persona: 'rival' }, { text: 'did someone unplug their router', persona: 'casual' },
+  { text: 'KEKW they walked into all 5', persona: 'memer' }, { text: 'scripted. 100% scripted.', persona: 'copypasta' },
+];
 
 const SPEEDS = [1, 2, 4, 8, 16, 32, 64];
 const ZOOM_STEP = 1.4;
@@ -52,6 +63,7 @@ export default function LiveMatch({ sim, teams, userSide, onFinished }: { sim: M
   const [fog, setFog] = useState<0 | 1 | null>(() => (useStore.getState().state?.settings.showFog ? userSide : null));
   const [selected, setSelected] = useState<number | null>(null);
   const [shout, setShout] = useState<string | null>(null);
+  const faker = useFakerMode(); // Settings easter egg (ui/cheats.ts)
   const [theater, setTheaterState] = useState(() => readLS(PREF_THEATER) === '1');
   const [fs, setFs] = useState(false);
   const big = theater || fs;
@@ -470,6 +482,24 @@ export default function LiveMatch({ sim, teams, userSide, onFinished }: { sim: M
         ))}
       </div>
       <div className="text-[11px] text-dim mt-2">Aggression now {Math.round(myTeam.aggression)} · {myTeam.input.tactics.playstyle} · {myTeam.input.tactics.objectivePriority}</div>
+      {faker && (() => {
+        const enemy = (1 - userSide) as 0 | 1;
+        const fated = sim.destiny === enemy;
+        const used = sim.throwSide !== null;
+        return (
+          <button className={`btn text-xs mt-2 w-full ${big ? 'px-2! py-1!' : ''}`} style={{ borderColor: '#e2012d88', color: used ? undefined : '#ff5b6e' }}
+            disabled={sim.winner !== null || used || fated}
+            title={fated ? 'Not even the Demon King can make them lose this one (lore rules).' : 'Cheat: the enemy team falls apart.'}
+            onClick={() => {
+              if (!sim.forceThrow(enemy)) return;
+              pushChatLine([...THROW_CHAT].sort(() => Math.random() - 0.5).slice(0, 5));
+              setShout('the throw');
+              setTimeout(() => setShout(null), 2500);
+            }}>
+            {used ? `🐐 ${teams[enemy].short} are throwing…` : fated ? '🐐 Destiny says no' : `🐐 Make ${teams[enemy].short} throw`}
+          </button>
+        );
+      })()}
     </div>
   );
 
