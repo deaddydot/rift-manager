@@ -3,7 +3,8 @@ import { useEffect, useRef, useState } from 'react';
 import type { GameState } from '../../engine/types';
 import { nav, useStore } from '../../store/game';
 import { nextUserFixture } from '../../engine/game';
-import { HUBS, type NavHub } from '../nav/config';
+import { visibleHubs, type NavHub } from '../nav/config';
+import { useDevTools } from '../cheats';
 import { summarize, type Attention } from '../nav/attention';
 import { canGoBack, MOD_KEY } from '../nav/history';
 import { TeamLogo, money, fmtDate } from './kit';
@@ -36,6 +37,7 @@ export function Sidebar({ state, hubId, active, attention, collapsed, onToggle }
   state: GameState; hubId: string; active: string; attention: Attention[]; collapsed: boolean; onToggle: () => void;
 }) {
   const team = state.teams[state.userTeamId];
+  const dev = useDevTools(); // the Editor hub is secret in the online build (ui/cheats.ts)
   const [fly, setFly] = useState<{ hub: NavHub; top: number; left: number } | null>(null);
   const openT = useRef<number | undefined>(undefined);
   const closeT = useRef<number | undefined>(undefined);
@@ -59,8 +61,9 @@ export function Sidebar({ state, hubId, active, attention, collapsed, onToggle }
 
   const LEVEL_ORDER = { live: 0, alert: 1, info: 2 } as const;
   const todo = attention.filter((a) => a.todo !== false).sort((a, b) => LEVEL_ORDER[a.level] - LEVEL_ORDER[b.level]);
-  const main = HUBS.filter((h) => !h.footer);
-  const footer = HUBS.filter((h) => h.footer);
+  const hubs = visibleHubs(dev);
+  const main = hubs.filter((h) => !h.footer);
+  const footer = hubs.filter((h) => h.footer);
 
   const hubButton = (hub: NavHub, small?: boolean) => {
     const on = hub.id === hubId;

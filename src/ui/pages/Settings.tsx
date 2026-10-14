@@ -217,7 +217,9 @@ export default function Settings(_props: { id?: string; tab?: string; kind?: str
         </div>
         <div className="text-[11px] text-dim mt-4 border-t hairline pt-3">
           {/* easter egg (ui/cheats.ts): click the name, then type the word */}
-          <span onClick={() => armSecret((now) => notify(now ? '🐐 The Unkillable Demon King is watching. Your next live match has a new button.' : 'The Demon King goes back to sleep.'))}>Rift Manager</span> is a fan-made, non-commercial project. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. This project is not endorsed by or affiliated with Riot Games. Sponsors, staff free agents and generated prospects are fictional.
+          <span onClick={() => armSecret((word, now) => notify(word === 'faker'
+            ? (now ? '🐐 The Unkillable Demon King is watching. Your next live match has a new button.' : 'The Demon King goes back to sleep.')
+            : (now ? '🛠 Dev tools unlocked: the Editor is in the sidebar for this session.' : 'Dev tools locked again.')))}>Rift Manager</span> is a fan-made, non-commercial project. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. This project is not endorsed by or affiliated with Riot Games. Sponsors, staff free agents and generated prospects are fictional.
         </div>
       </Panel>
 

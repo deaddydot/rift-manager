@@ -4,7 +4,8 @@ import type { GameState } from '../../engine/types';
 import { ROLE_LABEL } from '../../engine/types';
 import { nav, type Route } from '../../store/game';
 import { gd } from '../../data/gamedata';
-import { HUBS, PALETTE_SHORTCUTS, describeRoute } from '../nav/config';
+import { HUBS, PALETTE_SHORTCUTS, describeRoute, visibleHubs } from '../nav/config';
+import { useDevTools } from '../cheats';
 import type { Attention } from '../nav/attention';
 import { Portrait, TeamLogo, ChampIcon } from './kit';
 import { SearchIcon } from './Nav';
@@ -47,14 +48,15 @@ export default function CommandPalette({ state, attention, recents, current, act
   const listRef = useRef<HTMLDivElement>(null);
   const go = (fn: () => void) => { onClose(); fn(); };
 
+  const dev = useDevTools();
   // searchable index, built once per opening
   const index = useMemo(() => ({
     players: Object.values(state.players).map((p) => ({ p, f: [norm(p.handle), norm(p.name), norm(p.nativeName)] })),
     teams: Object.values(state.teams).map((t) => ({ t, f: [norm(t.name), norm(t.short)] })),
     comps: Object.values(state.competitions).map((c) => ({ c, f: [norm(c.name), norm(c.short)] })),
     champs: gd().champions.map((c) => ({ c, f: [norm(c.name), norm(c.id)] })),
-    pages: HUBS.flatMap((h) => h.pages.map((p) => ({ p, h, f: [norm(p.label), norm(h.label), norm(p.keywords)] }))),
-  }), [state]);
+    pages: visibleHubs(dev).flatMap((h) => h.pages.map((p) => ({ p, h, f: [norm(p.label), norm(h.label), norm(p.keywords)] }))),
+  }), [state, dev]);
 
   const hits = useMemo<Hit[]>(() => {
     const query = norm(q.trim());

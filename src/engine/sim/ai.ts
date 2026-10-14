@@ -793,6 +793,7 @@ export function champDecide(sim: MatchSim, c: SimChamp) {
   const t = sim.t;
   if (c.dead) return;
   if (c.ccUntil > t) return;
+  if (sim.throwSide === c.side) { runItDown(sim, c); return; } // cheat: no thinking, just int
 
   // a committed bad engage plays out
   if (c.mistakeUntil > t && c.mistakeKind === 'engage' && c.combatTarget !== null) return;
@@ -894,6 +895,31 @@ export function champDecide(sim: MatchSim, c: SimChamp) {
     case 'group': if (c.task.pos) sim.setDest(c, c.task.pos); return;
     case 'invade': return doJungle(sim, c);
     default: c.task = defaultTask(sim, c);
+  }
+}
+
+/**
+ * Cheat (Settings easter egg, MatchSim.forceThrow): the throwing team runs it down — straight at the nearest enemy,
+ * or down mid into the enemy towers and fountain. No fleeing, no recalls, no waiting for teammates.
+ */
+const runNotes = new WeakMap<SimChamp, number>();
+function runItDown(sim: MatchSim, c: SimChamp) {
+  const enemy = (1 - c.side) as Side;
+  c.recallUntil = 0;
+  c.task = { kind: 'group', reason: 'running it down' };
+  const foes = sim.champs.filter((e) => e.side === enemy && !e.dead);
+  const near = foes.sort((a, b) => dist2(a.pos, c.pos) - dist2(b.pos, c.pos))[0];
+  if (near && dist(near.pos, c.pos) < 3200) {
+    c.combatTarget = near.idx; c.tradeUntil = sim.t + 5; c.tradeMode = false;
+    sim.setDest(c, near.pos);
+  } else {
+    c.combatTarget = null;
+    const ahead = laneProgress('mid', c.pos) + (enemy === 1 ? 0.25 : -0.25); // a quarter of the lane at a time, towards the enemy base
+    sim.setDest(c, ahead >= 1 || ahead <= 0 ? FOUNTAIN[enemy] : lanePoint('mid', ahead));
+  }
+  if (sim.t - (runNotes.get(c) ?? -999) > 75 && dist(c.pos, FOUNTAIN[c.side]) < 3000) {
+    runNotes.set(c, sim.t);
+    sim.event('info', `${c.input.name} walks out of the fountain and runs it down mid`, c.side);
   }
 }
 

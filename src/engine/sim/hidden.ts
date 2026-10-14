@@ -70,8 +70,8 @@ export function updateForm(sim: MatchSim, c: SimChamp, dt: number) {
   }
   // cheat: a throwing team stays tilted and plays far below itself
   const throwing = sim.throwSide === c.side;
-  if (throwing) { f -= 0.3; c.tilt = Math.max(c.tilt, 0.2); }
-  c.perf = clamp(c.basePerf * f * (1 - c.tilt), throwing ? 0.45 : sim.destiny !== null ? 0.6 : 0.7, sim.destiny !== null ? 1.3 : 1.22);
+  if (throwing) { f -= 0.55; c.tilt = Math.max(c.tilt, 0.3); }
+  c.perf = clamp(c.basePerf * f * (1 - c.tilt), throwing ? 0.2 : sim.destiny !== null ? 0.6 : 0.7, throwing ? 0.35 : sim.destiny !== null ? 1.3 : 1.22);
 }
 
 export function onDeathTilt(c: SimChamp) {

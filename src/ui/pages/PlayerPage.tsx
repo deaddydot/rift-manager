@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { HOSTED } from '../../hosted';
+import { useDevTools } from '../cheats';
 import { MASTERY_MAX, masteryTier } from '../../engine/mastery';
 import { useGame, useStore, nav } from '../../store/game';
 import { Panel, Portrait, TeamLogo, Rating, Bar, RatingBar, RatingBandTag, ChampIcon, Pill, Tabs, Modal, money, fmtDate, ageOf, flag, pct, RoleIcon, Stat, Empty, ratingColor } from '../components/kit';
@@ -35,6 +35,7 @@ export default function PlayerPage({ id }: { id: string }) {
   const notify = useStore((s) => s.notify);
   const p = state.players[id];
   const [tab, setTab] = useState<'overview' | 'champions' | 'history' | 'career'>('overview');
+  const dev = useDevTools(); // Editor: dev build, or the "levi" easter egg online
   const [real, setReal] = useState<MatchHistoryEntry[] | null>(null);
   const [renew, setRenew] = useState(false);
   useEffect(() => { realHistory().then((h) => setReal(h[id] ?? [])).catch(() => setReal([])); }, [id]);
@@ -118,7 +119,7 @@ export default function PlayerPage({ id }: { id: string }) {
         {mine && <button className="btn btn-danger" onClick={() => { if (confirm(`Release ${p.handle}? You pay 50% of the remaining salary.`)) { releasePlayer(state, p.id); bump(); nav('squad'); } }}>Release</button>}
         {!mine && <button className="btn btn-gold" onClick={() => nav('transfers')}>Scout / make offer</button>}
         {!mine && team && <span className="text-sm text-muted self-center">Asking fee ~{money(askingFee(state, p, team))} · demands ~{money(salaryDemand(state, p, state.teams[state.userTeamId]))}/yr from you</span>}
-        {!HOSTED && <button className="btn btn-ghost" onClick={() => nav('editor', 'player', p.id)}>Edit in editor</button>}
+        {dev && <button className="btn btn-ghost" onClick={() => nav('editor', 'player', p.id)}>Edit in editor</button>}
       </div>
 
       {mine && <PlayerTalk playerId={p.id} />}

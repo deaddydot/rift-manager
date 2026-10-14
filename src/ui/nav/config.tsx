@@ -4,6 +4,7 @@ import { lazy, type ComponentType, type ReactNode } from 'react';
 import type { Route } from '../../store/game';
 import type { GameState } from '../../engine/types';
 import { gd } from '../../data/gamedata';
+import { devToolsOn } from '../cheats';
 
 export interface NavPage {
   /** hash route key, e.g. 'squad' -> #/squad */
@@ -22,6 +23,8 @@ export interface NavHub {
   pages: NavPage[];
   /** rendered in the sidebar footer instead of the main list */
   footer?: boolean;
+  /** hidden (and its pages unreachable) unless the dev tools are on — the online build's Editor (ui/cheats.ts) */
+  secret?: boolean;
 }
 /** Routes that open an entity (player, team, ...) and belong under a parent page/tab. */
 export interface DetailRoute {
@@ -82,10 +85,10 @@ export const HUBS: NavHub[] = [
     { page: 'database', label: 'Players & Teams', icon: '🔎', keywords: 'database search leagues', render: lazyPage(() => import('../pages/DatabasePage'), (r) => ({ tab: r.id })) },
     { page: 'champions', label: 'Champions', icon: '🛡', keywords: 'meta patch tier list', render: lazyPage(() => import('../pages/Champions'), (r) => ({ id: r.id })) },
   ] },
-  // (the online build has no Editor: players, teams and staff stay as they are)
-  ...(import.meta.env.VITE_HOSTED === '1' ? [] : [{ id: 'editor', label: 'Editor', icon: '✎', footer: true, pages: [
+  // the online build hides the Editor (players, teams and staff stay as they are) unless the "levi" easter egg is on
+  { id: 'editor', label: 'Editor', icon: '✎', footer: true, secret: import.meta.env.VITE_HOSTED === '1', pages: [
     { page: 'editor', label: 'Editor', icon: '✎', keywords: 'edit create custom', render: lazyPage(() => import('../pages/Editor'), (r) => ({ kind: r.id, targetId: r.tab })) },
-  ] }]),
+  ] },
   { id: 'settings', label: 'Settings', icon: '⚙', footer: true, pages: [
     { page: 'settings', label: 'Save & Settings', icon: '⚙', keywords: 'save load options export', render: lazyPage(() => import('../pages/Settings')) },
   ] },
@@ -111,10 +114,13 @@ for (const hub of HUBS) for (const page of hub.pages) PAGES[page.page] = { page,
 const DETAIL_BY_PAGE: Record<string, DetailRoute> = Object.fromEntries(DETAILS.map((d) => [d.page, d]));
 
 export const HOME = PAGES.home;
+/** Hubs to show in the sidebar / palette (secret ones only with the dev tools on). */
+export const visibleHubs = (dev: boolean) => HUBS.filter((h) => !h.secret || dev);
 
 /** Resolve a route to what should render plus which hub / nav page is "active". */
 export function resolveRoute(r: Route, s: GameState): { render: (r: Route) => ReactNode; hub: NavHub; active: string; detail: boolean } {
   const direct = PAGES[r.page];
+  if (direct && direct.hub.secret && !devToolsOn()) return { render: HOME.page.render, hub: HOME.hub, active: 'home', detail: false };
   if (direct) return { render: direct.page.render, hub: direct.hub, active: direct.page.page, detail: false };
   const d = DETAIL_BY_PAGE[r.page];
   if (d) {
@@ -127,6 +133,7 @@ export function resolveRoute(r: Route, s: GameState): { render: (r: Route) => Re
 /** Human label for any route (recent list, breadcrumbs, document title). */
 export function describeRoute(r: Route, s: GameState): { label: string; sub?: string; icon: string } | null {
   const p = PAGES[r.page];
+  if (p && p.hub.secret && !devToolsOn()) return null; // a locked secret page doesn't show up in titles or history
   if (p) {
     if (r.page === 'champions' && r.id) {
       return { label: gd().championById[r.id]?.name ?? r.id, sub: 'Champion', icon: '🛡' };

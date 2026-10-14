@@ -23,14 +23,16 @@ function team(rng: RNG, id: string, used: Set<string>): SimTeamInput {
   return { teamId: id, name: id, short: id, color: '#fff', players, tactics: { aggression: 50, earlyFocus: 'balanced', objectivePriority: 'balanced', laneSwap: 'auto', playstyle: 'balanced', invadeLevel1: false, visionFocus: 50 }, chemistry: 60 };
 }
 for (const cheat of [false, true]) {
-  let w0 = 0, mins = 0;
+  let w0 = 0, mins = 0, deathsAfter = 0, killsAfter = 0;
   for (let g = 0; g < N; g++) {
     const rng = new RNG(1000 + g);
     const used = new Set<string>();
     const sim = new MatchSim(team(rng, 'A', used), team(rng, 'B', used), { seed: 50 + g });
-    while (sim.winner === null && sim.t < sim.maxTime) { sim.step(); if (cheat && sim.t >= AT && sim.throwSide === null) sim.forceThrow(1); }
+    let k0 = 0, k1 = 0;
+    while (sim.winner === null && sim.t < sim.maxTime) { sim.step(); if (sim.t >= AT && !k0 && !k1) { k0 = sim.teams[0].kills + 1e-9; k1 = sim.teams[1].kills + 1e-9; } if (cheat && sim.t >= AT && sim.throwSide === null) sim.forceThrow(1); }
+    deathsAfter += sim.teams[0].kills - Math.floor(k0); killsAfter += sim.teams[1].kills - Math.floor(k1);
     if (sim.winner === 0) w0++;
     mins += sim.t / 60;
   }
-  console.log(`${cheat ? 'throw at ' + AT / 60 + ' min' : 'no cheat     '}: side A wins ${Math.round(w0 / N * 100)}% · avg ${(mins / N).toFixed(1)} min`);
+  console.log(`${cheat ? 'throw at ' + AT / 60 + ' min' : 'no cheat     '}: side A wins ${Math.round(w0 / N * 100)}% · avg ${(mins / N).toFixed(1)} min · after ${AT / 60} min: B dies ${(deathsAfter / N).toFixed(1)}×, kills ${(killsAfter / N).toFixed(1)}`);
 }
