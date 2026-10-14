@@ -4,7 +4,7 @@
 import { clamp, sigmoid } from '../../util/rng';
 import { escapeDash, peelDash } from './dash';
 import {
-  type Vec, type Side, type Lane, LANES, FOUNTAIN, CAMPS, DRAGON_PIT, BARON_PIT, WARD_SPOTS, NEXUS,
+  type Vec, type Side, type Lane, LANES, FOUNTAIN, CAMPS, DRAGON_PIT, BARON_PIT, NEXUS,
   lanePoint, laneProgress, laneDistance, dist, dist2, nearestLane,
 } from './map';
 import { T, TOWER_RANGE } from './constants';
@@ -15,6 +15,9 @@ import { gd, matchupEdge } from '../../data/gamedata';
 import { maybeMistake, has } from './hidden';
 import { mapPlays, joinUlt, JOIN_ULT_CHAMPS } from './globals';
 import { lack } from '../ratings';
+import { hasteFor } from './speed';
+import { beliefs } from './fog';
+import { chooseWardSpot, VISION_SPOTS } from './vision';
 
 // ------------------------------------------------------------------ evaluation helpers
 export function champPower(c: SimChamp): number {
@@ -214,7 +217,9 @@ function objectiveStance(sim: MatchSim, side: Side) {
   const o = sim.objectives.find((x) => x.alive && sim.champs.some((c) => c.side === side && !c.dead && c.task.kind === 'objective' && c.task.objective === x.kind && dist(c.pos, x.pos) < 2600));
   if (!o) { if (tm.objStance && tm.objStance.until < t) tm.objStance = undefined; return; }
   const ours = sim.living(side).filter((c) => dist(c.pos, o.pos) < 2600);
-  const theirs = sim.living(enemy).filter((e) => sim.isVisibleTo(side, e.idx) && dist(e.pos, o.pos) < 4200);
+  // who can contest: enemies we see near the pit, and the ones we assume are there (vanished on the way — fog.ts)
+  const near = beliefs(sim, side).filter((b) => dist(b.pos, o.pos) < 4200 && (b.seen || b.conf >= 0.45));
+  const theirs = near.map((b) => b.e);
   const set = (stance: NonNullable<TeamRuntime['objStance']>['stance'], why: string) => {
     const cur = tm.objStance;
     // bait ↔ fight: don't flip-flop on every fog update; urgent changes (smite, retreat, enemies arriving) go through
@@ -226,6 +231,7 @@ function objectiveStance(sim: MatchSim, side: Side) {
   const hitting = [...o.attackers].some((i) => sim.champs[i].side === side);
   if (hitting && hpf < 0.25) return set('smite', `${Math.round(hpf * 100)}% left — finish it, ${sim.champs.find((c) => c.side === side && c.role === 'jungle')?.input.name ?? 'jungler'} on smite`);
   if (!theirs.length) return set('burn', 'nobody contesting — take it fast');
+  if (near.every((b) => !b.seen) && near.length) sim.dbg(side, 'call', `${o.kind}: assuming ${near.map((b) => b.e.input.name).join(', ')} nearby (${near[0].why})`);
   // fight value: power with the setup / position edge, and whether they know we're here
   const hold = ((tm.setup[o.kind] ?? 0) - (sim.teams[enemy].setup[o.kind] ?? 0)) / 60;
   const edge = 1 + clamp(hold * 0.06 + (tm.macro - sim.teams[enemy].macro) / 400, -0.12, 0.12);
@@ -233,7 +239,7 @@ function objectiveStance(sim: MatchSim, side: Side) {
   const spotted = ours.some((c) => sim.isVisibleTo(enemy, c.idx));
   const dps = ours.reduce((s2, c) => s2 + sim.monsterDps(c) * (o.kind === 'baron' ? 0.55 : 0.7), 0);
   const ttk = o.hp / Math.max(1, dps);
-  const arrive = Math.min(...theirs.map((e) => Math.max(0, dist(e.pos, o.pos) - 700) / Math.max(330, e.stats.ms)));
+  const arrive = Math.min(...near.map((b) => Math.max(0, dist(b.pos, o.pos) - 700) / Math.max(330, b.e.stats.ms)));
   if (ratio > 1.35) return set('fight', `we're stronger (×${ratio.toFixed(2)}) — turn on them first`);
   if (ratio < 0.8) {
     if (!spotted && ttk < arrive + 1) return set('race', `they're coming (${Math.round(arrive)}s) but haven't seen us — ${Math.round(ttk)}s to kill it`);
@@ -459,10 +465,11 @@ function teamPlan(sim: MatchSim, side: Side) {
       // who can contest? Unseen enemies are a read of the map (wave states, timers, who's missing):
       // good macro teams usually read it right, poor ones guess
       const mapRead = 0.2 + tm.macro / 250 + teamFarsight(sim, side) / 500;
+      const bel = beliefs(sim, side);
       const est = theirs.filter((e) => {
-        const seen = tm.lastSeen.get(e.idx);
         if (sim.isVisibleTo(side, e.idx)) return reach(e) < 30;
-        if (seen && t - seen.t < 20) return dist(seen.pos, pit) / e.stats.ms < 30 + (t - seen.t);
+        const b = bel.find((x) => x.e === e);
+        if (b && b.conf >= 0.35) return dist(b.pos, pit) / Math.max(330, e.stats.ms) < 30; // where we believe they are (fog.ts)
         return sim.rng.chance(mapRead) ? reach(e) < 30 : sim.rng.chance(0.5);
       });
       const myPow = groupPower(ours.length ? ours : mine.slice(0, 1)) * 1.12;
@@ -875,8 +882,9 @@ export function champDecide(sim: MatchSim, c: SimChamp) {
     }
   }
 
-  // ---------- warding opportunistically
+  // ---------- warding opportunistically (and supports / junglers walking to a spot that needs a ward)
   maybeWard(sim, c);
+  if (wardTrip(sim, c)) return;
 
   if (c.task.kind === 'lane' && c.task.until && c.task.until < t) c.task = defaultTask(sim, c);
   switch (c.task.kind) {
@@ -888,7 +896,13 @@ export function champDecide(sim: MatchSim, c: SimChamp) {
     case 'defend': return doDefend(sim, c);
     case 'roam': return doGank(sim, c);
     case 'ward': {
-      if (c.task.pos && dist(c.pos, c.task.pos) < 500) { sim.placeWard(c, c.task.pos, c.controlWards > 0 && sim.rng.chance(0.5)); c.task = defaultTask(sim, c); }
+      if (c.task.until && c.task.until < t) { c.task = defaultTask(sim, c); return; } // couldn't get there in time
+      if (c.task.pos && dist(c.pos, c.task.pos) < 500) {
+        const spot = VISION_SPOTS.find((s) => dist(s.pos, c.task.pos!) < 60);
+        const control = c.controlWards > 0 && (c.wardCharges <= 0 || spot?.kind === 'pit' || spot?.kind === 'objective' || sim.rng.chance(0.3));
+        sim.placeWard(c, c.task.pos, control ? 'control' : 'stealth');
+        c.task = defaultTask(sim, c);
+      }
       else if (c.task.pos) sim.setDest(c, c.task.pos);
       return;
     }
@@ -1188,6 +1202,7 @@ function fightDecision(sim: MatchSim, c: SimChamp, threats: SimChamp[]): boolean
     c.task = { kind: 'flee', reason: `outnumbered/outpowered (power ratio ${ratio.toFixed(2)}, HP ${Math.round(hpf * 100)}%)` };
     c.combatTarget = pickTarget(sim, c, enemies.filter((e) => dist(e.pos, c.pos) < c.stats.range + 100)); // shoot while running if possible
     const safe = safeSpot(sim, c);
+    if (enemies.some((e) => e.combatTarget === c.idx || dist(e.pos, c.pos) < 700)) hasteFor(sim, c, 'flee', hpf < 0.4); // haste spell / Ghost to get away
     if (!escapeDash(sim, c, safe)) sim.setDest(c, safe);
     return true;
   }
@@ -1232,7 +1247,10 @@ function fightDecision(sim: MatchSim, c: SimChamp, threats: SimChamp[]): boolean
       else if (gap < (c.chaseGap ?? gap) - 40) c.chaseStart = Math.min(t, c.chaseStart + (t - c.lastDecisionAt)); // closing in: not a chase yet
       c.chaseGap = gap;
       const killable = e.hp < burstEstimate(c, e, t) * 1.1;
-      const patience = 2.5 + c.input.aggression / 40 + (e.hp < e.stats.maxHp * 0.15 ? 2 : 0) + (killable ? 1 : 0) + (ganking ? 2.5 : 0) + (teamfight ? 1.5 : 0); // a gank runs them down; a won teamfight cleans up
+      // speed decides chases: a haste spell / Ghost to catch a kill, and less patience for a target that's faster
+      if (killable || e.hp < e.stats.maxHp * 0.3) hasteFor(sim, c, 'chase', killable);
+      const speedEdge = clamp((sim.speedOf(c) - sim.speedOf(e)) / 40, -1, 1); // ±40 MS ≈ a whole chase's worth
+      const patience = (2.5 + c.input.aggression / 40 + (e.hp < e.stats.maxHp * 0.15 ? 2 : 0) + (killable ? 1 : 0) + (ganking ? 2.5 : 0) + (teamfight ? 1.5 : 0)) * (speedEdge >= 0 ? 1 + speedEdge * 0.6 : 1 + speedEdge * 0.55); // a gank runs them down; a won teamfight cleans up
       const farFromObjective = c.task.kind === 'objective' && dist(c.pos, objPos(c.task.objective!)) > 2600;
       const leash = laneLeash(sim, c, e, killable);
       if (t - c.chaseStart > patience || farFromObjective || leash || !sim.isVisibleTo(side, e.idx)) {
@@ -1515,17 +1533,17 @@ const depthOf = (c: SimChamp, lane: Lane, p: Vec) => (c.side === 0 ? laneProgres
  * nearby. Enemies shown far away don't count — that's what lets a team shove safely.
  */
 function ambushRisk(sim: MatchSim, c: SimChamp, lane: Lane, p: Vec): number {
-  const t = sim.t;
-  const tm = sim.teams[c.side];
+  const bel = beliefs(sim, c.side);
   const deep = clamp((depthOf(c, lane, p) - 0.36) / 0.4, 0, 1);
   let missing = 0, near = 0;
   for (const e of sim.champs) {
     if (e.side === c.side || e.dead) continue;
     if (sim.isVisibleTo(c.side, e.idx)) { if (dist(e.pos, p) < 3500) near++; continue; }
-    const seen = tm.lastSeen.get(e.idx);
-    if (!seen) { missing += 1; continue; }
-    const slack = dist(seen.pos, p) - e.stats.ms * (t - seen.t); // could they be here by now?
-    missing += slack < 1500 ? 1 : slack < 4000 ? 0.5 : 0;
+    // unseen: where we believe they are (fog.ts) — close and likely counts fully, far or stale counts little
+    const b = bel.find((x) => x.e === e);
+    if (!b) { missing += 1; continue; }
+    const d = dist(b.pos, p);
+    missing += (d < 1800 ? 1 : d < 3500 ? 0.55 : 0.12) * (0.4 + b.conf * 0.6);
   }
   const wards = sim.wards.filter((w) => w.side === c.side && dist(w.pos, p) < 2600).length;
   const tower = sim.towers.some((tw) => tw.alive && tw.def.side === c.side && dist(tw.def.pos, p) < 1600);
@@ -1687,7 +1705,7 @@ function decideWaveIntent(sim: MatchSim, c: SimChamp, lane: Lane) {
 }
 
 /** How hard champions hit structures (tuned for structure timings: first tower ~15 min, first inhibitor ~26). */
-const STRUCTURE_HIT = 1.4;
+const STRUCTURE_HIT = 1.55;
 
 /** Champions in lane/push/defend tasks damage enemy waves (last hitting / shoving) and towers. Called every tick. */
 export function champActions(sim: MatchSim, dt: number) {
@@ -1940,9 +1958,8 @@ function endGank(sim: MatchSim, c: SimChamp, why: string) {
   if (c.role !== 'jungle') { c.task = { ...defaultTask(sim, c), reason: `roam off — ${why}` }; return; }
   // 1) leave vision behind: a river ward near this lane
   if (c.wardCharges > 0 && lane) {
-    const spot = WARD_SPOTS.filter((s) => s.tags.includes(lane) && (s.tags.includes('river') || s.tags.includes(c.side === 0 ? 'blue_jungle' : 'red_jungle')) && dist(s.pos, c.pos) < 2500 && !sim.wards.some((w) => w.side === c.side && dist(w.pos, s.pos) < 900))
-      .sort((a, b) => dist(a.pos, c.pos) - dist(b.pos, c.pos))[0];
-    if (spot) { c.task = { kind: 'ward', pos: spot.pos, reason: `gank off (${why}) — warding ${lane} river on the way out` }; return; }
+    const pick = chooseWardSpot(sim, c, 2500, { filter: (s) => s.tags.includes(lane) && (s.tags.includes('river') || s.owner === c.side) });
+    if (pick) { c.task = { kind: 'ward', pos: pick.spot.pos, reason: `gank off (${why}) — warding ${lane} river on the way out` }; return; }
   }
   // 2) back to farming: the best camp, or the one about to respawn
   const camp = chooseCamp(sim, c);
@@ -1984,9 +2001,10 @@ function doObjective(sim: MatchSim, c: SimChamp) {
     const hold = { x: pit.x + (FOUNTAIN[c.side].x - pit.x) * 0.15, y: pit.y + (FOUNTAIN[c.side].y - pit.y) * 0.15 };
     sim.setDest(c, gd().nav.snap(hold));
     if ((c.role === 'support' || c.role === 'jungle') && (c.wardCharges > 0 || c.controlWards > 0)) {
-      const spot = WARD_SPOTS.filter((s) => s.tags.includes(k === 'baron' || k === 'herald' || k === 'grubs' ? 'baron' : 'dragon') && !sim.wards.some((w) => w.side === c.side && dist(w.pos, s.pos) < 700))
-        .sort((a, b) => dist(a.pos, c.pos) - dist(b.pos, c.pos))[0];
-      if (spot && dist(spot.pos, c.pos) < 700 && sim.rng.chance(0.3 + c.input.vision / 250)) sim.placeWard(c, spot.pos, c.controlWards > 0);
+      const obj = k === 'baron' || k === 'herald' || k === 'grubs' ? 'baron' : 'dragon';
+      const control = c.controlWards > 0 && !sim.wards.some((w) => w.side === c.side && w.kind === 'control' && dist(w.pos, pit) < 1500);
+      const pick = chooseWardSpot(sim, c, 800, { control, filter: (s) => s.obj === obj || dist(s.pos, pit) < 1800 });
+      if (pick && sim.rng.chance(0.3 + c.input.vision / 250)) sim.placeWard(c, pick.spot.pos, control ? 'control' : 'stealth');
     }
     return;
   }
@@ -2111,30 +2129,38 @@ function doDefend(sim: MatchSim, c: SimChamp) {
 }
 
 function maybeWard(sim: MatchSim, c: SimChamp) {
-  if (c.wardCharges <= 0 && c.controlWards <= 0) return;
-  const vision = c.input.vision / 100;
-  const roleMul = c.role === 'support' ? 1.6 : c.role === 'jungle' ? 1.1 : 0.5;
-  if (!sim.rng.chance(0.03 * roleMul * (0.4 + vision) * (0.5 + sim.teams[c.side].input.tactics.visionFocus / 100))) return;
-  let best = null as null | (typeof WARD_SPOTS)[number], bs = -Infinity;
-  const plan = sim.teams[c.side].plan;
-  const enemySide = (1 - c.side) as Side;
-  const enemyJungleTag = enemySide === 0 ? 'blue_jungle' : 'red_jungle';
-  for (const s of WARD_SPOTS) {
-    const d = dist(s.pos, c.pos);
-    if (d > 900) continue;
-    // warding the enemy jungle needs map control: their tower on that side down, or lane priority
-    if (s.tags.includes(enemyJungleTag)) {
-      const halfLane: Lane = s.tags.includes('top') ? 'top' : s.tags.includes('bot') ? 'bot' : 'mid';
-      const towerDown = !sim.towers.some((tw) => tw.alive && tw.def.side === enemySide && tw.def.lane === halfLane && tw.def.tier === 'outer');
-      if (!towerDown && lanePriority(sim, c.side, halfLane) < 0.3) continue;
-    }
-    if (sim.wards.some((w) => w.side === c.side && dist(w.pos, s.pos) < 900)) continue;
-    let sc = 1 - d / 900 + sim.rng.next() * (1.2 - vision);
-    if (plan.kind === 'objective' && s.tags.includes(plan.target === 'dragon' || plan.target === 'elder' ? 'dragon' : 'baron')) sc += 1;
-    if (s.tags.includes('river')) sc += 0.3;
-    if (sc > bs) { bs = sc; best = s; }
+  if ((c.wardCharges <= 0 && c.controlWards <= 0) || c.combatTarget !== null || sim.t < 75) return;
+  // how often a player stops to ward: supports all the time, junglers often, laners when a charge would go to waste
+  const full = c.wardCharges >= (c.trinket === 'yellow' || !c.trinket ? 2 : 3);
+  const rate = c.role === 'support' ? 0.4 : c.role === 'jungle' ? 0.25 : full ? 0.16 : 0.06;
+  if (!sim.rng.chance(rate * (0.55 + c.input.vision / 100) * (0.6 + sim.teams[c.side].input.tactics.visionFocus / 125))) return;
+  const control = c.controlWards > 0 && (c.wardCharges <= 0 || sim.rng.chance(c.role === 'support' ? 0.3 : 0.2));
+  const pick = chooseWardSpot(sim, c, c.role === 'support' ? 950 : 800, { control });
+  if (!pick || pick.value < (c.role === 'support' ? 0.35 : c.role === 'jungle' ? 0.45 : full ? 0.35 : 0.6)) return;
+  sim.placeWard(c, pick.spot.pos, control ? 'control' : 'stealth');
+}
+
+/** Supports (and junglers between camps) walk over to put vision on a spot that matters, when nothing else is going on. */
+function wardTrip(sim: MatchSim, c: SimChamp): boolean {
+  const t = sim.t;
+  if ((c.role !== 'support' && c.role !== 'jungle') || c.task.kind === 'ward' || c.combatTarget !== null || t < 150) return false;
+  if (c.wardCharges < (c.role === 'support' ? 2 : 1) && c.controlWards <= 0) return false;
+  const free = c.role === 'support' ? c.task.kind === 'lane' || c.task.kind === 'group' || (c.task.kind === 'objective' && !sim.objectives.find((o) => o.kind === c.task.objective)?.alive)
+    : c.task.kind === 'jungle' && !c.task.campId;
+  if (!free || !sim.rng.chance((c.role === 'support' ? 0.05 : 0.025) * (0.5 + c.input.vision / 100))) return false;
+  if (c.role === 'support' && t < 840 && sim.champs.some((a) => a.side === c.side && a.role === 'adc' && !a.dead && dist(a.pos, c.pos) < 1500 && a.task.kind === 'lane')) {
+    // in lane with the ADC: only the nearby bushes / river, not a walk across the map
+    const pick = chooseWardSpot(sim, c, 1800, { filter: (s) => s.half === 'bot' || s.kind === 'pixel' });
+    if (!pick || pick.value < 1) return false;
+    c.task = { kind: 'ward', pos: pick.spot.pos, until: t + 12, reason: `warding ${pick.spot.id.replace(/_/g, ' ')}` };
+    return true;
   }
-  if (best) sim.placeWard(c, best.pos, c.controlWards > 0 && sim.rng.chance(0.35));
+  const control = c.controlWards > 0 && c.wardCharges <= 1;
+  const pick = chooseWardSpot(sim, c, 3200, { control });
+  if (!pick || pick.value < 1.05) return false;
+  c.task = { kind: 'ward', pos: pick.spot.pos, until: t + 18, reason: `warding ${pick.spot.id.replace(/_/g, ' ')}${control ? ' (control ward)' : ''}` };
+  sim.setDest(c, pick.spot.pos);
+  return true;
 }
 
 // keep tree-shaking quiet for helpers used only in some builds

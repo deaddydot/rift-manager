@@ -93,7 +93,7 @@ export interface SimChamp {
   abilities: SimAbility[];
   attackReadyAt: number;
   flashReadyAt: number;
-  summ2: 'smite' | 'teleport' | 'heal' | 'ignite' | 'exhaust' | 'barrier' | 'cleanse';
+  summ2: 'smite' | 'teleport' | 'heal' | 'ignite' | 'exhaust' | 'barrier' | 'cleanse' | 'ghost';
   summ2ReadyAt: number;
   smiteCharges: number;
   ccUntil: number;        // hard CC (stun, knock-up, suppression, sleep, charm, taunt, fear, polymorph): no actions
@@ -104,6 +104,13 @@ export interface SimChamp {
   blindUntil?: number;    // blinded: basic attacks miss
   slowUntil: number;
   slowAmt: number;
+  hasteUntil?: number;    // movement speed boost (abilities, Ghost, item actives — sim/speed.ts)
+  hasteAmt?: number;
+  itemActiveAt?: number;  // next time an item active (Youmuu's, Shurelya's, Stridebreaker) is ready
+  snipeAt?: number;       // next look for a low enemy in reach of a spell (combat.ts snipe)
+  trinket?: 'yellow' | 'oracle' | 'farsight'; // vision.ts
+  trinketReadyAt?: number;
+  sweepUntil?: number;    // Oracle Lens sweep active
   shield: number;
   shieldUntil: number;
   dead: boolean;
@@ -210,7 +217,14 @@ export interface SimObjective {
   count?: number; // grubs remaining
 }
 
-export interface SimWard { id: number; side: Side; pos: Vec; until: number; control: boolean; owner: number }
+export interface SimWard {
+  id: number; side: Side; pos: Vec; until: number; owner: number;
+  /** stealth (trinket / support item), control (visible, reveals wards) or farsight (blue trinket, visible) — vision.ts */
+  kind: 'stealth' | 'control' | 'farsight';
+  control: boolean;
+  /** inside an enemy Control Ward's radius: shown to them (and disabled) */
+  revealed?: boolean;
+}
 
 /** A summoned unit: a pet that fights (Tibbers, Daisy), a turret that holds a spot (Heimerdinger) or a trap. */
 export interface SimSummon {
@@ -265,7 +279,8 @@ export interface TeamRuntime {
   firstTower?: boolean;
   goldTimeline: number[];
   visible: Set<number>;   // enemy champion idx visible to this team
-  lastSeen: Map<number, { pos: Vec; t: number }>;
+  /** last sighting of each enemy: where, when, HP fraction, and where they were ~2 s before (heading) — fog.ts */
+  lastSeen: Map<number, { pos: Vec; t: number; hpf?: number; from?: Vec; fromT?: number }>;
   siege: { lane: Lane | null; until: number };
   compWindow?: number;
   objCalls: Record<string, { d: 'take' | 'hover' | 'concede'; until: number; score: number }>;
@@ -283,7 +298,7 @@ export interface MatchResult {
   players: {
     idx: number; side: Side; playerId: string; name: string; role: Role; championId: string;
     k: number; d: number; a: number; cs: number; gold: number; damage: number; damageTaken: number; vision: number;
-    items: string[]; level: number; wardsPlaced: number; healing: number;
+    items: string[]; level: number; wardsPlaced: number; wardsKilled?: number; healing: number;
   }[];
   events: GameEvent[];
   goldDiff: number[];   // per minute, blue - red

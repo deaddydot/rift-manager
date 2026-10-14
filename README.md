@@ -42,7 +42,17 @@ Saves are stored in your browser (IndexedDB, gzip-compressed) and can be exporte
   all-ins, teamfights with real ability damage, CC and summoners, Voidgrubs/Herald/elemental drakes & souls/Elder/
   Baron (2026 rules: no Atakhan, Feats removed), turret plates, lane swaps, Baron power plays, backdoors,
   composition power windows, and player mistakes. Watch it live with speed controls and in-game shouts, or simulate.
-- **Pro draft** with Fearless and an AI drafter that weighs player comfort, real 2026 pro meta and comp balance.
+  Movement speed matters (boots and item speed, haste spells, Ghost, Youmuu's / Shurelya's, Rylai's and Stridebreaker
+  slows, Riot's soft caps — a faster champion runs a slower one down, a slower chaser gives up sooner); champions snipe
+  low enemies in spell range, over walls and with global ultimates. Vision is a game of its own (`sim/vision.ts`): a
+  table of pro ward spots per role and phase, yellow / red (Oracle Lens sweeps) / blue (Farsight) trinkets, the
+  support item's ward charges, Control Wards that cost gold, show up and reveal enemy wards — better vision players
+  choose better spots. Teams also read the fog (`sim/fog.ts`): an enemy who vanished becomes a "ghost" drifting toward
+  where they were likely going, so five players disappearing from mid with Baron up are assumed to be at Baron, and
+  players take the long way round instead of walking into the river they're probably in.
+- **Pro draft** with Fearless and an AI drafter that weighs player comfort, real 2026 pro meta and comp balance, plus
+  a live composition checklist for both teams (Hard CC, Engage, Disengage, Poke, Waveclear, Tank, Physical / Magical /
+  Utility damage — `src/engine/draft/checklist.ts`) that the AI drafter also uses.
 - **The real 2026 calendar**: LCK Cup → Rounds → Road to MSI → Playoffs, LPL/LEC/LCS/LCP/CBLOL splits, First
   Stand (São Paulo), MSI (Daejeon), Esports World Cup (Paris), KeSPA Cup, EMEA Masters, Worlds (Play-In, Swiss,
   Knockouts, NYC final), LCS/CBLOL/LCP promotion tournaments; following seasons repeat the format.

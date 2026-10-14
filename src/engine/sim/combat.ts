@@ -9,6 +9,7 @@ import type { SimChamp, SimAbility } from './simtypes';
 import { kitInfo } from './champstats';
 import { hasSummon, spawnSummons, splashSummons } from './summons';
 import { JOIN_ULT_CHAMPS } from './globals';
+import { onAbilityCast, onHitSpeed } from './speed';
 
 const HARD_CC = new Set(['stun', 'knockup', 'suppress', 'charm', 'taunt', 'fear', 'sleep', 'polymorph', 'root', 'pull', 'airborne']);
 const NO_TENACITY = new Set(['knockup', 'suppress', 'airborne', 'pull']);
@@ -341,11 +342,67 @@ function flashPlays(sim: MatchSim, c: SimChamp, dt: number): boolean {
   return false;
 }
 
+/**
+ * Snipes: a visible enemy that one spell (or one auto attack) would finish gets it — over a wall, outside any fight,
+ * or across the map with a global ultimate. The fight logic below only casts at the current target; this covers
+ * everyone else in reach (a 1-HP runner behind a wall in Ziggs Q range doesn't walk away).
+ */
+function snipe(sim: MatchSim, c: SimChamp): boolean {
+  const t = sim.t;
+  if ((c.snipeAt ?? 0) > t) return false;
+  c.snipeAt = t + 0.4;
+  const vis = sim.teams[c.side].visible;
+  const foes = sim.champs.filter((e) => e.side !== c.side && !e.dead && vis.has(e.idx) && !((e.ghostUntil ?? 0) > t) && e.idx !== c.combatTarget);
+  if (!foes.length) return false;
+  const after = (raw: number, type: 'physical' | 'magic' | 'true', e: SimChamp) => raw * (type === 'true' ? 1 : 100 / (100 + Math.max(0, type === 'magic' ? e.stats.mr - c.stats.magicPen : e.stats.armor * (1 - c.stats.armorPen) - c.stats.lethality)));
+  // one auto attack finishes someone in range
+  if (t >= c.attackReadyAt && !((c.blindUntil ?? 0) > t)) {
+    const e = foes.find((x) => dist(x.pos, c.pos) <= c.stats.range + RADIUS && after(c.stats.ad * c.perf, 'physical', x) > x.hp + x.shield);
+    if (e) {
+      dealDamage(sim, c, e, c.stats.ad * c.perf, 'physical');
+      c.attackReadyAt = t + 1 / Math.max(0.2, c.stats.as);
+      c.moveLockUntil = t + Math.min(0.4, 0.26 / Math.max(0.3, c.stats.as));
+      c.fx.push({ kind: 'attack', until: t + 0.18, to: { ...e.pos } });
+      return true;
+    }
+  }
+  if ((c.silenceUntil ?? 0) > t) return false;
+  let best: { a: SimAbility; e: SimChamp; d: number } | null = null;
+  for (const a of c.abilities) {
+    if (!c.ranks[a.slot] || a.cdUntil > t || !a.damage || a.targeting === 'passive' || a.targeting === 'self') continue;
+    if (c.dashes?.some((x) => x.def.slot === a.slot) || hasSummon(c, a.slot) || (a.slot === 'R' && JOIN_ULT_CHAMPS.has(c.champ.id))) continue;
+    const range = a.range >= 5000 ? 4800 : a.range;
+    for (const e of foes) {
+      const d = dist(c.pos, e.pos);
+      if (d > range + RADIUS || (best && d >= best.d)) continue;
+      if (after(abilityDamage(c, a, e), a.damage.type, e) < (e.hp + e.shield) * 1.05) continue;
+      best = { a, e, d };
+    }
+  }
+  if (!best) return false;
+  const { a, e, d } = best;
+  const isUlt = a.slot === 'R';
+  const hit = sim.rng.chance(hitChance(sim, c, a, e, d));
+  if (hit) {
+    dealDamage(sim, c, e, abilityDamage(c, a, e), a.damage!.type, { ability: true });
+    if (a.cc && !e.dead) applyCC(sim, c, e, a.cc.type, a.cc.duration, a.cc.amount ?? 0.3, a.name);
+  }
+  onAbilityCast(sim, c, a);
+  a.cdUntil = t + cooldownOf(c, a);
+  c.moveLockUntil = t + 0.25;
+  c.lastAbilityName = a.name;
+  c.fx.push({ kind: hit ? 'cast' : 'miss', until: t + 0.45, to: { ...e.pos }, color: a.damage!.type === 'magic' ? '#a78bfa' : a.damage!.type === 'true' ? '#f8fafc' : '#fb923c' });
+  if (isUlt) sim.recordUlt(c, a.name, a.icon, { ...c.pos }, { ...e.pos }, a.aoe ? 330 : 110, hit ? [{ target: e, dmg: 1 }] : []);
+  if (hit && e.dead && d > 1300) sim.event('info', `${c.input.name} snipes ${e.input.name} with ${a.name} ${d > 3000 ? 'from across the map' : 'from long range'}!`, c.side, { important: d > 3000 });
+  return true;
+}
+
 export function updateCombat(sim: MatchSim, dt: number) {
   const t = sim.t;
   for (const c of sim.turnOrder) {
     if (c.dead || c.ccUntil > t || c.recallUntil > t || c.dashing) continue;
     if (flashPlays(sim, c, dt)) continue;
+    if (snipe(sim, c)) continue;
     if (c.combatTarget === null) continue;
     const e = sim.champs[c.combatTarget];
     if (!e || e.dead || e.side === c.side) { c.combatTarget = null; continue; }
@@ -436,6 +493,7 @@ export function updateCombat(sim: MatchSim, dt: number) {
         const dmgType = a.damage?.type ?? (c.champ.adaptive === 'ap' ? 'magic' : 'physical');
         const ad = abilityDamage(c, a, tg);
         const dealt = ad > 0 ? dealDamage(sim, c, tg, ad, dmgType, { ability: true }) : 0;
+        if (dealt > 0 && !tg.dead) onHitSpeed(sim, c, tg, true, (x, amt, dur, label) => applyCC(sim, c, x, 'slow', dur, amt, label));
         if (isUlt) ultHits.push({ target: tg, dmg: dealt });
         if (a.cc && !tg.dead) applyCC(sim, c, tg, a.cc.type, a.cc.duration, a.cc.amount ?? 0.3, a.name);
       }
@@ -449,6 +507,7 @@ export function updateCombat(sim: MatchSim, dt: number) {
         heal(sim, c, c, hv);
       }
       if (a.asBuff) c.attackReadyAt = Math.min(c.attackReadyAt, t + 0.2);
+      onAbilityCast(sim, c, a); // haste kits (speed.ts)
       a.cdUntil = t + cooldownOf(c, a);
       if (!dashAbility) c.moveLockUntil = t + (a.targeting === 'self' ? 0.1 : 0.25);
       c.fx.push({ kind: anyHit ? 'cast' : 'miss', until: t + 0.45, to: { ...e.pos }, color: a.damage?.type === 'magic' ? '#a78bfa' : a.damage?.type === 'true' ? '#f8fafc' : '#fb923c' });
@@ -471,6 +530,7 @@ export function updateCombat(sim: MatchSim, dt: number) {
       if (c.items.some((i) => (i.id === '6672' || i.id === '3153' || i.id === '3124') && i.frac >= 1)) dmg += 40 + e.stats.maxHp * 0.025;
       if ((c.blindUntil ?? 0) > t) dmg = 0; // blinded: the attack misses
       dealDamage(sim, c, e, dmg, 'physical');
+      if (!e.dead) onHitSpeed(sim, c, e, false, (x, amt, dur, label) => applyCC(sim, c, x, 'slow', dur, amt, label));
       // Azir style AP auto attackers deal magic on-hit via soldiers: approximate with AP ratio
       if (c.champ.adaptive === 'ap' && c.champ.attackType === 'ranged' && c.role !== 'support') dealDamage(sim, c, e, s.ap * 0.18, 'magic');
       c.attackReadyAt = t + 1 / Math.max(0.2, s.as);

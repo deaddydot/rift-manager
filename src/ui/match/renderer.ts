@@ -57,12 +57,13 @@ export function renderMatch(ctx: CanvasRenderingContext2D, sim: MatchSim, o: Ren
   // wards & vision
   if (o.showWards) {
     for (const w of sim.wards) {
-      if (o.fog !== null && w.side !== o.fog) continue;
+      // in a team's fog view: its own wards, plus the enemy wards it can see (Control / Farsight, or revealed)
+      if (o.fog !== null && w.side !== o.fog && w.kind === 'stealth' && !w.revealed) continue;
       const [x, y] = P(w.pos, S);
       ctx.beginPath(); ctx.arc(x, y, 900 / MAP_SIZE * S, 0, Math.PI * 2);
       ctx.fillStyle = w.side === 0 ? 'rgba(59,130,246,0.06)' : 'rgba(239,68,68,0.06)'; ctx.fill();
       ctx.beginPath(); ctx.arc(x, y, 3 * sc, 0, Math.PI * 2);
-      ctx.fillStyle = w.control ? '#f472b6' : '#facc15'; ctx.fill();
+      ctx.fillStyle = w.kind === 'control' ? '#f472b6' : w.kind === 'farsight' ? '#60a5fa' : '#facc15'; ctx.fill();
       ctx.strokeStyle = TEAM_COLORS[w.side]; ctx.lineWidth = PX; ctx.stroke();
     }
   }

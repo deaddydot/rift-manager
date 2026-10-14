@@ -157,32 +157,7 @@ export const CAMPS: CampDef[] = [
 export const DRAGON_PIT = v(9866, 4414);
 export const BARON_PIT = v(5007, 10471);
 
-// Common pro ward spots
-export interface WardSpot { id: string; pos: Vec; tags: string[] }
-export const WARD_SPOTS: WardSpot[] = [
-  { id: 'drag_pit_entrance', pos: v(9300, 4900), tags: ['dragon', 'river', 'bot'] },
-  { id: 'drag_bush_river', pos: v(10100, 5300), tags: ['dragon', 'river', 'bot'] },
-  { id: 'drag_back_bush', pos: v(10300, 3900), tags: ['dragon', 'bot', 'red_jungle'] },
-  { id: 'bot_tribush_b', pos: v(10300, 3000), tags: ['bot', 'blue_jungle'] },
-  { id: 'bot_lane_bush', pos: v(12500, 2100), tags: ['bot', 'lane'] },
-  { id: 'bot_river_bush', pos: v(11800, 4000), tags: ['bot', 'river'] },
-  { id: 'baron_pit_entrance', pos: v(5600, 10000), tags: ['baron', 'river', 'top'] },
-  { id: 'baron_bush_river', pos: v(4800, 9600), tags: ['baron', 'river', 'top'] },
-  { id: 'baron_back', pos: v(4500, 11000), tags: ['baron', 'top', 'blue_jungle'] },
-  { id: 'top_tribush_r', pos: v(4600, 11800), tags: ['top', 'red_jungle'] },
-  { id: 'top_lane_bush', pos: v(2300, 12600), tags: ['top', 'lane'] },
-  { id: 'top_river_bush', pos: v(3000, 10900), tags: ['top', 'river'] },
-  { id: 'mid_river_top', pos: v(6200, 8300), tags: ['mid', 'river', 'top'] },
-  { id: 'mid_river_bot', pos: v(8600, 6500), tags: ['mid', 'river', 'bot'] },
-  { id: 'blue_raptor', pos: v(6800, 6000), tags: ['mid', 'blue_jungle'] },
-  { id: 'red_raptor', pos: v(8100, 8900), tags: ['mid', 'red_jungle'] },
-  { id: 'blue_buff_b', pos: v(3500, 7200), tags: ['blue_jungle', 'top'] },
-  { id: 'red_buff_r', pos: v(7100, 10200), tags: ['red_jungle', 'top'] },
-  { id: 'blue_red_b', pos: v(7600, 3500), tags: ['blue_jungle', 'bot'] },
-  { id: 'red_blue_r', pos: v(11300, 7600), tags: ['red_jungle', 'bot'] },
-  { id: 'blue_jg_entrance_top', pos: v(4900, 7300), tags: ['blue_jungle', 'mid'] },
-  { id: 'red_jg_entrance_bot', pos: v(9900, 7600), tags: ['red_jungle', 'mid'] },
-];
+// Ward spots: see vision.ts (VISION_SPOTS — blue side + river, mirrored for red)
 
 // ------------------------------------------------------------------ navigation grid
 export class NavGrid {

@@ -18,6 +18,13 @@ import { updateSummons } from './summons';
 import { pickMvp, type MvpLine } from './mvp';
 import { applyTraitInputs, rollPerf, updateForm, onDeathTilt } from './hidden';
 import { clampSimStat, SIM_RATING_MAX } from '../ratings';
+import { softCapMs } from './speed';
+import { saferWaypoint } from './fog';
+import { shopVision, wardUpkeep, useTrinket, visionTick } from './vision';
+/** Tasks where a champion is just getting somewhere (and should avoid walking into a likely ambush). */
+const TRAVEL_TASKS = new Set(['lane', 'jungle', 'ward', 'base', 'group', 'push']);
+/** Top laners who usually run Ghost instead of Teleport. */
+const GHOST_TOPS = new Set(['Darius', 'Olaf', 'Sion', 'Garen', 'Hecarim', 'Udyr', 'Volibear', 'Nasus', 'Yorick', 'Trundle', 'Mordekaiser', 'Illaoi', 'Sett', 'Urgot', 'Skarner', 'Kled']);
 
 const ROLE_ORDER: Role[] = ['top', 'jungle', 'mid', 'adc', 'support'];
 const SUPER_DPS = 90; // one super minion's damage per second (vs minions; 60% of it against structures)
@@ -131,7 +138,8 @@ export class MatchSim {
           stats: null as never, items: [], order, starter: starterFor(champ, role), skillOrder: so, ranks: { Q: 1, W: 0, E: 0, R: 0 },
           abilities: champ.abilities.map((a) => ({ ...a, cdUntil: 0 })),
           attackReadyAt: 0, flashReadyAt: 0,
-          summ2: role === 'jungle' ? 'smite' : role === 'top' ? 'teleport' : role === 'adc' ? (this.rng.chance(0.7) ? 'heal' : 'cleanse') : role === 'support' ? (this.rng.chance(0.6) ? 'ignite' : 'exhaust') : (this.rng.chance(0.55) ? 'teleport' : 'ignite'),
+          // Ghost: bruisers who run people down take it over Teleport; some ADCs over Cleanse
+          summ2: role === 'jungle' ? 'smite' : role === 'top' ? (this.rng.chance(GHOST_TOPS.has(champ.id) ? 0.55 : 0.1) ? 'ghost' : 'teleport') : role === 'adc' ? (this.rng.chance(0.62) ? 'heal' : this.rng.chance(0.65) ? 'cleanse' : 'ghost') : role === 'support' ? (this.rng.chance(0.6) ? 'ignite' : 'exhaust') : (this.rng.chance(0.55) ? 'teleport' : 'ignite'),
           summ2ReadyAt: 0, smiteCharges: 1,
           ccUntil: 0, ccType: null, slowUntil: 0, slowAmt: 0, shield: 0, shieldUntil: 0,
           dead: false, respawnAt: 0, task: { kind: 'base' }, combatTarget: null, lastCombatAt: -100,
@@ -316,10 +324,19 @@ export class MatchSim {
     if (c.dest && dist2(c.dest, p) < 150 * 150 && c.path.length) return;
     c.dest = { x: p.x, y: p.y };
     c.path = gd().nav.path(c.pos, gd().nav.snap(p));
+    // route safety (fog.ts): travelling — not fighting — around the place the enemy most likely is
+    if (c.combatTarget === null && TRAVEL_TASKS.has(c.task.kind) && this.t > 150 && c.path.length >= 4 && dist2(c.pos, p) > 2200 * 2200 && this.throwSide !== c.side) {
+      const wp = saferWaypoint(this, c, c.path, p);
+      if (wp) {
+        c.path = [...gd().nav.path(c.pos, wp), ...gd().nav.path(wp, gd().nav.snap(p))];
+        this.dbg(c, 'task', `takes the long way round — enemies likely on the direct route`);
+      }
+    }
   }
 
   speedOf(c: SimChamp) {
     let ms = c.stats.ms;
+    if ((c.hasteUntil ?? 0) > this.t) ms *= 1 + (c.hasteAmt ?? 0); // haste spells, Ghost, item actives (speed.ts)
     if (c.slowUntil > this.t) ms *= 1 - c.slowAmt;
     if (c.ccUntil > this.t && c.ccType === 'polymorph') ms *= 0.6;
     const tm = this.teams[c.side];
@@ -327,7 +344,7 @@ export class MatchSim {
     if (dist(c.pos, FOUNTAIN[c.side]) < 2600) ms *= 1.35;
     if (tm.baronUntil > this.t && c.task.kind === 'push') ms *= 1.03;
     if (c.task.kind === 'flee') ms *= 1.04;
-    return ms;
+    return softCapMs(ms);
   }
 
   move(c: SimChamp, dt: number) {
@@ -482,8 +499,9 @@ export class MatchSim {
     if (atFountain) {
       c.hp = Math.min(c.stats.maxHp, c.hp + c.stats.maxHp * 0.12 * dt);
       if (this.t < 840 && c.potions < 2 && c.gold >= 50 && c.role !== 'jungle') { c.potions++; c.gold -= 50; }
+      shopVision(this, c); // trinket swaps, Control Wards (vision.ts)
       if (c.gold > 0) this.goldSpend(c);
-      if (c.role === 'support' || c.role === 'jungle') c.controlWards = Math.max(c.controlWards, c.role === 'support' ? 2 : 1);
+      if (c.role === 'support' && this.t >= 480) c.wardRechargeAt = Math.min(c.wardRechargeAt, this.t); // support item restocks at the shop
     } else if (this.t - c.lastCombatAt > 5) {
       c.hp = Math.min(c.stats.maxHp, c.hp + c.stats.hpRegen * dt * (this.t - c.lastCombatAt > 10 ? 1.4 : 1));
     }
@@ -491,14 +509,7 @@ export class MatchSim {
     if (c.potions > 0 && c.potionUntil < this.t && c.hp < c.stats.maxHp * 0.6 && !atFountain) { c.potions--; c.potionUntil = this.t + 15; }
     if (c.potionUntil > this.t) c.hp = Math.min(c.stats.maxHp, c.hp + 8 * dt);
     if (c.shieldUntil < this.t) c.shield = 0;
-    // ward charges
-    const maxCharges = c.role === 'support' ? 3 + (c.input.vision >= 75 ? 1 : 0) : 2;
-    if (c.wardCharges < maxCharges && this.t >= c.wardRechargeAt) {
-      c.wardCharges++;
-      const sup = c.role === 'support' ? 0.5 : c.role === 'jungle' ? 0.8 : 1;
-      // good vision players keep wards cycling (buying, swapping trinkets, using charges on time)
-      c.wardRechargeAt = this.t + (210 - c.level * 7) * sup * Math.max(0.5, 1.35 - c.input.vision / 100 * 0.6);
-    }
+    wardUpkeep(this, c); // trinket / support item charges (vision.ts)
   }
 
   respawn(c: SimChamp) {
@@ -584,7 +595,12 @@ export class MatchSim {
         if (!seen) for (const w of myWaves) if (dist2(lanePoint(w.lane, w.p), e.pos) < VISION.minion ** 2) { seen = true; break; }
         if (seen) {
           if (!tm.seenSince.has(e.idx)) tm.seenSince.set(e.idx, this.t);
-          tm.visible.add(e.idx); tm.lastSeen.set(e.idx, { pos: { ...e.pos }, t: this.t });
+          tm.visible.add(e.idx);
+          const prev = tm.lastSeen.get(e.idx);
+          const fresh = !prev || this.t - prev.t > 1; // a new sighting: heading starts here
+          const from = fresh ? { ...e.pos } : this.t - (prev.fromT ?? prev.t) > 2.5 ? prev.pos : prev.from ?? prev.pos;
+          const fromT = fresh ? this.t : this.t - (prev.fromT ?? prev.t) > 2.5 ? prev.t : prev.fromT ?? prev.t;
+          tm.lastSeen.set(e.idx, { pos: { ...e.pos }, t: this.t, hpf: e.hp / e.stats.maxHp, from, fromT });
         } else tm.seenSince.delete(e.idx);
       }
     }
@@ -592,34 +608,30 @@ export class MatchSim {
 
   isVisibleTo(side: Side, idx: number) { return this.teams[side].visible.has(idx); }
 
-  placeWard(c: SimChamp, pos: Vec, control = false) {
-    if (control) { if (c.controlWards <= 0) return; c.controlWards--; }
-    else { if (c.wardCharges <= 0) return; c.wardCharges--; if (c.wardRechargeAt < this.t) c.wardRechargeAt = this.t + 120; }
-    // replace an existing control ward
-    if (control) this.wards = this.wards.filter((w) => !(w.control && w.owner === c.idx));
-    this.wards.push({ id: this.wardIdSeq++, side: c.side, pos: { ...pos }, until: control ? this.t + 9999 : this.t + WARD_DURATION + c.level * 2, control, owner: c.idx });
+  /** `kind`: a stealth ward (trinket / support item), a Control Ward, or a Farsight ward (blue trinket). `true` = control. */
+  placeWard(c: SimChamp, pos: Vec, kind: boolean | 'stealth' | 'control' | 'farsight' = false) {
+    const k = kind === true ? 'control' : kind === false ? 'stealth' : kind;
+    if (k === 'control') { if (c.controlWards <= 0) return; c.controlWards--; }
+    else if (k === 'stealth') { if (c.wardCharges <= 0) return; c.wardCharges--; if (c.wardRechargeAt < this.t) c.wardRechargeAt = this.t + 90; }
+    // one Control Ward per champion: the old one goes
+    if (k === 'control') this.wards = this.wards.filter((w) => !(w.kind === 'control' && w.owner === c.idx));
+    const life = k === 'control' ? 9999 : k === 'farsight' ? 180 : WARD_DURATION + c.level * 2;
+    this.wards.push({ id: this.wardIdSeq++, side: c.side, pos: { ...pos }, until: this.t + life, kind: k, control: k === 'control', owner: c.idx });
     c.wardsPlaced++;
-    c.visionScore += control ? 1.5 : 1;
+    c.visionScore += k === 'control' ? 1.5 : 1;
+  }
+
+  killWard(c: SimChamp, w: SimWard) {
+    if (w.until <= this.t) return;
+    w.until = 0; c.wardsKilled++; c.visionScore += w.kind === 'control' ? 2 : 1.5;
+    this.giveGold(c, GOLD.wardKill);
   }
 
   updateWards() {
     if (Math.floor(this.t * 4) % 4 !== 0) return;
-    this.wards = this.wards.filter((w) => w.until > this.t);
-    // sweeping: champions with good vision skill clear enemy wards they walk near
-    for (const c of this.champs) {
-      if (c.dead) continue;
-      const sweeper = c.role === 'support' || c.role === 'jungle';
-      const range = sweeper ? 650 : 350;
-      for (const w of this.wards) {
-        if (w.side === c.side || w.until <= this.t) continue;
-        if (dist2(w.pos, c.pos) < range * range) {
-          const p = (w.control ? 0.6 : 0.35) * (0.5 + c.input.vision / 100) * (sweeper ? 1 : 0.5);
-          if (this.rng.chance(p)) {
-            w.until = 0; c.wardsKilled++; c.visionScore += 1.5; this.giveGold(c, GOLD.wardKill);
-          }
-        }
-      }
-    }
+    // trinket actives (Oracle sweeps, Farsight wards), then sweeps / Control Wards / visible wards get cleared
+    for (const c of this.champs) useTrinket(this, c);
+    visionTick(this);
     for (const c of this.champs) if (!c.dead) c.visionScore += 0.0035 * (c.role === 'support' ? 3 : c.role === 'jungle' ? 1.8 : 1) * (0.6 + c.input.vision / 125);
   }
 
@@ -937,7 +949,7 @@ export class MatchSim {
         killer.cs += camp.def.kind === 'wolves' ? 3 : camp.def.kind === 'raptors' ? 6 : camp.def.kind === 'krugs' ? 6 : camp.def.kind === 'scuttle' ? 1 : 4;
         if (camp.def.kind === 'scuttle') {
           // scuttle grants vision of the river
-          this.wards.push({ id: this.wardIdSeq++, side: killer.side, pos: { ...camp.def.pos }, until: this.t + 90, control: false, owner: -1 });
+          this.wards.push({ id: this.wardIdSeq++, side: killer.side, pos: { ...camp.def.pos }, until: this.t + 90, kind: 'stealth', control: false, owner: -1 }); // a shrine: can't be swept
         }
         if (killer.side !== camp.def.side && camp.def.side !== -1 && (camp.def.kind === 'blue' || camp.def.kind === 'red')) this.event('info', `${killer.input.name} steals the enemy ${camp.def.kind} buff`, killer.side);
         killer.task = { kind: 'jungle' };
@@ -1210,7 +1222,7 @@ export class MatchSim {
         idx: c.idx, side: c.side, playerId: c.input.playerId, name: c.input.name, role: c.role, championId: c.champ.id,
         k: c.kills, d: c.deaths, a: c.assists, cs: c.cs, gold: Math.round(c.goldEarned), damage: Math.round(c.damageDealt),
         damageTaken: Math.round(c.damageTaken), vision: Math.round(c.visionScore), items: c.items.filter((i) => i.frac >= 1 && !i.starter).map((i) => i.id),
-        level: c.level, wardsPlaced: c.wardsPlaced, healing: Math.round(c.healing),
+        level: c.level, wardsPlaced: c.wardsPlaced, wardsKilled: c.wardsKilled, healing: Math.round(c.healing),
       })),
       events: this.events,
       goldDiff: this.goldDiff,

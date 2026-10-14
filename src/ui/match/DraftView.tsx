@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import { Fragment, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { gd } from '../../data/gamedata';
 import { useGame } from '../../store/game';
 import { DRAFT_ORDER, applyAction, aiChoose, taken, picksOf, bansOf, openRoles, pickValue, comfort, metaScore, currentTurn, type DraftState } from '../../engine/draft/draft';
+import { compChecklist, checklistFills } from '../../engine/draft/checklist';
 import { MASTERY_TIERS, masteryTier, type MasteryTier } from '../../engine/mastery';
 import { ChampIcon, TeamLogo, RoleIcon, ROLE_COLORS, asset } from '../components/kit';
 import { ROLES, ROLE_LABEL, type Role, type Team } from '../../engine/types';
@@ -119,6 +120,9 @@ export default function DraftView({ draft, userSide, onDone, gameNo }: { draft: 
   const sidePicks = picksOf(draft, shownSide);
   const assigning = myTurn && turn.type === 'pick' && viewSide === 'us';
   const isBan = !draft.done && turn.type === 'ban';
+  // the hovered champion previews which checklist rows it would fill for the side being viewed
+  const preview = hover && !blocked.has(hover) && sidePicks.length < 5 ? hover : null;
+  const pickIds = (side: 0 | 1) => picksOf(draft, side).map((a) => a.champion!);
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
@@ -129,7 +133,7 @@ export default function DraftView({ draft, userSide, onDone, gameNo }: { draft: 
       </div>
 
       <div className="grid grid-cols-[260px_1fr_260px] gap-3">
-        <SideColumn side={0} draft={draft} team={teams[0]} userSide={userSide} />
+        <SideColumn side={0} draft={draft} team={teams[0]} userSide={userSide} preview={shownSide === 0 ? preview : null} />
         <div className="panel p-3 min-w-0">
           <div className="flex flex-wrap items-center gap-2 mb-2">
             {(['all', ...ROLES] as const).map((r) => (
@@ -175,8 +179,10 @@ export default function DraftView({ draft, userSide, onDone, gameNo }: { draft: 
                   {suggestions.map((s) => {
                     const p = s.role ? playerFor(draft, userSide, s.role) : undefined;
                     const ci = p && s.role ? comfortOf(p, s.id, s.role) : null;
+                    const fills = checklistFills(pickIds(turn.type === 'pick' ? userSide : oppSide), s.id);
                     return (
-                      <button key={s.id + (s.role ?? '')} onMouseEnter={() => setHover(s.id)} onClick={() => choose(s.id, s.role)} className="flex items-center gap-1.5 chip hover:border-gold">
+                      <button key={s.id + (s.role ?? '')} onMouseEnter={() => setHover(s.id)} onClick={() => choose(s.id, s.role)} className="flex items-center gap-1.5 chip hover:border-gold"
+                        title={fills.length ? `${turn.type === 'pick' ? 'Fills our' : 'Would fill their'} comp: ${fills.join(', ')}` : undefined}>
                         <ChampIcon id={s.id} size={20} />{champName(s.id)}
                         {p && ci && <span className="text-dim">→ {p.name} <span style={{ color: ci.tier.color }}>{ci.tier.label}</span></span>}
                       </button>
@@ -204,7 +210,7 @@ export default function DraftView({ draft, userSide, onDone, gameNo }: { draft: 
             </div>
           </div>
         </div>
-        <SideColumn side={1} draft={draft} team={teams[1]} userSide={userSide} />
+        <SideColumn side={1} draft={draft} team={teams[1]} userSide={userSide} preview={shownSide === 1 ? preview : null} />
       </div>
     </div>
   );
@@ -277,7 +283,9 @@ function ChampPreview({ id, draft, userSide, shownSide, tile, blocked }: { id: s
   const allyPicks = picksOf(draft, shownSide);
   const laneEnemy = enemyPicks.find((a) => a.role === role)?.champion;
   const counter = laneCounter(draft, shownSide, id, role);
-  const hints = synergyHints(allyPicks.map((a) => a.champion!).filter((x) => x !== id), id);
+  const allyIds = allyPicks.map((a) => a.champion!).filter((x) => x !== id);
+  const hints = synergyHints(allyIds, id);
+  const fills = allyPicks.length < 5 && !blocked.has(id) ? checklistFills(allyIds, id) : [];
   const status = (mid: string): { label: string; color: string } | null => {
     if (mid === laneEnemy) return { label: `their ${ROLE_LABEL[role].toLowerCase()}`, color: '#f0e6d2' };
     const e = enemyPicks.find((a) => a.champion === mid);
@@ -330,6 +338,11 @@ function ChampPreview({ id, draft, userSide, shownSide, tile, blocked }: { id: s
             <div className="flex items-start gap-1.5"><span className="w-8 shrink-0 text-[10px] font-bold uppercase mt-1" style={{ color: '#f87171' }}>Hard</span>{matchRow(mu.hard, false)}</div>
           </div>
         ) : <div className="text-dim">No lane matchup data.</div>}
+        {fills.length > 0 && (
+          <div className="truncate" title={`Unmet rows of ${shownSide === userSide ? 'our' : 'their'} comp checklist that ${c.name} would tick`}>
+            <span className="text-dim">{shownSide === userSide ? 'Fills our comp:' : 'Would fill their comp:'}</span> <b className="text-gold2">{fills.join(' · ')}</b>
+          </div>
+        )}
         {hints.length > 0 && (
           <div className="flex flex-wrap gap-1">
             {hints.map((h) => <span key={h.text} className="chip" style={{ color: h.good ? '#86efac' : '#fca5a5', borderColor: h.good ? '#166534' : '#7f1d1d' }}>{h.good ? '✓' : '!'} {h.text}</span>)}
@@ -348,7 +361,7 @@ function ComfortLine({ name, role, v, known, tier, dim }: { name: string; role: 
   );
 }
 
-function SideColumn({ side, draft, team, userSide }: { side: 0 | 1; draft: DraftState; team: Team; userSide: 0 | 1 }) {
+function SideColumn({ side, draft, team, userSide, preview }: { side: 0 | 1; draft: DraftState; team: Team; userSide: 0 | 1; preview: string | null }) {
   const picks = picksOf(draft, side);
   const bans = bansOf(draft, side);
   const players = draft.teams[side].players;
@@ -385,6 +398,44 @@ function SideColumn({ side, draft, team, userSide }: { side: 0 | 1; draft: Draft
                 )}
               </div>
             </div>
+          );
+        })}
+      </div>
+      <CompChecklist ids={picks.map((a) => a.champion!)} preview={preview} />
+    </div>
+  );
+}
+
+const DOT = { met: '#22c55e', open: '#5b6787', missing: '#ef4444' };
+/**
+ * The comp-building checklist for one team's picks (engine/draft/checklist.ts): count vs goal and a status
+ * dot per row (green met, grey not yet, red still missing once all five are locked); hover lists the picks
+ * that tick it. `preview` (a hovered champion) marks the unmet rows it would fill.
+ */
+function CompChecklist({ ids, preview }: { ids: string[]; preview: string | null }) {
+  const rows = compChecklist(ids);
+  const fills = new Set(preview ? checklistFills(ids, preview) : []);
+  const final = ids.length >= 5;
+  const met = rows.filter((r) => r.met).length;
+  return (
+    <div className="mt-3 pt-2 border-t hairline">
+      <div className="flex items-center justify-between text-[11px] uppercase text-muted font-bold mb-1" title="Classic comp-building checklist. Green: met · grey: not yet · red: missing from the final comp. Hover a row for the picks that tick it.">
+        <span>Comp checklist</span>
+        <span style={{ color: met === rows.length ? DOT.met : undefined }}>{met}/{rows.length}</span>
+      </div>
+      <div className="text-[11px] leading-[17px]">
+        {rows.map((r, i) => {
+          const plus = fills.has(r.label) ? gd().championById[preview!]?.name : undefined;
+          return (
+            <Fragment key={r.key}>
+              {r.group === 'damage' && rows[i - 1]?.group !== 'damage' && <div className="text-center text-[10px] uppercase text-dim font-bold mt-0.5">— Damage —</div>}
+              <div className="flex items-center gap-1.5 min-w-0" title={`${r.label} ${r.have}/${r.goal} — ${r.rule}\n${r.contributors.length ? r.contributors.join('\n') : 'No pick ticks it yet'}${plus ? `\n+ ${plus} would tick it` : ''}`}>
+                <span className="w-2 h-2 rounded-full shrink-0" style={{ background: r.met ? DOT.met : final ? DOT.missing : DOT.open }} />
+                <span className={`truncate ${r.met ? 'text-text' : 'text-muted'}`}>{r.label}</span>
+                {plus && <span className="text-[10px] font-bold text-gold2">+1</span>}
+                <span className="ml-auto font-display font-bold tabular-nums" style={{ color: r.met ? DOT.met : final ? DOT.missing : undefined }}>{r.have}/{r.goal}</span>
+              </div>
+            </Fragment>
           );
         })}
       </div>

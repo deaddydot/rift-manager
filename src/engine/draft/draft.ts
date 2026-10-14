@@ -4,6 +4,7 @@ import { MASTERY_MAX, MASTERY_UNKNOWN } from '../mastery';
 import { ROLES } from '../types';
 import { gd, matchupEdge } from '../../data/gamedata';
 import { RNG, clamp } from '../../util/rng';
+import { checklistCounts, checklistGain, contributions } from './checklist';
 
 export type DraftActionType = 'ban' | 'pick';
 export interface DraftAction { side: 0 | 1; type: DraftActionType; champion?: string; role?: Role }
@@ -113,18 +114,16 @@ export function compFit(ours: string[], champId: string): number {
   const s = summarize(ours);
   const p = c.profile;
   let v = 0;
-  // damage mix
-  if (s.n >= 2) {
-    if (c.adaptive === 'ap' && s.ap === 0) v += 0.1;
-    if (c.adaptive === 'ad' && s.ad === 0) v += 0.08;
-    if (c.adaptive === 'ap' && s.ap >= 3) v -= 0.12;
-    if (c.adaptive === 'ad' && s.ad >= 4) v -= 0.12;
-  }
-  // engage & frontline
-  const maxEngage = s.n ? s.engage / s.n : 0;
-  if (p.engage >= 7 && maxEngage < 5) v += 0.08;
-  if (p.tankiness >= 7 && s.front / Math.max(1, s.n) < 5) v += 0.07;
-  if (s.n >= 3 && s.front / s.n < 4 && p.tankiness <= 3) v -= 0.05;
+  // comp checklist (hard CC, engage, disengage, poke, waveclear, frontline, damage mix, utility): filling
+  // unmet rows is worth up to ~0.1 on the first pick and ~0.2 on the last, when the gaps can't wait
+  v += checklistGain(ours, champId) * (0.1 + s.n * 0.025);
+  // lopsided damage: a 4th magic dealer, or a late pick that leaves the comp without one damage type
+  const kind = contributions(c), have = checklistCounts(ours);
+  if (kind.magic && !kind.physical && have.magic >= 3) v -= 0.06;
+  const left = 4 - s.n; // picks still to come after this one
+  if (left <= 1 && (!have.physical && !kind.physical || !have.magic && !kind.magic)) v -= left === 0 ? 0.12 : 0.04;
+  // another squishy into a comp with no frontline yet
+  if (s.n >= 3 && !have.tank && p.tankiness <= 3) v -= 0.05;
   // tempo coherence (all-early or all-late comps are fine; mixed less so)
   if (s.n >= 2) {
     const earlyAvg = s.early / s.n, lateAvg = s.late / s.n;

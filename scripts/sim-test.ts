@@ -101,6 +101,8 @@ for (let g = 0; g < N; g++) {
     add(`deaths_${p.role}`, p.d);
     add(`kills_${p.role}`, p.k);
     add(`vspm_${p.role}`, p.vision / m);
+    add(`wpm_${p.role}`, p.wardsPlaced / m);
+    add(`wkpm_${p.role}`, (p.wardsKilled ?? 0) / m);
     add(`level_${p.role}`, p.level);
   }
   const upset = process.env.UPSET === '1' && (res.winner === 0) !== aBlue;

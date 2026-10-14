@@ -3,6 +3,7 @@
 // enemy's comfort picks worth banning. Nothing here changes the draft.
 import { gd, matchupEdge } from '../../data/gamedata';
 import { comfort, openRoles, picksOf, type DraftPlayer, type DraftState } from '../../engine/draft/draft';
+import { checklistCounts, contributions } from '../../engine/draft/checklist';
 import { MASTERY_MAX, masteryTier, type MasteryTier } from '../../engine/mastery';
 import { ROLES, type Role } from '../../engine/types';
 
@@ -83,8 +84,9 @@ export function matchupsFor(champId: string, role: Role): { role: Role; easy: { 
 
 export interface Hint { text: string; good: boolean }
 /**
- * Comp hints for adding `champId` to `ours`, from the champion profiles (same thresholds as the AI's comp fit):
- * engage + follow-up pairs, peel for a carry, damage mix, frontline and engage the comp lacks.
+ * Comp hints for adding `champId` to `ours`, from the champion profiles (same rules as the AI's compFit):
+ * engage + follow-up pairs, peel for a carry, and warnings for a lopsided damage mix or no frontline.
+ * The checklist rows it would fill are shown separately (checklistFills).
  */
 export function synergyHints(ours: string[], champId: string): Hint[] {
   const C = gd().championById;
@@ -103,18 +105,11 @@ export function synergyHints(ours: string[], champId: string): Hint[] {
     const carry = allies.filter((a) => a.archetype === 'hypercarry_adc' || (a.profile.late >= 8 && a.profile.dps >= 7))[0];
     if (carry) out.push({ text: `Peels for ${carry.name}`, good: true });
   }
-  if (allies.length >= 2) {
-    const ap = allies.filter((a) => a.adaptive === 'ap').length, ad = allies.length - ap;
-    if (c.adaptive === 'ap' && ap === 0) out.push({ text: 'Adds the magic damage the comp lacks', good: true });
-    if (c.adaptive === 'ad' && ad === 0) out.push({ text: 'Adds the physical damage the comp lacks', good: true });
-    if (c.adaptive === 'ap' && ap >= 3) out.push({ text: 'Comp is already AP-heavy', good: false });
-    if (c.adaptive === 'ad' && ad >= 4) out.push({ text: 'Comp is already all AD', good: false });
-    const n = allies.length;
-    const front = allies.reduce((s, a) => s + a.profile.tankiness, 0) / n, eng = allies.reduce((s, a) => s + a.profile.engage, 0) / n;
-    if (p.tankiness >= 7 && front < 5) out.push({ text: 'Frontline the comp is missing', good: true });
-    else if (n >= 3 && front < 4 && p.tankiness <= 3) out.push({ text: 'Another squishy — no frontline yet', good: false });
-    if (p.engage >= 7 && eng < 5 && !out.some((h) => h.text.startsWith('Engage'))) out.push({ text: 'Brings engage the comp lacks', good: true });
-  }
+  const kind = contributions(c), have = checklistCounts(allies.map((a) => a.id)), n = allies.length;
+  if (kind.magic && !kind.physical && have.magic >= 3) out.push({ text: 'Comp is already magic-heavy', good: false });
+  if (n >= 3 && !have.physical && !kind.physical) out.push({ text: 'Still no physical damage', good: false });
+  else if (n >= 3 && !have.magic && !kind.magic) out.push({ text: 'Still no magic damage', good: false });
+  if (n >= 3 && !have.tank && p.tankiness <= 3) out.push({ text: 'Another squishy — no frontline yet', good: false });
   return out.slice(0, 3);
 }
 
