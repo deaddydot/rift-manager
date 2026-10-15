@@ -11,6 +11,7 @@ import { breakthrough, settlePotential } from './potential';
 import { staffBonus } from '../season/prep';
 import { addNews, addInbox } from './news';
 import { trainingMult, applyTrainingFocus, learnMult } from './traitEffects';
+import { scrimTrainingMult, shootPenalty } from './contentFx';
 
 export type TrainingIntensity = 'light' | 'balanced' | 'intense';
 export interface TrainingPlan { intensity: TrainingIntensity; scrims: number; soloq: number; vod: number; rest: number }
@@ -76,6 +77,8 @@ function weekPlan(state: GameState, team: Team, p: Player, plan: TrainingPlan, c
   if (team.facilities.academy && age < 20) rate *= 1 + team.facilities.academy * 0.05;
   if (age < 22) rate *= 0.85 + cx.sb.development / 100 * 0.35;
   rate *= trainingMult(state, team, p, age, curve); // extended traits & personal profile (traitEffects.ts)
+  // the user's club: this week's scrim partners (scrims.ts) and practice lost to content shoots (orgContent.ts)
+  if (!aiClub) rate *= scrimTrainingMult(state, plan.scrims) * shootPenalty(state, p.id);
   // past ~28 the hands slow down: professionalism and a good environment soften it (~-0.7/yr at 28–29, ~-2/yr after 30)
   const growth = curve > 0 ? rate * curve * devRoom(aiClub, room) * levelFactor(ovr) : 0.09 * curve * 0.8 * (1.3 - p.hidden.professionalism / 100 * 0.6) * (1.15 - cx.env * 0.15);
   // distribute growth: focus attribute gets more, scrim/soloq/vod mix shapes the rest

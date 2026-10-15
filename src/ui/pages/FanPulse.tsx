@@ -134,6 +134,16 @@ export default function FanPulse(_props: { id?: string }) {
             </div>
             <div className="text-[11px] text-dim mt-2 leading-relaxed">Years at the club, personality, streaming, starting every week and local roots turn casual fans into die-hards over months. Sell a favourite and some of his followers leave with him.</div>
           </Panel>
+          {(state.content?.videos.length ?? 0) > 0 && (
+            <Panel title="Creators talking about you" right={<button className="text-[11px] text-gold2 hover:underline" onClick={() => nav('content')}>Watch →</button>} bodyClass="p-0">
+              {state.content!.videos.slice(0, 4).map((x) => (
+                <button key={x.id} className="w-full px-4 py-2 border-b border-[#141e33] last:border-0 text-left hover:bg-[#111a2e]" onClick={() => nav('content')}>
+                  <div className="text-sm font-semibold leading-snug line-clamp-2"><span style={{ color: x.tone > 0 ? '#22c55e' : x.tone < 0 ? '#ef4444' : '#c8aa6e' }}>●</span> {x.title}</div>
+                  <div className="text-[11px] text-dim">{state.content!.creators.find((c) => c.id === x.creatorId)?.channel} · {num(x.views)} views</div>
+                </button>
+              ))}
+            </Panel>
+          )}
           {fm?.trend && fm.trend.length > 1 && (
             <Panel title="Mood over time">
               <Sparkline data={fm.trend} width={300} height={60} color={moodLabel(fm.mood).color} zero />

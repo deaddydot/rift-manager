@@ -1,5 +1,6 @@
 // Merchandise: product lines with unit cost, price, stock and production runs.
 // Weekly demand depends on fans, hype, star players, results, price and quality.
+import { contentMerchBoost } from './contentFx';
 import type { GameState, Team, MerchProduct, Player } from '../types';
 import { RNG, clamp } from '../../util/rng';
 import { merchAppeal } from './traitEffects';
@@ -33,7 +34,7 @@ export function merchDemand(state: GameState, team: Team, m: MerchProduct, starP
   const t = MERCH_TEMPLATES.find((x) => x.type === m.type);
   if (!t) return 0;
   const priceFactor = clamp(Math.pow(t.basePrice / Math.max(1, m.price), 1.6), 0.15, 2.5);
-  let demand = merchAudience(team) / 10_000 * t.appeal * (0.6 + team.hype / 100) * (1 + starPower * 0.08) * (0.7 + m.quality / 200) * priceFactor * (0.8 + team.facilities.contentStudio * 0.06);
+  let demand = merchAudience(team) / 10_000 * t.appeal * (0.6 + team.hype / 100) * (1 + starPower * 0.08) * (0.7 + m.quality / 200) * priceFactor * (0.8 + team.facilities.contentStudio * 0.06) * (1 + contentMerchBoost(state, team));
   if (m.type === 'signature' && m.playerId) {
     const p = state.players[m.playerId];
     demand *= p && p.teamId === team.id ? (0.5 + p.reputation / 60) * (1 + merchAppeal(p) * 0.3) : 0.05;

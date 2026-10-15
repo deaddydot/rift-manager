@@ -17,6 +17,8 @@ import { applyAscensionMoves, ascensionDaily, reactToLeagueChange } from './mana
 import { reactionsDaily } from './management/reactions';
 import { peopleDaily } from './management/people';
 import { personaDaily } from './management/personaTick';
+import { scrimsDaily } from './management/scrims';
+import { contentDaily } from './management/orgContent';
 import { addDays, weekday } from './season/formats';
 import { overall } from './setup';
 
@@ -68,6 +70,7 @@ export function endDay(state: GameState) {
   state.date = addDays(state.date, 1);
   const d = state.date;
   const md = d.slice(5);
+  scrimsDaily(state, prev); // invitations answered, yesterday's scrim block played (before the weekly training reads it)
   // weekly (Mondays)
   if (weekday(d) === 1) {
     for (const team of Object.values(state.teams)) {
@@ -120,6 +123,7 @@ export function endDay(state: GameState) {
   reactionsDaily(state); // fan pulse & owner
   peopleDaily(state, r); // locker room: player approaches, relationships
   personaDaily(state); // off the Rift: profiles & extended traits (lazy init), streaming, media, stamina
+  contentDaily(state, prev); // creator videos about the club, the club's own channel (management/orgContent.ts)
   save();
 }
 

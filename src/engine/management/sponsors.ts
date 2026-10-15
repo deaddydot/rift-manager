@@ -1,6 +1,7 @@
 // Sponsorships: a pool of parody brands. Brands approach the club every few weeks (more often after big
 // results, fan growth or with few partners); offer size scales with the audience (die-hards count extra), prestige,
 // hype and the league, and bonus clauses pay for results.
+import { contentSponsorAppeal } from './contentFx';
 import type { GameState, Team, SponsorOffer, SponsorDeal, Competition, RegionId } from '../types';
 import { addLedger } from './finance';
 import { addInbox } from './news';
@@ -123,7 +124,8 @@ function pickBrand(state: GameState, team: Team, rng: RNG, recent: string[]): Sp
 export function sponsorAppealParts(state: GameState, team: Team) {
   const fans = (sponsorAudience(team) / audienceBenchmark(state, team)) * 0.6;
   const prestige = team.prestige / 150, hype = team.hype / 250, studio = team.facilities.contentStudio * 0.05, faces = sponsorAppeal(state, team);
-  return { fans, prestige, hype, studio, faces, total: clamp(fans + prestige + hype + studio + faces, 0.2, 3) };
+  const channel = contentSponsorAppeal(state, team); // an active club channel (0 for AI clubs, contentFx.ts)
+  return { fans, prestige, hype, studio, faces, channel, total: clamp(fans + prestige + hype + studio + faces + channel, 0.2, 3) };
 }
 const DEAL_RATE: [number, number] = [0.08, 0.18]; // × league sponsor level × brand tier × appeal, per month
 /** Typical monthly fee range from a brand of this tier (Sponsors page). */

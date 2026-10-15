@@ -59,6 +59,7 @@ export const HUBS: NavHub[] = [
     { page: 'squad', label: 'Squad', icon: '👥', keywords: 'roster lineup players team', render: lazyPage(() => import('../pages/Squad')) },
     { page: 'tactics', label: 'Tactics', icon: '♟', keywords: 'strategy draft style', render: lazyPage(() => import('../pages/Tactics')) },
     { page: 'training', label: 'Training', icon: '🏋', keywords: 'scrims practice development', render: lazyPage(() => import('../pages/Training')) },
+    { page: 'scrims', label: 'Scrims', icon: '🆚', keywords: 'scrim partners practice invite blocks', render: lazyPage(() => import('../pages/Scrims')) },
     { page: 'staff', label: 'Staff', icon: '🎧', keywords: 'coach analyst scout psychologist', render: lazyPage(() => import('../pages/StaffPage')) },
     { page: 'dynamics', label: 'Locker room', icon: '🫂', keywords: 'dynamics relationships chemistry morale trust talk drama', render: lazyPage(() => import('../pages/Dynamics')) },
   ] },
@@ -77,6 +78,7 @@ export const HUBS: NavHub[] = [
     { page: 'boardroom', label: 'Boardroom', icon: '🏛', keywords: 'owner board objectives requests', render: lazyPage(() => import('../pages/Boardroom')) },
     { page: 'news', label: 'News', icon: '📰', keywords: 'headlines media', render: lazyPage(() => import('../pages/News')) },
     { page: 'fans', label: 'Fan Pulse', icon: '📣', keywords: 'fans social mood hype', render: lazyPage(() => import('../pages/FanPulse')) },
+    { page: 'content', label: 'Content', icon: '🎬', keywords: 'audience creators youtube videos tier list vlog channel talk show game show host mc', render: lazyPage(() => import('../pages/Content')) },
   ] },
   { id: 'market', label: 'Transfers', icon: '🔁', pages: [
     { page: 'transfers', label: 'Transfers', icon: '🔁', keywords: 'market sign buy sell offers free agents scouting', render: lazyPage(() => import('../pages/Transfers')) },

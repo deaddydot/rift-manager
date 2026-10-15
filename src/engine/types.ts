@@ -509,6 +509,67 @@ export interface PeopleState {
   recent?: number[];                     // hashes of recently used lines (variety)
 }
 
+// ------------------------------------------------------------------ scrims (management/scrims.ts; optional, created lazily)
+/** One scrim block (a day of ~5 practice games) with another club: an invitation either way, then the result. */
+export interface ScrimBlock {
+  id: string; teamId: string; date: string; dir: 'out' | 'in';
+  status: 'pending' | 'accepted' | 'declined' | 'played' | 'cancelled' | 'expired';
+  sent: string; replyOn?: string; reply?: string; why?: string;
+  result?: { w: number; l: number; q: number; note: string; standout?: string; struggled?: string };
+}
+/** Scrim history with one club: blocks played, games won / lost, rapport 0..100 (50 = neutral). */
+export interface ScrimPartner { blocks: number; w: number; l: number; rapport: number; last?: string; asks?: string[] }
+export interface ScrimState { blocks: ScrimBlock[]; partners: Record<string, ScrimPartner>; reported?: string }
+
+// ------------------------------------------------------------------ content (management/content.ts + orgContent.ts; optional, created lazily)
+/** A fictional content creator who makes videos about clubs. */
+export interface Creator { id: string; name: string; channel: string; style: string; region: RegionId | 'INTL'; subs: number; tagline: string; color: string; league?: string }
+/** One scene of a creator video (played as a slideshow): a narration caption plus what is on screen. */
+export interface VideoScene {
+  k: 'title' | 'intro' | 'stat' | 'player' | 'tier' | 'rank' | 'score' | 'quote' | 'upload' | 'outro';
+  cap: string;
+  pid?: string; tone?: number;
+  stats?: { label: string; v: string; good?: boolean }[];
+  tiers?: { tier: string; pids: string[] }[];
+  teams?: string[];
+  score?: { a: string; b: string; sa: number; sb: number };
+  big?: string;
+}
+export interface CreatorVideo {
+  id: string; creatorId: string; date: string; teamId: string; kind: string; tone: number;
+  title: string; thumb: string; mins: number; views: number; likes: number;
+  playerIds?: string[]; scenes: VideoScene[]; comments: FanReply[]; seen?: boolean;
+}
+/** Content crew the club hires: a host / MC for shows, an editor for production value. */
+export interface ContentCrew {
+  id: string; name: string; country: string; role: 'host' | 'editor';
+  charisma: number; humor: number; looks: number; smarts: number; skill: number;
+  fame: number;      // own social following
+  salary: number;    // USD / month
+  hired?: string;
+}
+/** A video being made: `q` is the expected quality when it was shot (cast, host, production, novelty), luck comes at release. */
+export interface ContentProduction { id: string; format: string; title: string; players: string[]; host: boolean; budget: number; cost: number; started: string; ready: string; q: number; collab?: string }
+export interface ContentUpload {
+  id: string; format: string; title: string; date: string; players: string[]; host?: string; collab?: string;
+  quality: number; views: number; likes: number; subs: number; fans: number; revenue: number;
+  highlight: string; comments: FanReply[]; viral?: boolean; flop?: boolean; controversy?: string;
+}
+export interface ClubChannel {
+  subs: number;
+  momentum: number;   // 0..100: how much the platforms push the channel (regular, good uploads)
+  community: number;  // 0..100: how close the fans feel to the club (vlogs, Q&As, spotlights)
+  views: number;      // lifetime
+  crew: ContentCrew[];
+  pool?: { month: string; list: ContentCrew[] };
+  queue: ContentProduction[];
+  uploads: ContentUpload[];
+  appear: Record<string, number>;   // player id -> recent appearances (fans bond with the faces they see)
+  shoots: Record<string, string[]>; // player id -> recent shoot dates (time away from practice)
+  merch?: { until: string; boost: number };
+}
+export interface ContentState { creators: Creator[]; videos: CreatorVideo[]; channel: ClubChannel; events: { kind: string; date: string; data: Record<string, string | number> }[]; roster?: string[]; flags: Record<string, string> }
+
 export interface GameSettings {
   simDetail: 'mine' | 'tier1' | 'all';
   autoSave: boolean;
@@ -556,6 +617,10 @@ export interface GameState {
   people?: PeopleState;
   /** Title-history reactions (management/legacy.ts): finals on record, the manager's trophies, flags. Lazily created. */
   legacy?: LegacyState;
+  /** Scrim invitations and partners (management/scrims.ts). Lazily created. */
+  scrims?: ScrimState;
+  /** Creator videos about the club and the club's own channel (management/content.ts, orgContent.ts). Lazily created. */
+  content?: ContentState;
 }
 
 /** A final on record (in-save; real pre-2026 finals live in legacyData.ts). sc = score from the winner's side. */

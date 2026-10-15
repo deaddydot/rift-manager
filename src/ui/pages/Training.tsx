@@ -5,6 +5,7 @@ import { overall, ageOn } from '../../engine/setup';
 import { DEFAULT_PLAN, ageCurve, projectedGrowth, teamDevEnvironment } from '../../engine/management/development';
 import { headCoach } from '../../engine/season/prep';
 import { gd } from '../../data/gamedata';
+import { scrimWeek, scrimTrainingMult } from '../../engine/management/contentFx';
 
 const BLOCKS = [
   { k: 'scrims', label: 'Scrims', desc: 'Team play, teamfighting, macro' },
@@ -58,6 +59,10 @@ export default function Training() {
             {(() => { const env = teamDevEnvironment(state, team); return (
               <div className="flex items-center justify-between pt-1 text-xs"><span className="text-muted" title="Coaching quality × training facility. A typical tier-1 club is about ×1.0, tier-2/3 clubs ×0.6–0.7, the best staff with a level-5 facility about ×1.5 (intense training adds ×1.25).">Development environment</span>
                 <span className="font-display font-bold" style={{ color: env >= 1.3 ? '#22c55e' : env >= 0.95 ? '#c8aa6e' : '#f97316' }}>×{env.toFixed(2)}</span></div>
+            ); })()}
+            {(() => { const wk = scrimWeek(state); const m = scrimTrainingMult(state, plan.scrims); return (
+              <div className="flex items-center justify-between text-xs"><span className="text-muted" title="Practice quality of the last 7 days of scrims (stronger partners teach more), applied to the scrims share of the week.">Scrim partners {wk.blocks ? `(${wk.blocks} block${wk.blocks > 1 ? 's' : ''}, ${wk.w}-${wk.l})` : '(none booked)'}</span>
+                <button className="font-display font-bold hover:underline" style={{ color: m > 1.01 ? '#22c55e' : m < 0.99 ? '#f97316' : '#c8aa6e' }} onClick={() => nav('scrims')}>{m >= 1 ? '+' : ''}{Math.round((m - 1) * 100)}% →</button></div>
             ); })()}
             <div className="text-xs text-muted pt-2">Ratings run 0–200 and players grow towards a hidden ceiling (potential). Growth is fastest until ~21, solid to ~25, a trickle to 28, then a slow decline (experience keeps their macro sharp). Room to the ceiling, work ethic, coaching and the training facility drive it; official games add more — wins on big stages most — and winners who reach their ceiling can push it higher.</div>
           </div>

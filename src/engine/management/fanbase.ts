@@ -20,6 +20,7 @@ import { streamScore, streamWeight } from './traitEffects';
 import { honours, compEv } from './legacy';
 import { REAL_DOMESTIC, REAL_PLAYER_TITLES } from './legacyData';
 import { regionOfCountry } from './transfers';
+import { appearanceCharm, communityLoyalty, contentForm } from './contentFx';
 
 const CASUAL_PULL = 0.06;               // share of the gap to the casual target closed each week (fickle)
 const DIEHARD_GROW = 0.02, DIEHARD_FADE = 0.004; // …and to the die-hard target: months to build, years to lose
@@ -70,6 +71,9 @@ export function playerBond(state: GameState, team: Team, p: Player): Bond {
   if (stream > 1.1) reasons.push('popular streamer');
   for (const t of p.traits) charm += TRAIT_BOND[t] ?? 0;
   if (p.traits.includes('fan_favorite')) reasons.push('fan favourite');
+  const seen = appearanceCharm(state, team, p.id); // the faces of the club's own videos (orgContent.ts)
+  charm += seen;
+  if (seen >= 0.15) reasons.push('club content');
   if (p.country && p.country === team.country) { charm += 0.3; reasons.push('local hero'); }
   else if (regionOfCountry(p.country) === team.region) charm += 0.15;
   charm += (p.reputation / 100) * 0.6;
@@ -93,7 +97,7 @@ export function loyalty(state: GameState, team: Team): Loyalty {
   history = Math.min(0.35, history);
   const bonds = team.roster.map((id) => state.players[id]).filter((p): p is Player => !!p).map((p) => playerBond(state, team, p)).sort((a, b) => b.bond - a.bond);
   const players = Math.min(0.3, bonds.reduce((s, b) => s + b.bond, 0));
-  const community = team.facilities.contentStudio * 0.015;
+  const community = communityLoyalty(state, team); // content studio + the club channel's community (contentFx.ts)
   return { total: clamp(0.1 + history + players + community, 0.05, 0.85), history, players, community, bonds };
 }
 
@@ -112,7 +116,7 @@ function recentTitles(state: GameState): Map<string, number> {
 }
 /** Casual pull of the club right now: hype (results), recent titles, streamers. 1 = average. */
 export function fanForm(state: GameState, team: Team, titles = recentTitles(state)) {
-  return (0.7 + team.hype / 166) * (1 + (titles.get(team.id) ?? 0)) * (1 + 0.03 * streamWeight(state, team));
+  return (0.7 + team.hype / 166) * (1 + (titles.get(team.id) ?? 0)) * (1 + 0.03 * streamWeight(state, team)) * contentForm(state, team);
 }
 
 // ------------------------------------------------------------------ state

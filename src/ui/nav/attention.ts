@@ -4,6 +4,7 @@ import { ROLES } from '../../engine/types';
 import { ownerRequestLive } from '../../engine/management/owner';
 import { sales } from '../../engine/management/franchise';
 import { offerLive, offerById } from '../../engine/management/ascension';
+import { scrimInviteLive } from '../../engine/management/scrims';
 
 /**
  * live  = pulsing red dot (something is happening right now, e.g. match day)
@@ -30,6 +31,7 @@ export function inboxActionLive(state: GameState, m: InboxMessage) {
   if (a.type === 'ascensionOffer') return offerLive(state, offerById(state, String(a.payload)));
   if (a.type === 'openPlayer') { const p = state.players[String(a.payload)]; return !!p?.contract && p.teamId === state.userTeamId; }
   if (a.type === 'ownerChoice') return ownerRequestLive(state, String(a.payload));
+  if (a.type === 'scrimInvite') return scrimInviteLive(state, String(a.payload));
   return true;
 }
 
@@ -64,6 +66,9 @@ export function computeAttention(state: GameState): Attention[] {
   if (state.sponsorOffers.length) out.push({ page: 'sponsors', level: 'info', n: state.sponsorOffers.length, text: `${plural(state.sponsorOffers.length, 'sponsor offer')} on the table`, todo: false });
 
   if (team.balance < 0) out.push({ page: 'finances', level: 'alert', text: 'Balance is negative' });
+
+  const newVids = state.content?.videos.filter((v) => !v.seen).length ?? 0;
+  if (newVids) out.push({ page: 'content', level: 'info', n: newVids, text: `${plural(newVids, 'new creator video')} about your club`, todo: false });
 
   const o = state.owner;
   const requests = o ? o.requests.filter((r) => ownerRequestLive(state, r.id)).length : 0;

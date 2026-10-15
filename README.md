@@ -72,6 +72,22 @@ Saves are stored in your browser (IndexedDB, gzip-compressed) and can be exporte
   **big-chance brand backing**: a club that dominates its league may be approached by a global brand offering a
   naming-rights deal ("Monstar Wolves" / "Wolves Monstar") that funds most of a buyout of a spot in the league above.
   AI clubs climb the same ways; brands walk away (and names revert) if a club is relegated.
+- **Scrims** (`src/engine/management/scrims.ts`, Squad → Scrims): invite clubs from your region (or anyone at the same
+  international event) to scrim blocks. They answer the next day. Your lineup's strength, your club's fame (fans,
+  prestige), the league tier gap, rapport from past blocks and their schedule decide it, and nobody scrims the team
+  they play officially within ten days. Strong, famous clubs also get invitations. Stronger partners make better
+  practice: the week's scrim quality scales the scrims share of your training plan. Blocks also teach your staff
+  about the other roster, and results against famous clubs leak to fans and creators.
+- **Content** (Office → Content). Fictional **creators** (analysts, hot-take critics, hype channels, tier-list makers,
+  meme pages, ex-pros, news, coaches — `content.ts`) post videos about your club: reactions to your series, stat
+  breakdowns, criticism and praise, hype videos before big matches, role tier lists, power rankings, takes on
+  signings, scrim-leak rumours and reactions to your own uploads. Each one can be watched: it plays as a slideshow
+  with narration and comments. Coverage moves hype and fan mood, and players who get called out feel it. The **club
+  channel** (`orgContent.ts`) is yours to run: vlogs, funny videos, game shows, talk shows, player spotlights, hype
+  trailers, photoshoots, pro tips, creator collabs and Q&A livestreams. The players on camera matter (looks, humor,
+  charisma, smarts, media savvy, online presence, style, comms, traits), and so do a hired host / MC and editor, the
+  content studio and the budget. Regular, good uploads build momentum (casual fans, content revenue, sponsor appeal)
+  and community (die-hards; fans bond with the faces they see). Shoots cost money, fatigue and a little practice.
 - **Editor**: create custom players, teams and staff (portraits/logos uploaded from your computer), edit anyone
   (including coaches, analysts and other staff), and keep a reusable custom library.
 

@@ -169,6 +169,7 @@ export default function Sponsors(_props: { id?: string; tab?: string; kind?: str
               <Driver label="Hype" detail={`${Math.round(team.hype)}/100 short-term buzz from results`} part={parts.hype} max={0.4} />
               <Driver label="Content Studio" detail={`Level ${team.facilities.contentStudio}/5 · also +1 slot per level`} part={parts.studio} max={0.25} />
               <Driver label="Faces" detail="Media-savvy, charismatic players and Brand Ambassadors" part={Math.max(0, parts.faces)} max={0.25} />
+              <Driver label="Club channel" detail="An active channel with momentum (Content page) — a dead one costs a little" part={Math.max(0, parts.channel)} max={0.08} />
             </div>
             <div className="flex items-center justify-between border-t hairline mt-3 pt-2.5">
               <span className="text-sm text-muted">Sponsor appeal</span>

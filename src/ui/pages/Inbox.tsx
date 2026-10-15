@@ -13,6 +13,7 @@ import { OwnerChoiceBox } from '../components/FanPulseWidget';
 import { PlayerChoiceBox } from '../components/PlayerTalk';
 import { playerRequestLive } from '../../engine/management/people';
 import { StanceBox } from '../components/BidStance';
+import { scrimInviteLive, answerScrimInvite, scrimState, powerOf, blockQuality } from '../../engine/management/scrims';
 
 const KIND: Record<InboxMessage['kind'], { label: string; color: string }> = {
   info: { label: 'Info', color: '#8a97b3' },
@@ -39,6 +40,7 @@ function actionLive(state: GameState, m: InboxMessage) {
   if (a.type === 'openPlayer') return !!state.players[String(a.payload)]?.contract && state.players[String(a.payload)].teamId === state.userTeamId;
   if (a.type === 'ownerChoice') return ownerRequestLive(state, String(a.payload));
   if (a.type === 'playerChoice') return playerRequestLive(state, String(a.payload));
+  if (a.type === 'scrimInvite') return scrimInviteLive(state, String(a.payload));
   return true;
 }
 type Filter = 'all' | 'unread' | 'action' | InboxMessage['kind'];
@@ -183,6 +185,7 @@ function ActionBox({ state, m }: { state: GameState; m: InboxMessage }) {
   if (a.type === 'incomingOffer') return <BidAction state={state} m={m} />;
   if (a.type === 'franchiseOffer') return <FranchiseAction state={state} m={m} />;
   if (a.type === 'ascensionOffer') return <AscensionAction state={state} m={m} />;
+  if (a.type === 'scrimInvite') return <ScrimAction state={state} m={m} />;
   if (a.type === 'ownerChoice') return <OwnerChoiceBox state={state} reqId={String(a.payload)} />;
   if (a.type === 'playerChoice') return <PlayerChoiceBox state={state} reqId={String(a.payload)} />;
   if (a.type === 'openPlayer') return (
@@ -278,6 +281,36 @@ function AscensionAction({ state, m }: { state: GameState; m: InboxMessage }) {
       ) : (
         <div className="text-sm text-muted">{o.status === 'accepted' ? `Signed (${o.accepted === 'title' ? 'title naming' : 'co-branding'}). The move to the ${target} happens at season rollover.` : o.status === 'declined' ? 'You declined this offer.' : 'This offer has expired.'}</div>
       )}
+    </Shell>
+  );
+}
+
+function ScrimAction({ state, m }: { state: GameState; m: InboxMessage }) {
+  const bump = useStore((s) => s.bump);
+  const notify = useStore((s) => s.notify);
+  const b = scrimState(state).blocks.find((x) => x.id === String(m.action!.payload));
+  const t = b ? state.teams[b.teamId] : undefined;
+  if (!b || !t) return <Shell title="Scrim invitation" done><div className="text-sm text-muted">This invitation no longer exists.</div></Shell>;
+  const live = scrimInviteLive(state, b.id);
+  const me = state.teams[state.userTeamId];
+  const q = blockQuality(powerOf(state, me), powerOf(state, t), false);
+  const act = (yes: boolean) => { const r = answerScrimInvite(state, b.id, yes); notify(r.message); if (r.ok) m.action!.done = true; bump(); };
+  return (
+    <Shell title="Scrim invitation" done={!live}>
+      <div className="flex items-center gap-3 mb-3">
+        <TeamLogo team={t} size={36} />
+        <div className="text-sm">
+          <div><b>{t.name}</b> want a block of scrims on <b>{fmtDate(b.date)}</b></div>
+          <div className="text-muted text-xs">Their lineup {Math.round(powerOf(state, t))} vs yours {Math.round(powerOf(state, me))} · practice quality ×{q.toFixed(2)}</div>
+        </div>
+      </div>
+      {live ? (
+        <div className="flex gap-2">
+          <button className="btn btn-gold" onClick={() => act(true)}>Accept</button>
+          <button className="btn" onClick={() => act(false)}>Decline</button>
+          <button className="btn btn-ghost ml-auto" onClick={() => nav('scrims')}>Scrims page</button>
+        </div>
+      ) : <div className="text-sm text-muted">{b.status === 'accepted' || b.status === 'played' ? 'Accepted.' : b.status === 'declined' ? 'Declined.' : 'This invitation has lapsed.'}</div>}
     </Shell>
   );
 }

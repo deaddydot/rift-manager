@@ -5,6 +5,7 @@ import { RNG } from '../../util/rng';
 import { weeklyMerchSales, aiRestockMerch } from './merch';
 import { LEAGUE_ECON } from '../setup';
 import { streamWeight } from './traitEffects';
+import { contentRevenueMult } from './contentFx';
 
 const monthKey = (d: string) => d.slice(0, 7);
 /** Monthly league revenue share (Global Revenue Pool / partner stipends), USD. */
@@ -74,7 +75,7 @@ export function weeklyFinance(state: GameState, team: Team, rng: RNG) {
   // streaming & content: streamers on roster + content studio
   const tier = state.leagues[team.leagueId]?.tier ?? 3;
   const streamers = streamWeight(state, team); // appeal-weighted (looks, humor, charisma…): an average streamer counts ~1
-  const content = Math.round((team.fans / 1000) * (0.9 + team.facilities.contentStudio * 0.35) * (1 + streamers * 0.08) * (0.8 + team.hype / 250) * (tier === 1 ? 1 : 0.6));
+  const content = Math.round((team.fans / 1000) * (0.9 + team.facilities.contentStudio * 0.35) * (1 + streamers * 0.08) * (0.8 + team.hype / 250) * (tier === 1 ? 1 : 0.6) * contentRevenueMult(state, team));
   if (content) addLedger(state, team, 'Streaming & content', content);
 }
 
