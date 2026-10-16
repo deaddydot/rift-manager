@@ -5,6 +5,7 @@ import { useGame, useStore, nav } from '../../store/game';
 import { useSession, type MatchSession } from './session';
 import { Panel, TeamLogo, Portrait, Rating, ChampIcon, ItemIcon, RoleIcon, mmss, fmtDate, money, Pill, Empty } from '../components/kit';
 import DraftView from './DraftView';
+import CasterPicker from './broadcast/CasterPicker';
 import LiveMatch from './LiveMatch';
 import { newSeries, playNextGame, finishSeries, simulateSeries, draftPicks, isBigMatch } from '../../engine/season/series';
 import { draftTeam, simTeam, lineupPlayers, effective } from '../../engine/season/prep';
@@ -93,6 +94,7 @@ function PreMatch({ fixture }: { fixture: MatchFixture }) {
           <button className="btn px-6 py-3 text-base" onClick={quick}>Simulate series</button>
         </div>
         {h2h.length > 0 && <div className="text-center text-xs text-muted mt-3">Head-to-head this season: {h2h.map((f) => `${state.teams[f.teamA!].short} ${f.result!.scoreA}-${f.result!.scoreB} ${state.teams[f.teamB!].short}`).join(' · ')}</div>}
+        <CasterPicker state={state} fixture={fixture} />
       </div>
       <div className="grid grid-cols-2 gap-4">
         <Lineup team={user} title="Your lineup" />

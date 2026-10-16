@@ -15,6 +15,8 @@ import type { Ctx } from '../../../engine/management/fans';
 import { RNG, hashString } from '../../../util/rng';
 import { CASTERS, CASTER_POOLS, SHARED, PUNS, RECAP_EN, RECAP_VI, VI, DESKS, type CasterId, type DeskDef, type Tpl } from './castersData';
 import type { BroadcastCtx, PlayerInfo } from './context';
+import { eventOf } from './audience';
+import type { GameState, MatchFixture } from '../../../engine/types';
 import { WEIRD, COMFORT_LABEL, type PickNote, type ComfortTier } from './picks';
 
 export interface SubLine {
@@ -75,6 +77,15 @@ const k1 = (n: number) => `${(Math.abs(n) / 1000).toFixed(1)}k`;
 const mmss = (t: number) => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, '0')}`;
 
 /** Which desk calls this match: Settings choice, or by the competition (VCS / Vietnamese teams → Hoàng Luân). */
+/** The desk "Auto" would pick for a fixture before the game exists (match center pre-game picker). */
+export function autoDeskFor(state: GameState, f: MatchFixture): DeskDef {
+  const c = state.competitions[f.competitionId];
+  const teams = [f.teamA, f.teamB].map((id) => state.teams[id ?? '']).filter(Boolean);
+  const vnTeams = teams.filter((t) => t.country === 'Vietnam' || t.leagueId === 'VCS').length;
+  const bc = { fixtureId: f.id, event: eventOf(c), leagueId: c?.leagueId, teams: teams.map((t) => ({ region: t.region })), vnTeams, vn: vnTeams > 0 || c?.leagueId === 'VCS' || state.teams[state.userTeamId]?.country === 'Vietnam' };
+  return pickDesk(bc as unknown as BroadcastCtx, 'auto');
+}
+
 export function pickDesk(bc: BroadcastCtx, pref: string = 'auto'): DeskDef {
   if (pref !== 'auto') { const d = DESKS.find((x) => x.id === pref); if (d) return d; }
   const r = (hashString(bc.fixtureId + ':desk') % 1000) / 1000;
