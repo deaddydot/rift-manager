@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { analysisState, coachView } from '../../engine/management/analysis';
 import { destinySide } from '../../engine/season/lore';
 import { useGame, useStore, nav } from '../../store/game';
 import { useSession, type MatchSession } from './session';
@@ -162,7 +163,7 @@ function SessionView({ session }: { session: MatchSession }) {
   const startGame = () => {
     const d = session.draft!;
     const big = isBigMatch(state, f);
-    session.sim = new MatchSim(simTeam(state, teams[0], draftPicks(d, 0)), simTeam(state, teams[1], draftPicks(d, 1)), { seed: (state.rngState ^ (session.gameNo * 2654435761)) >>> 0, bigMatch: big, debug: true, destiny: destinySide(state, teams[0], teams[1]) ?? undefined });
+    session.sim = new MatchSim(simTeam(state, teams[0], draftPicks(d, 0)), simTeam(state, teams[1], draftPicks(d, 1)), { seed: (state.rngState ^ (session.gameNo * 2654435761)) >>> 0, bigMatch: big, debug: true, analyze: true, destiny: destinySide(state, teams[0], teams[1]) ?? undefined });
     session.phase = 'live';
     touch();
   };
@@ -240,6 +241,25 @@ function SessionView({ session }: { session: MatchSession }) {
   );
 }
 
+/** The analyst's first word right after a game (the full breakdown lives on the Game analysis page). */
+function QuickTake({ game }: { game: SeriesGame }) {
+  const state = useGame();
+  const r = analysisState(state).reports.find((x) => x.blue === game.blue && x.red === game.red && Math.abs(x.a.duration - game.duration) < 2);
+  if (!r) return null;
+  const v = coachView(state, r);
+  return (
+    <div className="panel px-4 py-3 flex items-start gap-4">
+      <div className="text-2xl">📊</div>
+      <div className="flex-1 min-w-0">
+        <div className="text-[11px] uppercase tracking-wider font-bold text-gold2 mb-1">{v.analyst}’s first take</div>
+        <ul className="text-sm space-y-0.5">{v.reasons.slice(0, 2).map((x, i) => <li key={i}>▸ {x}</li>)}</ul>
+        <div className="text-[11px] text-dim mt-1">{v.ours.length} mistake{v.ours.length === 1 ? '' : 's'} on us · {v.theirs.length} on them</div>
+      </div>
+      <button className="btn" onClick={() => nav('analysis', r.id)}>Full analysis →</button>
+    </div>
+  );
+}
+
 export function PostGame({ game, onNext, seriesDone }: { game: SeriesGame; onNext?: () => void; seriesDone?: boolean }) {
   const state = useGame();
   const blue = state.teams[game.blue], red = state.teams[game.red];
@@ -255,6 +275,7 @@ export function PostGame({ game, onNext, seriesDone }: { game: SeriesGame; onNex
         {mvp && <div className="ml-auto flex items-center gap-3"><Pill color="#c8aa6e">MVP</Pill><ChampIcon id={mvp.champion} size={36} /><div className="font-semibold">{state.players[mvp.playerId]?.handle}</div><div className="font-display">{mvp.k}/{mvp.d}/{mvp.a}</div></div>}
         {onNext && <button className="btn btn-gold ml-4 px-5 py-2.5" onClick={onNext}>{seriesDone ? 'Finish series' : 'Next game ▶'}</button>}
       </div>
+      <QuickTake game={game} />
       <div className="grid grid-cols-2 gap-3">
         {[blue, red].map((team, side) => (
           <Panel key={side} title={<span className="flex items-center gap-2"><TeamLogo team={team} size={20} />{team.name} {side === 0 ? '(blue)' : '(red)'}</span>} bodyClass="p-0">

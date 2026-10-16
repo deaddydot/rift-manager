@@ -621,6 +621,10 @@ export interface GameState {
   scrims?: ScrimState;
   /** Creator videos about the club and the club's own channel (management/content.ts, orgContent.ts). Lazily created. */
   content?: ContentState;
+  /** Post-game analysis of the user's games and the lessons from VOD reviews (management/analysis.ts). Lazily created. */
+  analysis?: import('./management/analysis').AnalysisState;
+  /** Club drama: decisions, follow-ups and cooldowns (management/drama.ts). Lazily created. */
+  drama?: import('./management/drama').DramaState;
 }
 
 /** A final on record (in-save; real pre-2026 finals live in legacyData.ts). sc = score from the winner's side. */

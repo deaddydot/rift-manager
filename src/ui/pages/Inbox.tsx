@@ -14,6 +14,7 @@ import { PlayerChoiceBox } from '../components/PlayerTalk';
 import { playerRequestLive } from '../../engine/management/people';
 import { StanceBox } from '../components/BidStance';
 import { scrimInviteLive, answerScrimInvite, scrimState, powerOf, blockQuality } from '../../engine/management/scrims';
+import { dramaLive, resolveDrama } from '../../engine/management/drama';
 
 const KIND: Record<InboxMessage['kind'], { label: string; color: string }> = {
   info: { label: 'Info', color: '#8a97b3' },
@@ -41,6 +42,7 @@ function actionLive(state: GameState, m: InboxMessage) {
   if (a.type === 'ownerChoice') return ownerRequestLive(state, String(a.payload));
   if (a.type === 'playerChoice') return playerRequestLive(state, String(a.payload));
   if (a.type === 'scrimInvite') return scrimInviteLive(state, String(a.payload));
+  if (a.type === 'drama') return dramaLive(state, String(a.payload));
   return true;
 }
 type Filter = 'all' | 'unread' | 'action' | InboxMessage['kind'];
@@ -186,6 +188,7 @@ function ActionBox({ state, m }: { state: GameState; m: InboxMessage }) {
   if (a.type === 'franchiseOffer') return <FranchiseAction state={state} m={m} />;
   if (a.type === 'ascensionOffer') return <AscensionAction state={state} m={m} />;
   if (a.type === 'scrimInvite') return <ScrimAction state={state} m={m} />;
+  if (a.type === 'drama') return <DramaAction state={state} m={m} />;
   if (a.type === 'ownerChoice') return <OwnerChoiceBox state={state} reqId={String(a.payload)} />;
   if (a.type === 'playerChoice') return <PlayerChoiceBox state={state} reqId={String(a.payload)} />;
   if (a.type === 'openPlayer') return (
@@ -280,6 +283,37 @@ function AscensionAction({ state, m }: { state: GameState; m: InboxMessage }) {
         </div>
       ) : (
         <div className="text-sm text-muted">{o.status === 'accepted' ? `Signed (${o.accepted === 'title' ? 'title naming' : 'co-branding'}). The move to the ${target} happens at season rollover.` : o.status === 'declined' ? 'You declined this offer.' : 'This offer has expired.'}</div>
+      )}
+    </Shell>
+  );
+}
+
+function DramaAction({ state, m }: { state: GameState; m: InboxMessage }) {
+  const bump = useStore((s) => s.bump);
+  const notify = useStore((s) => s.notify);
+  const ev = state.drama?.events.find((x) => x.id === String(m.action!.payload));
+  if (!ev) return <Shell title="Decision" done><div className="text-sm text-muted">This is no longer on file.</div></Shell>;
+  const live = dramaLive(state, ev.id);
+  const chosen = ev.options.find((o) => o.id === ev.resolved);
+  const p = ev.playerId ? state.players[ev.playerId] : undefined;
+  return (
+    <Shell title="How do we handle it?" done={!live}>
+      {p && <div className="flex items-center gap-2 mb-3 text-sm"><Portrait player={p} team={p.teamId ? state.teams[p.teamId] : null} size={28} /><span className="font-semibold">{p.handle}</span></div>}
+      {live ? (
+        <div className="grid gap-2">
+          {ev.options.map((o) => (
+            <button key={o.id} className="btn justify-between text-left w-full" onClick={() => { const r = resolveDrama(state, ev.id, o.id); notify(r.message); if (r.ok) m.action!.done = true; bump(); }}>
+              <span>{o.label}</span>
+              {o.hint && <span className="text-[11px] text-muted font-normal">{o.hint}</span>}
+            </button>
+          ))}
+          <div className="text-[11px] text-dim">Answer by {fmtDate(ev.expires, { month: 'short', day: 'numeric' })} — otherwise the staff go with “{ev.options.find((o) => o.id === ev.fallback)?.label ?? ev.fallback}”.</div>
+        </div>
+      ) : (
+        <div className="text-sm">
+          {chosen && <div className="mb-1"><Pill color="#f0c674">{chosen.label}</Pill></div>}
+          <div className="whitespace-pre-line text-text/90">{ev.outcome ?? 'No decision was made.'}</div>
+        </div>
       )}
     </Shell>
   );

@@ -19,6 +19,7 @@ import { peopleDaily } from './management/people';
 import { personaDaily } from './management/personaTick';
 import { scrimsDaily } from './management/scrims';
 import { contentDaily } from './management/orgContent';
+import { dramaDaily } from './management/drama';
 import { addDays, weekday } from './season/formats';
 import { overall } from './setup';
 
@@ -124,6 +125,7 @@ export function endDay(state: GameState) {
   peopleDaily(state, r); // locker room: player approaches, relationships
   personaDaily(state); // off the Rift: profiles & extended traits (lazy init), streaming, media, stamina
   contentDaily(state, prev); // creator videos about the club, the club's own channel (management/orgContent.ts)
+  dramaDaily(state); // club drama at home and around the world (management/drama.ts)
   save();
 }
 

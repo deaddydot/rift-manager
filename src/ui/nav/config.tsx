@@ -59,6 +59,7 @@ export const HUBS: NavHub[] = [
     { page: 'squad', label: 'Squad', icon: '👥', keywords: 'roster lineup players team', render: lazyPage(() => import('../pages/Squad')) },
     { page: 'tactics', label: 'Tactics', icon: '♟', keywords: 'strategy draft style', render: lazyPage(() => import('../pages/Tactics')) },
     { page: 'training', label: 'Training', icon: '🏋', keywords: 'scrims practice development', render: lazyPage(() => import('../pages/Training')) },
+    { page: 'analysis', label: 'Game analysis', icon: '📊', keywords: 'post game review mistakes vod coach analyst report', render: lazyPage(() => import('../pages/Analysis'), (r) => ({ id: r.id })) },
     { page: 'scrims', label: 'Scrims', icon: '🆚', keywords: 'scrim partners practice invite blocks', render: lazyPage(() => import('../pages/Scrims')) },
     { page: 'staff', label: 'Staff', icon: '🎧', keywords: 'coach analyst scout psychologist', render: lazyPage(() => import('../pages/StaffPage')) },
     { page: 'dynamics', label: 'Locker room', icon: '🫂', keywords: 'dynamics relationships chemistry morale trust talk drama', render: lazyPage(() => import('../pages/Dynamics')) },

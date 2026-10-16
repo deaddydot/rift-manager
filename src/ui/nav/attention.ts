@@ -5,6 +5,7 @@ import { ownerRequestLive } from '../../engine/management/owner';
 import { sales } from '../../engine/management/franchise';
 import { offerLive, offerById } from '../../engine/management/ascension';
 import { scrimInviteLive } from '../../engine/management/scrims';
+import { dramaLive } from '../../engine/management/drama';
 
 /**
  * live  = pulsing red dot (something is happening right now, e.g. match day)
@@ -32,6 +33,7 @@ export function inboxActionLive(state: GameState, m: InboxMessage) {
   if (a.type === 'openPlayer') { const p = state.players[String(a.payload)]; return !!p?.contract && p.teamId === state.userTeamId; }
   if (a.type === 'ownerChoice') return ownerRequestLive(state, String(a.payload));
   if (a.type === 'scrimInvite') return scrimInviteLive(state, String(a.payload));
+  if (a.type === 'drama') return dramaLive(state, String(a.payload));
   return true;
 }
 

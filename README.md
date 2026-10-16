@@ -50,6 +50,10 @@ Saves are stored in your browser (IndexedDB, gzip-compressed) and can be exporte
   choose better spots. Teams also read the fog (`sim/fog.ts`): an enemy who vanished becomes a "ghost" drifting toward
   where they were likely going, so five players disappearing from mid with Baron up are assumed to be at Baron, and
   players take the long way round instead of walking into the river they're probably in.
+- **Stream chat**: a Twitch-style English chat, or a Vietnamese YouTube live chat when the Hoàng Luân desk casts
+  (`src/ui/match/chatVi.ts`, studied from a real Vietnamese LoL broadcast chat: short reactions, `:)))` and `???` floods,
+  gg / siuuu waves, feeding scores counted out loud, Super Chats in ₫, memberships, Nightbot warnings, the pace of
+  ~1.5 messages/s in game and ~3/s at the end). Language packs: `src/ui/match/chatPack.ts`.
 - **Pro draft** with Fearless and an AI drafter that weighs player comfort, real 2026 pro meta and comp balance, plus
   a live composition checklist for both teams (Hard CC, Engage, Disengage, Poke, Waveclear, Tank, Physical / Magical /
   Utility damage — `src/engine/draft/checklist.ts`) that the AI drafter also uses.
@@ -88,6 +92,23 @@ Saves are stored in your browser (IndexedDB, gzip-compressed) and can be exporte
   charisma, smarts, media savvy, online presence, style, comms, traits), and so do a hired host / MC and editor, the
   content studio and the budget. Regular, good uploads build momentum (casual fans, content revenue, sponsor appeal)
   and community (die-hards; fans bond with the faces they see). Shoots cost money, fatigue and a little practice.
+- **Club drama** (`src/engine/management/drama.ts`, text in `dramaTemplates.ts`): every couple of weeks something
+  happens off the Rift — a van parked outside the gaming house, cheating accusations after a big game, an obsessive
+  fan, a stage invader, leaked scrims, a tell-all interview, food poisoning in match week, a viral meme, a bench
+  petition, a celebrity in your jersey, trash talk before a match, visa trouble, noise complaints, a hacked account, a
+  charity stream, tampering accusations, a fan meet gone wrong. Each is an inbox decision with costs and
+  consequences (fans, morale, trust, the owner, money). Many come back later: the league's verdict, the van returning,
+  whether the trash talk aged well. They also spill into fan posts, news and creator videos. Other clubs get theirs
+  in the world news.
+- **Post-game analysis** (Squad → Game analysis; `src/engine/sim/analysis.ts`, `src/engine/management/analysis.ts`): a
+  match analyst watches every game your team plays and classifies every death. A death can be a mistake (face-check,
+  overextension, solo engage, caught alone, ambushed from unwarded fog, tower dive, chased too deep, outnumbered,
+  greedy side-lane farm, unspent gold) or a fair trade. It also checks team objective calls against where the enemy
+  really was (calls are made from the team's beliefs about the fog), plus objectives given away, lanes lost, low
+  vision and thrown leads. Your analysts (and the Analytics Lab) decide how much of it they catch. The page shows why
+  you won or lost, a gold graph with every mistake, player scores and the plays to show off. "Review with the team"
+  turns the mistakes into two weeks of focused training. The analyst only observes: games play out exactly the same
+  with it on.
 - **Editor**: create custom players, teams and staff (portraits/logos uploaded from your computer), edit anyone
   (including coaches, analysts and other staff), and keep a reusable custom library.
 

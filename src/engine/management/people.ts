@@ -289,6 +289,13 @@ function ease(state: GameState, me: PersonState, kind: string, dSev: number, max
   else if (maxDays !== undefined) { const cap = addDays(state.date, maxDays); if (cap < i.until) i.until = cap; }
 }
 
+/** For other systems (drama.ts): send one of the user's players away for `days` (a same-role sub steps in). */
+export function sendPlayerAway(state: GameState, p: Player, days: number, reason: string): string | null {
+  const ps = state.people, team = state.teams[state.userTeamId];
+  if (!ps || ps.teamId !== team?.id || p.teamId !== team.id || !ps.players[p.id]) return null;
+  return sendAway(state, ps, team, p, days, reason);
+}
+
 /** Send a player away (leave, illness, benching). A same-role sub steps in and is swapped back on return. */
 function sendAway(state: GameState, ps: PeopleState, team: Team, p: Player, n: number, reason: string): string {
   const me = ps.players[p.id];

@@ -1,6 +1,7 @@
 // Top-down League of Legends match simulator.
 // Tick-based world simulation: champions (AI driven), minion waves, towers,
 // inhibitors, jungle camps, epic monsters, vision and economy.
+import { MatchAnalyst } from './analysis';
 import { RNG, clamp } from '../../util/rng';
 import { dashesFor, stepDash, onTakedown } from './dash';
 import { gd, matchupEdge } from '../../data/gamedata';
@@ -70,6 +71,9 @@ export class MatchSim {
   lastMacroAt = [-10, -10];
   goldDiff: number[] = [];
   debugOn: boolean;
+  /** The post-game analyst (opts.analyze): watches deaths, calls and objectives (analysis.ts). */
+  analyst: MatchAnalyst | null = null;
+  private analyzeOn = false;
   debugLog: DebugEntry[] = [];
   summons: SimSummon[] = [];
   summonSeq = 1;
@@ -94,6 +98,7 @@ export class MatchSim {
     this.maxTime = opts.maxTime ?? 75 * 60;
     this.bigMatch = !!opts.bigMatch;
     this.debugOn = !!opts.debug;
+    this.analyzeOn = !!opts.analyze;
     this.destiny = opts.destiny ?? null;
     if (this.destiny !== null) {
       // lore: the destined side plays out of its mind; the other side feels the weight of history
@@ -424,6 +429,7 @@ export class MatchSim {
 
   step() {
     if (this.winner !== null) return;
+    if (this.analyzeOn && !this.analyst) this.analyst = new MatchAnalyst(this);
     const dt = this.dt;
     this.t += dt;
     const t = this.t;
@@ -481,6 +487,7 @@ export class MatchSim {
     this.updateObjectives(dt);
     this.updateWards();
     this.checkEnd();
+    this.analyst?.tick();
     if (t >= this.maxTime && this.winner === null) {
       // safety valve: higher gold wins
       const g0 = this.champs.filter((c) => c.side === 0).reduce((s, c) => s + c.goldEarned, 0);
@@ -859,6 +866,7 @@ export class MatchSim {
 
   destroyTower(tw: SimTower, side: Side) {
     tw.alive = false; tw.hp = 0; tw.plates = 0;
+    this.analyst?.onTower(side);
     const tm = this.teams[side];
     tm.towers++;
     const local = tw.def.tier === 'outer' ? GOLD.outerTowerLocal : tw.def.tier === 'inner' ? GOLD.innerTowerLocal : tw.def.tier === 'inhib' ? GOLD.inhibTowerLocal : GOLD.nexusTowerLocal;
@@ -1045,15 +1053,16 @@ export class MatchSim {
         const myJg = attackers.find((c) => c.summ2 === 'smite' && t >= c.summ2ReadyAt - 15);
         const enemyJg = this.champs.find((c) => c.side !== mySide && c.summ2 === 'smite' && !c.dead && dist(c.pos, o.pos) < 900);
         let taker: SimChamp = myJg ?? attackers[0];
+        let stolen = false;
         if (enemyJg && (o.kind !== 'grubs')) {
           let pSteal = clamp(0.12 + (enemyJg.input.obj - (myJg?.input.obj ?? 40)) / 220 + (myJg ? 0 : 0.35) + (myJg ? (myJg.input.mistakes - 40) / 400 : 0), 0.03, 0.7);
           if (enemyJg.input.traits.includes('baron_thief')) pSteal = Math.min(0.75, pSteal + 0.12);
           if (enemyJg.input.traits.includes('smite_nerves')) pSteal = Math.max(0, pSteal - 0.08);
           if (myJg?.input.traits.includes('smite_nerves')) pSteal = Math.min(0.75, pSteal + 0.06);
-          if (this.rng.chance(pSteal)) { taker = enemyJg; this.event('steal', `${enemyJg.input.name} STEALS the ${this.objName(o)}!`, enemyJg.side, { important: true }); }
+          if (this.rng.chance(pSteal)) { taker = enemyJg; stolen = true; this.event('steal', `${enemyJg.input.name} STEALS the ${this.objName(o)}!`, enemyJg.side, { important: true }); }
         }
         if (taker.summ2 === 'smite') taker.summ2ReadyAt = t + 15;
-        this.takeObjective(o, taker);
+        this.takeObjective(o, taker, stolen);
       }
     }
   }
@@ -1062,8 +1071,9 @@ export class MatchSim {
     return o.kind === 'dragon' ? `${DRAGON_LABEL[o.dragonType!]} Drake` : o.kind === 'grubs' ? 'Voidgrubs' : o.kind === 'herald' ? 'Rift Herald' : o.kind === 'baron' ? 'Baron' : 'Elder Dragon';
   }
 
-  takeObjective(o: SimObjective, taker: SimChamp) {
+  takeObjective(o: SimObjective, taker: SimChamp, stolen = false) {
     const side = taker.side;
+    this.analyst?.onObjective(o, side, stolen);
     const tm = this.teams[side];
     const t = this.t;
     o.alive = false; o.takenBy = side; o.attackers.clear();
@@ -1136,6 +1146,7 @@ export class MatchSim {
     victim.dead = true;
     victim.deaths++;
     onDeathTilt(victim);
+    const wasMistake = victim.mistakeUntil > t ? victim.mistakeKind : undefined;
     victim.mistakeUntil = 0;
     victim.respawnAt = t + respawnTime(victim.level, t);
     victim.task = { kind: 'dead' };
@@ -1155,6 +1166,7 @@ export class MatchSim {
       victim.killStreak = 0;
       victim.lastDamagedBy.clear();
       this.event('info', `${victim.input.name} (${victim.champ.name}) was executed`, killerSide, { victim: victim.idx, pos: { ...victim.pos } });
+      this.analyst?.onDeath(victim, null, [], 0, wasMistake);
       return;
     }
     kt.kills++;
@@ -1173,6 +1185,7 @@ export class MatchSim {
     let fb = '';
     if (!this.firstBlood) { this.firstBlood = true; this.firstBloodSide = killerSide; bounty += GOLD.firstBlood; fb = ' — FIRST BLOOD'; }
     const shut = victim.killStreak >= 3;
+    this.analyst?.onDeath(victim, killer, assisters, bounty, wasMistake);
     victim.killStreak = 0;
     const xp = XP.killBase + victim.level * XP.killPerLevel;
     if (killer) {
@@ -1229,6 +1242,7 @@ export class MatchSim {
       mvp,
       firstBlood: this.firstBloodSide ?? undefined,
       firstTower: this.firstTowerSide ?? undefined,
+      analysis: this.analyst?.finish(),
     };
   }
 }

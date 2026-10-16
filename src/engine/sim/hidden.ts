@@ -121,6 +121,7 @@ export function maybeMistake(sim: MatchSim, c: SimChamp): boolean {
     case 'flash': {
       if (c.flashReadyAt > t) return false;
       c.flashReadyAt = t + 300;
+      sim.analyst?.onMistakeStart(c, 'flash');
       if (sim.rng.chance(0.5)) sim.event('info', `${c.input.name} burns Flash for nothing`, c.side);
       return false;
     }

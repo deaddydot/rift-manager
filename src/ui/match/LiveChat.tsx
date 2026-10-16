@@ -1,4 +1,5 @@
-// Twitch-style stream chat column for the match viewer. The brain (chatBrain.ts) produces the lines on its own
+// Stream chat column for the match viewer: Twitch-style in English, YouTube-style in Vietnamese when the Hoàng
+// Luân desk casts (the brain picks its language pack, chatPack.ts / chatVi.ts). The brain (chatBrain.ts) produces the lines on its own
 // real-time timer; this component only renders them: newest at the bottom, auto-scroll that pauses when the user
 // scrolls up (a "new messages" pill brings them back), emote chips, badges, replies, sub/raid notices, the
 // channel-points prediction and the emote-combo counter. Cheap by design: memoised rows, a capped list, its own
@@ -10,6 +11,7 @@ import { EMOTE_INFO, EMOTE_TINT } from './chatLines';
 import { ChatBrain, managerHandle, readSetup, type Badge, type BrainMeta, type ChatOut, type PollView, type ComboView } from './chatBrain';
 import { _resetFeed, _setMeta, getChatMeta } from './chatFeed';
 import { fmtViewers } from './broadcast/audience';
+import { useCasterPrefs } from './broadcast/prefs';
 
 const MAX_LINES = 150;
 const MAX_HELD = 300;
@@ -24,6 +26,8 @@ function LiveChat({ sim, teams, userSide, collapsed = false, onToggle }: Props) 
   const [held, setHeld] = useState(0);
   const [pollOpen, setPollOpen] = useState(true);
   const [draft, setDraft] = useState('');
+  const [lang, setLang] = useState<'en' | 'vi'>('en');
+  const casterMode = useCasterPrefs((x) => x.mode); // the desk decides the chat's language: a new desk, a new chat
   const listRef = useRef<HTMLDivElement>(null);
   const brainRef = useRef<ChatBrain | null>(null);
   const heldRef = useRef<ChatOut[]>([]);
@@ -38,6 +42,8 @@ function LiveChat({ sim, teams, userSide, collapsed = false, onToggle }: Props) 
     _resetFeed();
     const brain = new ChatBrain(sim, teamsRef.current, userSide, readSetup(teamsRef.current, userSide, sim));
     brainRef.current = brain;
+    setLines([]); heldRef.current = []; setHeld(0);
+    setLang(brain.meta.lang);
     if (import.meta.env.DEV) (window as unknown as { __chat?: ChatBrain }).__chat = brain; // dev-only: poke the chat from the console
     let lastMeta = '';
     const id = window.setInterval(() => {
@@ -65,7 +71,7 @@ function LiveChat({ sim, teams, userSide, collapsed = false, onToggle }: Props) 
       brainRef.current = null;
       _setMeta({ ...getChatMeta(), live: false });
     };
-  }, [sim, userSide]);
+  }, [sim, userSide, casterMode]);
 
   // newest at the bottom: stick to it unless the user scrolled up
   useLayoutEffect(() => {
@@ -111,12 +117,13 @@ function LiveChat({ sim, teams, userSide, collapsed = false, onToggle }: Props) 
 
   const viewers = meta?.viewers ?? 0;
   const hype = meta?.hype ?? 20;
+  const vi = lang === 'vi';
 
   if (collapsed) {
     return (
       <button onClick={() => toggleRef.current?.()} title="Show chat" className="panel h-full w-full flex flex-col items-center gap-2 py-3 text-muted hover:text-text hover:border-gold transition-colors">
         <span className="text-base leading-none">💬</span>
-        <span className="text-[10px] font-bold uppercase tracking-widest [writing-mode:vertical-rl] rotate-180">Stream chat</span>
+        <span className="text-[10px] font-bold uppercase tracking-widest [writing-mode:vertical-rl] rotate-180">{vi ? 'Trò chuyện' : 'Stream chat'}</span>
         <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
         {held > 0 && <span className="text-[10px] font-bold text-gold2 [writing-mode:vertical-rl] rotate-180">{held > 99 ? '99+' : held} new</span>}
       </button>
@@ -129,22 +136,29 @@ function LiveChat({ sim, teams, userSide, collapsed = false, onToggle }: Props) 
       <div className="shrink-0 border-b border-line px-2.5 pt-2 pb-1.5">
         <div className="flex items-center gap-2">
           {onToggle && <button onClick={() => toggleRef.current?.()} title="Collapse chat" className="text-muted hover:text-text text-sm leading-none px-1 -ml-1 rounded hover:bg-white/5">⇥</button>}
-          <span className="text-[11px] uppercase tracking-wider text-muted font-bold">Stream chat</span>
-          <span className="ml-auto flex items-center gap-1.5 text-[11px] text-dim" title={`${viewers.toLocaleString('en-US')} watching the broadcast`}>
+          {vi ? (
+            <span className="text-[12px] font-semibold text-text">Trò chuyện trực tiếp <span className="text-[10px] text-dim font-normal">▾</span></span>
+          ) : <span className="text-[11px] uppercase tracking-wider text-muted font-bold">Stream chat</span>}
+          <span className="ml-auto flex items-center gap-1.5 text-[11px] text-dim" title={vi ? `${viewers.toLocaleString('vi-VN')} người đang xem` : `${viewers.toLocaleString('en-US')} watching the broadcast`}>
             <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
             <span className="text-red-300 font-semibold tabular-nums">{fmtViewers(viewers)}</span>
-            <span className="hidden sm:inline">watching</span>
+            <span className="hidden sm:inline">{vi ? 'đang xem' : 'watching'}</span>
           </span>
         </div>
         <div className="mt-1.5 h-1 rounded bg-[#0a1120] overflow-hidden" title={`Crowd hype ${hype}`}>
           <div className="h-full rounded transition-all duration-300" style={{ width: `${hype}%`, background: hype > 70 ? '#f0c674' : hype > 40 ? '#fb923c' : '#38bdf8' }} />
         </div>
       </div>
-      {meta?.poll && <PollCard poll={meta.poll} open={pollOpen} onToggle={() => setPollOpen((o) => !o)} />}
+      {vi && meta?.pinned && (
+        <div className="shrink-0 px-2.5 py-1.5 text-[11px] leading-snug border-b border-line bg-white/[0.03] flex gap-1.5">
+          <span>📌</span><span><span className="font-semibold text-text">RiftTV Việt Nam</span> <span className="text-muted">{meta.pinned}</span></span>
+        </div>
+      )}
+      {meta?.poll && <PollCard poll={meta.poll} open={pollOpen} onToggle={() => setPollOpen((o) => !o)} vi={vi} />}
       {(meta?.lore || (meta?.watching.length ?? 0) > 0) && (
         <div className="shrink-0 px-2.5 py-1 text-[10.5px] leading-snug border-b border-line bg-fuchsia-500/5 text-fuchsia-300">
           {meta?.lore && <div>📌 {meta.lore}</div>}
-          {(meta?.watching.length ?? 0) > 0 && <div>👀 Chat is watching {meta!.watching.join(', ')} closely.</div>}
+          {(meta?.watching.length ?? 0) > 0 && <div>👀 {vi ? `Chat đang soi kỹ ${meta!.watching.join(', ')}.` : `Chat is watching ${meta!.watching.join(', ')} closely.`}</div>}
         </div>
       )}
       {/* messages */}
@@ -153,13 +167,13 @@ function LiveChat({ sim, teams, userSide, collapsed = false, onToggle }: Props) 
         <div ref={listRef} onScroll={onScroll} role="log" aria-label="Stream chat" className="absolute inset-0 overflow-y-auto overflow-x-hidden [overflow-anchor:none]">
           {/* min-h-full + justify-end: a young chat starts at the bottom, like Twitch */}
           <div className="min-h-full flex flex-col justify-end py-1">
-            {lines.length === 0 && <div className="text-dim text-xs px-3 py-2">Welcome to the chat room!</div>}
-            {lines.map((l) => <ChatRow key={l.id} m={l} me={me} />)}
+            {lines.length === 0 && <div className="text-dim text-xs px-3 py-2">{vi ? 'Chào mừng bạn đến với cuộc trò chuyện trực tiếp! Hãy giữ bình luận văn minh và tôn trọng mọi người.' : 'Welcome to the chat room!'}</div>}
+            {lines.map((l) => (vi ? <YtRow key={l.id} m={l} me={me} /> : <ChatRow key={l.id} m={l} me={me} />))}
           </div>
         </div>
         {paused && (
           <button onClick={resume} className="absolute left-1/2 -translate-x-1/2 bottom-2 z-10 rounded-full bg-[#1f2a44]/95 border border-line2 px-3 py-1 text-[11px] font-semibold text-gold2 shadow-lg shadow-black/50 hover:border-gold fadein whitespace-nowrap">
-            {held > 0 ? `↓ ${held > 99 ? '99+' : held} new messages` : '⏸ Chat paused due to scroll · ↓'}
+            {vi ? (held > 0 ? `↓ ${held > 99 ? '99+' : held} tin nhắn mới` : '⏸ Đã tạm dừng · ↓') : held > 0 ? `↓ ${held > 99 ? '99+' : held} new messages` : '⏸ Chat paused due to scroll · ↓'}
           </button>
         )}
       </div>
@@ -167,15 +181,15 @@ function LiveChat({ sim, teams, userSide, collapsed = false, onToggle }: Props) 
       <div className="shrink-0 border-t border-line p-2 space-y-1.5">
         <div className="flex gap-1.5">
           <input
-            className="input flex-1 min-w-0 py-1.5! text-[12px]!" value={draft} maxLength={200} placeholder={`Send a message as ${me}`}
+            className="input flex-1 min-w-0 py-1.5! text-[12px]!" value={draft} maxLength={200} placeholder={vi ? `Trò chuyện với tên ${me}…` : `Send a message as ${me}`}
             onChange={(e) => setDraft(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); send(); } e.stopPropagation(); }}
           />
-          <button className="btn btn-gold py-1! px-2.5! text-xs!" onClick={send} disabled={!draft.trim()}>Chat</button>
+          <button className="btn btn-gold py-1! px-2.5! text-xs!" onClick={send} disabled={!draft.trim()}>{vi ? 'Gửi' : 'Chat'}</button>
         </div>
-        <div className="flex items-center gap-1 flex-wrap min-h-[16px]">
+        {!vi && <div className="flex items-center gap-1 flex-wrap min-h-[16px]">
           <span className="text-[10px] uppercase text-dim font-bold mr-0.5">Top</span>
           {top.length ? top.map(([w, n]) => <span key={w} className="inline-flex items-center gap-1"><Emote w={w} /><span className="text-[10px] text-dim">×{n}</span></span>) : <span className="text-[10px] text-dim">—</span>}
-        </div>
+        </div>}
       </div>
     </div>
   );
@@ -257,17 +271,21 @@ function BadgeIcon({ b }: { b: Badge }) {
     case 'sub': return <span className={`${base} text-[#0b0f19]`} style={{ background: SUB_TINT(b.n ?? 1) }} title={`${b.n}-Month Subscriber`}>★</span>;
     case 'gifter': return <span className={`${base} bg-[#b45309]`} title="Sub gifter">✚</span>;
     case 'bits': return <span className={`${base} bg-[#1f2937] ${(b.n ?? 0) >= 1000 ? 'text-[#a970ff]' : 'text-[#cbd5e1]'}`} title={`cheer ${b.n}`}>♦</span>;
+    case 'verified': return <span className={`${base} bg-[#606060]`} title="Kênh chính thức">✓</span>;
   }
 }
 
 // ------------------------------------------------------------------ pinned bits
-function PollCard({ poll, open, onToggle }: { poll: PollView; open: boolean; onToggle: () => void }) {
+function PollCard({ poll, open, onToggle, vi }: { poll: PollView; open: boolean; onToggle: () => void; vi?: boolean }) {
   const total = poll.opts[0].pts + poll.opts[1].pts;
-  const lock = poll.state === 'open' ? `Locks in ${Math.floor(poll.lockIn / 60)}:${String(Math.floor(poll.lockIn % 60)).padStart(2, '0')}` : poll.state === 'locked' ? 'Locked · waiting for result' : `Result: ${poll.opts[poll.winner ?? 0].label} won`;
+  const mmss = `${Math.floor(poll.lockIn / 60)}:${String(Math.floor(poll.lockIn % 60)).padStart(2, '0')}`;
+  const lock = vi
+    ? poll.state === 'open' ? `Đóng sau ${mmss}` : poll.state === 'locked' ? 'Đã đóng · chờ kết quả' : `Kết quả: ${poll.opts[poll.winner ?? 0].label} thắng`
+    : poll.state === 'open' ? `Locks in ${mmss}` : poll.state === 'locked' ? 'Locked · waiting for result' : `Result: ${poll.opts[poll.winner ?? 0].label} won`;
   return (
     <div className="shrink-0 border-b border-line bg-[#0b1324] px-2.5 py-1.5">
       <button className="w-full flex items-center gap-1.5 text-left" onClick={onToggle} title={open ? 'Collapse prediction' : 'Show prediction'}>
-        <span className="text-[11px]">🔮</span>
+        <span className="text-[11px]">{vi ? '📊' : '🔮'}</span>
         <span className="text-[11.5px] font-semibold truncate flex-1">{poll.title}</span>
         <span className={`text-[10px] ${poll.state === 'open' ? 'text-gold2' : 'text-dim'}`}>{lock}</span>
         <span className="text-[10px] text-dim">{open ? '▴' : '▾'}</span>
@@ -281,7 +299,7 @@ function PollCard({ poll, open, onToggle }: { poll: PollView; open: boolean; onT
               <div key={i} className={poll.state === 'done' && !won ? 'opacity-50' : ''}>
                 <div className="flex items-center justify-between text-[10.5px]">
                   <span className="font-bold" style={{ color: o.color }}>{won ? '🏆 ' : ''}{o.label} · {o.pct}%</span>
-                  <span className="text-dim">{fmt(o.pts)} pts · 1:{ratio} · 👤 {o.users.toLocaleString('en-US')}</span>
+                  <span className="text-dim">{vi ? `${o.users.toLocaleString('vi-VN')} phiếu` : <>{fmt(o.pts)} pts · 1:{ratio} · 👤 {o.users.toLocaleString('en-US')}</>}</span>
                 </div>
                 <div className="h-1.5 rounded bg-[#0a1120] overflow-hidden"><div className="h-full rounded transition-all duration-500" style={{ width: `${o.pct}%`, background: o.color }} /></div>
               </div>
@@ -312,3 +330,60 @@ function Combo({ combo }: { combo: ComboView }) {
     </div>
   );
 }
+
+// ------------------------------------------------------------------ YouTube (Vietnamese) rows
+/** Super Chat colours by amount (₫), like YouTube's tiers. */
+function scTier(amount: number): { bg: string; head: string; ink: string } {
+  if (amount >= 1_000_000) return { bg: '#e91e63', head: '#c2185b', ink: '#fff' };
+  if (amount >= 500_000) return { bg: '#f57c00', head: '#e65100', ink: '#fff' };
+  if (amount >= 200_000) return { bg: '#ffca28', head: '#ffb300', ink: '#1a1a1a' };
+  if (amount >= 100_000) return { bg: '#1de9b6', head: '#00bfa5', ink: '#0b1a17' };
+  if (amount >= 50_000) return { bg: '#00e5ff', head: '#00b8d4', ink: '#062026' };
+  return { bg: '#1e88e5', head: '#1565c0', ink: '#fff' };
+}
+function YtAvatar({ name, size = 22 }: { name: string; size?: number }) {
+  let h = 0;
+  for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) >>> 0;
+  return <span className="inline-flex items-center justify-center rounded-full shrink-0 font-bold text-white" style={{ width: size, height: size, fontSize: size * 0.45, background: `hsl(${h % 360} 45% 42%)` }}>{name.replace(/[^\p{L}\p{N}]/gu, '').slice(0, 1).toUpperCase() || '?'}</span>;
+}
+const YtRow = memo(function YtRow({ m, me }: { m: ChatOut; me: string }) {
+  if (m.kind === 'system') return <div className="px-2.5 py-1 text-[11.5px] text-dim">{m.title}</div>;
+  if (m.kind === 'notice') {
+    if (m.notice === 'bits') {
+      const t = scTier(m.amount ?? 20_000);
+      const [who, amt] = (m.title ?? '').split(' · ');
+      return (
+        <div className="mx-1.5 my-1 rounded-md overflow-hidden text-[12px] leading-snug fadein">
+          <div className="flex items-center gap-2 px-2.5 py-1.5" style={{ background: t.head, color: t.ink }}>
+            <YtAvatar name={m.name ?? who ?? '?'} size={26} />
+            <div className="min-w-0"><div className="text-[11px] opacity-80 truncate">{who}</div><div className="font-bold">{amt}</div></div>
+          </div>
+          {m.text && <div className="px-2.5 py-1.5 break-words" style={{ background: t.bg, color: t.ink }}>{m.text}</div>}
+        </div>
+      );
+    }
+    const green = m.notice === 'sub' || m.notice === 'gift';
+    const accent = green ? '#0f9d58' : m.notice === 'poll' ? '#3ea6ff' : '#606060';
+    return (
+      <div className="mx-1.5 my-1 rounded-md px-2.5 py-1.5 text-[12px] leading-snug fadein" style={{ background: `${accent}2a`, boxShadow: `inset 3px 0 0 ${accent}` }}>
+        <div className="flex items-center gap-1.5 font-semibold text-text">{m.name && <YtAvatar name={m.name} size={20} />}<span>{m.notice === 'gift' ? '🎁 ' : m.notice === 'poll' ? '📊 ' : ''}{m.title}</span></div>
+        {m.text && <div className="mt-0.5 text-[12px] text-muted break-words">{m.text}</div>}
+      </div>
+    );
+  }
+  const mod = m.badges?.some((b) => b.k === 'mod');
+  const verified = m.badges?.some((b) => b.k === 'verified');
+  const member = m.badges?.find((b) => b.k === 'sub');
+  const nameCls = m.self ? 'text-[#f0c674]' : verified ? 'bg-[#606060]/60 text-white rounded px-1' : mod ? 'text-[#5e84f1]' : member ? 'text-[#2ba640]' : 'text-[#aaaaaa]';
+  return (
+    <div className={`flex items-start gap-2 px-2.5 py-[3px] text-[12.5px] leading-[1.45] hover:bg-white/[0.04] ${m.mentionsMe ? 'bg-[#3ea6ff]/15' : ''}`}>
+      <YtAvatar name={m.name ?? '?'} />
+      <div className="min-w-0 break-words">
+        <span className={`font-medium mr-1 ${nameCls}`}>{m.name?.startsWith('@') || verified || m.self ? m.name : `@${m.name}`}</span>
+        {mod && <span className="mr-1 text-[#5e84f1]" title="Người kiểm duyệt">🔧</span>}
+        {member && <span className="mr-1 inline-flex items-center justify-center rounded-sm bg-[#2ba640] text-white text-[8px] font-black px-[3px] align-[1px]" title={`Hội viên ${member.n} tháng`}>★</span>}
+        {m.deleted ? <span className="italic text-dim">[tin nhắn đã bị xoá]</span> : <span className="text-[#f1f1f1]"><Words text={m.text} me={me} /></span>}
+      </div>
+    </div>
+  );
+});

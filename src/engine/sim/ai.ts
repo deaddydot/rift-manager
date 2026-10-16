@@ -478,7 +478,8 @@ function teamPlan(sim: MatchSim, side: Side) {
       const lanePrio = laneprio(sim, side, kind === 'dragon' || kind === 'elder' ? 'bot' : 'top');
       const vision = sim.wards.filter((w) => dist(w.pos, pit) < 2500).reduce((a, w) => a + (w.side === side ? 1 : -1), 0);
       let x = Math.log(myPow / enPow) * 2 + nDiff * 0.5 + lanePrio * 0.8 + clamp(vision, -4, 4) * 0.28 + (tm.aggression - 50) / 120;
-      x += sim.rng.normal(0, 0.25 + macroNoise * 0.7);
+      const noise = sim.rng.normal(0, 0.25 + macroNoise * 0.7);
+      x += noise;
       // Baron into a full, unseen enemy team is a coin flip on the game: pros start it after a pick, a won
       // fight or with deep vision — not on a whim the moment it spawns
       if (kind === 'baron' && theirs.length >= 4 && nDiff <= 0) x -= 1.2;
@@ -490,6 +491,12 @@ function teamPlan(sim: MatchSim, side: Side) {
       if (enemyOnIt && o.hp < o.maxHp * 0.4) x -= 1.2;
       if (ours.length < (kind === 'baron' || kind === 'elder' ? 3 : 2)) x -= 1.5;
       const d: 'take' | 'hover' | 'concede' = x > 0.45 ? 'take' : x < -0.25 ? 'concede' : 'hover';
+      if (sim.analyst && d !== 'hover') {
+        // the analyst checks the call against where the enemy really was (no fog, no noise; analysis.ts)
+        const real = theirs.filter((e) => reach(e) < 30);
+        const realX = x - noise - (Math.log(myPow / enPow) * 2 + nDiff * 0.5) + (Math.log(myPow / (groupPower(real) + 1)) * 2 + (ours.length - real.length) * 0.5);
+        sim.analyst.onCall(side, o, d, x, realX);
+      }
       call = { d, until: t + 10 + sim.rng.next() * 8, score: x };
       tm.objCalls[kind] = call;
     }

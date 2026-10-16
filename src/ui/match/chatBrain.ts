@@ -14,31 +14,23 @@ import { NEXUS_HP } from '../../engine/sim/constants';
 import { RNG, hashString } from '../../util/rng';
 import { fill, type Ctx } from '../../engine/management/fans';
 import { liveFlags, loreCtx, type LiveFlag } from '../../engine/management/buzzCore';
-import { LORE_CHAT } from '../../engine/management/loreTemplates';
 import { legacyChat } from '../../engine/management/legacy';
-import { LEG_CHAT } from '../../engine/management/legacyTemplates';
 import { useStore } from '../../store/game';
 import { useSession } from './session';
-import { CHAT, CHAT_USERS, EMOTE_INFO } from './chatLines';
-import {
-  PERSONAS, PERSONA_COUNT, PERSONA_NAMES, PERSONA_IDLE, PERSONA_REACT, COPYPASTAS, MEMES, SMASH, DIFF_LINES, FARM, FOOD, PAUSE, WAVES,
-  EMOTE_MOOD, ITEMS, REGION_LEAGUE, LEAGUES, CITIES, type Persona, type Moment,
-} from './chatMemes';
-import {
-  ARGUE, HOT_TAKES, ROASTS, HOT_DEFEND, BACKSEAT_REPLIES, BACKSEAT_BACK, QA, TIMEZONE_REPLIES, FIRST_TIME, WELCOME, PASTA_REACT, PREDICT,
-  GG_CALLS, EZ_CALLS, THROW_CALLS, STEAL_CALLS, BARON_START, NEXUS_LINES, CALLOUTS, BOTS, MOD_NAMES, NIGHTBOT_REMINDERS, COMMANDS, MOD_LINES,
-  TIMEOUT_BAIT, AFTER_TIMEOUT, BACK_FROM_TIMEOUT, RAIDERS, RAID_CHAT, RAID_WELCOME, SUB_MSGS, BITS_MSGS, GIFT_THANKS, POLL, GM_REPLIES, POSTGAME,
-  REGION_REPLIES, DRAFT_TAKES,
-} from './chatScenes';
+import { EMOTE_INFO } from './chatLines';
+import { PERSONAS, PERSONA_COUNT, EMOTE_MOOD, REGION_LEAGUE, type Persona, type Moment } from './chatMemes';
 import { _drainExternal, _recordLine, _setMeta, getTemplateShare, type ExternalLine } from './chatFeed';
-import { PICK_CHAT } from './chatPicks';
+import { EN_PACK, type ChatPack } from './chatPack';
+import { VI_PACK } from './chatVi';
+import { pickDesk } from './broadcast/commentary';
+import { useCasterPrefs } from './broadcast/prefs';
 import { buildBroadcastCtx } from './broadcast/context';
 import { AudienceTracker, roundViewers, type AudienceBase } from './broadcast/audience';
 import { headlineNotes, WEIRD, type PickReport, type PickNote, type PickKind } from './broadcast/picks';
 
 // ------------------------------------------------------------------ public types
 export type Tone = 'hype' | 'sad' | 'lore';
-export type BadgeKind = 'gm' | 'mod' | 'vip' | 'sub' | 'predBlue' | 'predPink' | 'bits' | 'bot' | 'gifter';
+export type BadgeKind = 'gm' | 'mod' | 'vip' | 'sub' | 'predBlue' | 'predPink' | 'bits' | 'bot' | 'gifter' | 'verified';
 export interface Badge { k: BadgeKind; n?: number }
 export interface ChatOut {
   id: number;
@@ -56,10 +48,11 @@ export interface ChatOut {
   title?: string;         // notice headline (the text is the attached user message, if any)
   deleted?: boolean;
   persona?: string;
+  amount?: number;        // Super Chat amount (YouTube, ₫)
 }
 export interface PollView { title: string; opts: { label: string; color: string; pct: number; pts: number; users: number }[]; state: 'open' | 'locked' | 'done'; lockIn: number; winner: 0 | 1 | null }
 export interface ComboView { token: string; count: number; tone?: Tone; live: boolean; key: number }
-export interface BrainMeta { hype: number; viewers: number; poll: PollView | null; combo: ComboView | null; watching: string[]; lore: string | null }
+export interface BrainMeta { hype: number; viewers: number; poll: PollView | null; combo: ComboView | null; watching: string[]; lore: string | null; lang: 'en' | 'vi'; pinned?: string }
 export interface TickOut { out: ChatOut[]; deleted: number[] }
 
 // ------------------------------------------------------------------ internals
@@ -75,7 +68,6 @@ interface Wave { key: string; token: string; alt: string[]; total: number; spawn
 interface Hist { id: number; ch: Chatter | null; text: string; t: number }
 interface Poll { title: string; pts: [number, number]; users: [number, number]; state: 'open' | 'locked' | 'done'; lockAt: number; winner: 0 | 1 | null; frac: number }
 
-const LINES: Record<string, string[]> = { ...CHAT, ...LORE_CHAT, ...LEG_CHAT, ...PICK_CHAT };
 const NAME_COLORS = ['#ff5a5a', '#6b9bff', '#2fbf71', '#ff7f50', '#9acd32', '#ff8c1a', '#3cb371', '#daa520', '#e0884f', '#5fb3b3', '#3ea6ff', '#ff69b4', '#b18cff', '#00d68f', '#f0c674', '#c084fc', '#f472b6', '#38bdf8', '#facc15', '#fb923c', '#a3e635', '#2dd4bf'];
 const MULTI = ['', '', 'double kill', 'triple kill', 'quadra kill', 'PENTAKILL'];
 const ROLE_LABEL: Record<Role, string> = { top: 'top', jungle: 'jungle', mid: 'mid', adc: 'bot', support: 'support' };
@@ -98,11 +90,14 @@ export function readSetup(teams: [Team, Team], us: 0 | 1, sim?: MatchSim) {
   const lore = state ? loreCtx(state, teams[0], teams[1]) : null;
   const fans = teams[us].fans ?? 100000;
   const sess = useSession.getState().s;
-  let aud: AudienceBase | null = null, picks: PickReport | null = null;
+  let aud: AudienceBase | null = null, picks: PickReport | null = null, vi = false;
   if (sim) {
     try {
       const bc = buildBroadcastCtx(state, sess ? { fixtureId: sess.fixtureId, gameNo: sess.gameNo, series: sess.series, draft: sess.draft } : null, sim, teams, us);
       aud = bc.audience; picks = bc.picks;
+      // the Hoàng Luân desk streams on YouTube in Vietnamese: the chat follows (chatVi.ts)
+      const mode = useCasterPrefs.getState().mode;
+      vi = mode !== 'off' && pickDesk(bc, mode).pbp === 'hoangluan';
     } catch { /* the chat works without them */ }
   }
   // no fixture (e.g. a test game): a rough number from our fanbase
@@ -116,7 +111,7 @@ export function readSetup(teams: [Team, Team], us: 0 | 1, sim?: MatchSim) {
   const leg = lc && f ? { ...lc, need: Math.ceil(bestOf / 2), mine, theirs } : null;
   return {
     flags, lore, base, aud, picks, leg, bestOf, mine, theirs, gameNo: sess?.gameNo ?? games.length + 1,
-    comp: (f && state?.competitions[f.competitionId]?.name) || 'Match day',
+    comp: (f && state?.competitions[f.competitionId]?.name) || 'Match day', vi,
     patch: state?.patch ?? '26.x',
     me: managerHandle(),
   };
@@ -124,6 +119,8 @@ export function readSetup(teams: [Team, Team], us: 0 | 1, sim?: MatchSim) {
 export type ChatSetup = ReturnType<typeof readSetup>;
 
 export class ChatBrain {
+  /** What the chat says and which platform it pretends to be (Twitch in English, YouTube in Vietnamese). */
+  private P: ChatPack;
   private rng: RNG;
   private us: 0 | 1;
   private them: 0 | 1;
@@ -189,9 +186,10 @@ export class ChatBrain {
   private picks: PickReport | null = null;
   private pickSaid = new Map<number, number>();
   private audIdx = 0;
-  meta: BrainMeta = { hype: 20, viewers: 0, poll: null, combo: null, watching: [], lore: null };
+  meta: BrainMeta = { hype: 20, viewers: 0, poll: null, combo: null, watching: [], lore: null, lang: 'en' };
 
   constructor(private sim: MatchSim, private teams: [Team, Team], userSide: 0 | 1, private setup: ChatSetup) {
+    this.P = setup.vi ? VI_PACK : EN_PACK;
     this.us = userSide;
     this.them = (1 - userSide) as 0 | 1;
     this.rng = new RNG(hashString(teams[0].id + teams[1].id + sim.events.length + ':' + Date.now()));
@@ -218,7 +216,7 @@ export class ChatBrain {
     const subMonths = [0, 0, 1, 2, 3, 5, 6, 9, 12, 14, 18, 24, 30, 36, 48];
     const used = new Set<string>();
     for (const p of PERSONAS) {
-      const pats = seedRng.shuffle([...PERSONA_NAMES[p]]);
+      const pats = seedRng.shuffle([...this.P.PERSONA_NAMES[p]]);
       for (let i = 0; i < PERSONA_COUNT[p] && i < pats.length; i++) {
         let name = pats[i].replace('{short}', alnum(teams[this.us].short)).replace('{opp}', alnum(teams[this.them].short)).replace('{n}', String(seedRng.int(2, 99)));
         if (used.has(name)) continue;
@@ -233,15 +231,15 @@ export class ChatBrain {
         this.addChatter(ch);
       }
     }
-    for (const n of seedRng.shuffle([...MOD_NAMES]).slice(0, 2)) this.mods.push(this.addChatter({ name: n, who: 'mod', color: NAME_COLORS[hashString(n) % NAME_COLORS.length], sub: seedRng.int(6, 40), mod: true, regular: true }));
-    this.nightbot = this.addChatter({ name: BOTS.nightbot, who: 'bot', color: '#7c8cff', sub: 0, mod: true, bot: true, regular: true });
-    this.elements = this.addChatter({ name: BOTS.elements, who: 'bot', color: '#53fc18', sub: 0, mod: true, bot: true, regular: true });
+    for (const n of seedRng.shuffle([...this.P.MOD_NAMES]).slice(0, 2)) this.mods.push(this.addChatter({ name: n, who: 'mod', color: NAME_COLORS[hashString(n) % NAME_COLORS.length], sub: seedRng.int(6, 40), mod: true, regular: true }));
+    this.nightbot = this.addChatter({ name: this.P.BOTS.nightbot, who: 'bot', color: '#7c8cff', sub: 0, mod: true, bot: true, regular: true });
+    this.elements = this.addChatter({ name: this.P.BOTS.elements, who: 'bot', color: '#53fc18', sub: 0, mod: true, bot: true, regular: true });
     this.gm = { name: setup.me, who: 'gm', color: '#f0c674', sub: 0, gm: true, regular: true };
     this.raidAt = this.rng.range(8, 24) * 60;
     this.aud = setup.aud ? new AudienceTracker(setup.aud) : null;
     this.picks = setup.picks;
     const watching = sim.champs.filter((c) => { const f = setup.flags[c.input.playerId]; return f && f.kind !== 'drop'; }).map((c) => c.input.name);
-    this.meta = { hype: 20, viewers: this.aud ? roundViewers(this.aud.viewers) : setup.base, poll: null, combo: null, watching, lore: setup.lore ? `${String(setup.lore.t1)} vs LPL: the curse is in play` : null };
+    this.meta = { hype: 20, viewers: this.aud ? roundViewers(this.aud.viewers) : setup.base, poll: null, combo: null, watching, lore: setup.lore ? this.P.T.lore(String(setup.lore.t1)) : null, lang: this.P.lang, pinned: this.P.CHANNEL_LINES?.[0] };
   }
 
   // ------------------------------------------------------------------ chatters
@@ -259,7 +257,7 @@ export class ChatBrain {
   }
   /** A one-off viewer from the crowd. */
   private crowd(): Chatter {
-    const u = this.rng.pick(CHAT_USERS).replace(/\{n\}/g, String(this.rng.int(1, 999))).replace(/\{short\}/g, String(this.base.short).replace(/[^A-Za-z0-9]/g, ''));
+    const u = this.rng.pick(this.P.USERS).replace(/\{n\}/g, String(this.rng.int(1, 999))).replace(/\{short\}/g, String(this.base.short).replace(/[^A-Za-z0-9]/g, ''));
     const ex = this.byName.get(u.toLowerCase());
     if (ex) return ex;
     const ch: Chatter = { name: u, who: 'crowd', color: NAME_COLORS[hashString(u) % NAME_COLORS.length], sub: this.rng.chance(0.4) ? this.rng.pick([1, 2, 3, 6, 9, 12, 24]) : 0, regular: false };
@@ -300,7 +298,7 @@ export class ChatBrain {
     }
     const winSide = sim.winner ?? (lead >= 0 ? us : them);
     const mvp = [...sim.champs.filter((c) => c.side === winSide)].sort((a, b) => (b.kills * 3 + b.assists * 2 - b.deaths * 2) - (a.kills * 3 + a.assists * 2 - a.deaths * 2))[0];
-    const others = LEAGUES.filter((l) => l !== this.base.region && l !== this.base.oppregion);
+    const others = this.P.LEAGUES.filter((l) => l !== this.base.region && l !== this.base.oppregion);
     const upMin = Math.floor((this.now - this.startReal) / 60000) + 74;
     const p = this.poll;
     const c: Ctx = {
@@ -314,8 +312,8 @@ export class ChatBrain {
       diffrole: diff ? ROLE_LABEL[diff.role] : undefined, diffname: diff?.name, diffside: diff ? this.teams[diff.side].short : undefined, diffgold: diff ? `${(Math.abs(diff.g) / 1000).toFixed(1)}k` : undefined,
       mvp: mvp?.input.name,
       rnd: rng.pick(sim.champs).input.name, rchamp: rng.pick(sim.champs).champ.name,
-      item: rng.pick(ITEMS), role: rng.pick(['top', 'jungle', 'mid', 'bot', 'support']),
-      city: rng.pick(CITIES), city2: rng.pick(CITIES), hour: rng.int(1, 6), hour2: rng.int(1, 11), region2: rng.pick(others.length ? others : LEAGUES),
+      item: rng.pick(this.P.ITEMS), role: rng.pick(['top', 'jungle', 'mid', 'bot', 'support']),
+      city: rng.pick(this.P.CITIES), city2: rng.pick(this.P.CITIES), hour: rng.int(1, 6), hour2: rng.int(1, 11), region2: rng.pick(others.length ? others : this.P.LEAGUES),
       ka: tm[0].kills, kb: tm[1].kills, uptime: `${Math.floor(upMin / 60)}h ${upMin % 60}m`,
       pollstate: p ? (p.state === 'open' ? 'open' : p.state === 'locked' ? 'locked' : 'closed') : undefined,
       p1: p ? `${this.teams[0].short} ${Math.round(this.pollPct(0))}% · ${this.teams[1].short} ${Math.round(this.pollPct(1))}%` : undefined,
@@ -334,6 +332,14 @@ export class ChatBrain {
   // ------------------------------------------------------------------ posting
   private badges(ch: Chatter): Badge[] {
     const b: Badge[] = [];
+    if (this.P.platform === 'youtube') {
+      // YouTube: the channel's own account (verified), moderators, members (months)
+      if (ch.gm) b.push({ k: 'gm' });
+      if (ch.bot && ch === this.elements) b.push({ k: 'verified' });
+      if (ch.mod) b.push({ k: 'mod' });
+      if (ch.sub > 0 && !ch.bot) b.push({ k: 'sub', n: ch.sub });
+      return b;
+    }
     if (ch.gm) b.push({ k: 'gm' });
     if (ch.mod) b.push({ k: 'mod' });
     if (ch.bot) b.push({ k: 'bot' });
@@ -373,7 +379,7 @@ export class ChatBrain {
   }
   /** Queue `n` lines of an event category spoken by the crowd. */
   private say(cat: string, ctx: Ctx = {}, n = 1, tone?: Tone, delay = 0.4, important = false) {
-    const pool = LINES[cat];
+    const pool = this.P.LINES[cat];
     if (!pool?.length) return;
     n = this.scaleN(n, important);
     let at = delay * this.ds();
@@ -392,13 +398,13 @@ export class ChatBrain {
       m === 'good' || m === 'bigGood' || m === 'ahead' || m === 'win'
         ? { superfan: 3, memer: 2, rival: 1.6, doomer: 1, analyst: 1, backseat: 0.5, wholesome: 0.7 }
         : { rival: 3, doomer: 2.5, superfan: 1.6, memer: 1.5, backseat: 1.4, analyst: 1, wholesome: 0.6 };
-    const ps = (Object.keys(w) as Persona[]).filter((p) => PERSONA_REACT[p]?.[m]?.length);
+    const ps = (Object.keys(w) as Persona[]).filter((p) => this.P.PERSONA_REACT[p]?.[m]?.length);
     if (!ps.length) return;
     const p = this.rng.weighted(ps, (x) => w[x] ?? 1);
     // a doomer way ahead doesn't call ff on one lost fight, he predicts the throw
     const lead = this.lead();
     const mm: Moment = p === 'doomer' && m === 'bad' && lead > 2500 ? 'ahead' : m;
-    const text = this.f(PERSONA_REACT[p]![mm] ?? PERSONA_REACT[p]![m], ctx);
+    const text = this.f(this.P.PERSONA_REACT[p]![mm] ?? this.P.PERSONA_REACT[p]![m], ctx);
     if (text) this.post(this.regular(p), text, (delay + this.rng.range(0, 1.5)) * this.ds(), {}, 2);
   }
   private setMood(m: keyof typeof EMOTE_MOOD, secs = 12) { this.mood = m; this.moodUntil = this.now + secs * 1000; }
@@ -406,7 +412,7 @@ export class ChatBrain {
 
   // ------------------------------------------------------------------ emote waves
   private startWave(key: string, ctx: Ctx = {}, strength = 0.6) {
-    const def = WAVES[key];
+    const def = this.P.WAVES[key];
     if (!def || !def.tokens.length) return;
     const active = this.wave && this.now < this.wave.until;
     if (active && this.wave!.pri > def.pri) return;
@@ -430,7 +436,8 @@ export class ChatBrain {
       const r = this.rng.next();
       const tok = w.token, alt = w.alt.length ? this.rng.pick(w.alt) : tok;
       // a phrase ("END END END", "WE ARE SO BACK") repeats less than a single emote
-      const text = tok.includes(' ')
+      const text = this.rng.chance(1 - this.P.repeat) ? (r < 0.85 ? tok : alt)
+        : tok.includes(' ')
         ? r < 0.55 ? tok : r < 0.75 ? `${tok.toUpperCase()}!!!` : r < 0.9 ? `${tok} ${alt}` : `${tok} ${tok}`
         : r < 0.42 ? tok : r < 0.66 ? `${tok} ${tok}` : r < 0.78 ? `${tok} ${tok} ${tok}` : r < 0.88 ? `${tok} ${alt}` : r < 0.94 && !isEmote(tok) ? `${tok.toUpperCase()}!!!` : `${tok} ${tok} ${tok} ${tok}`;
       const occ = text.split(tok).length - 1;
@@ -448,8 +455,8 @@ export class ChatBrain {
   /** Someone calls out (or credits) what a chatter said earlier, as a Twitch reply. */
   private callout(kind: string, c: Claim, delay: number, extra: Ctx = {}, answerPool?: string[]) {
     c.done = true;
-    const pool = CALLOUTS[kind];
-    const when = `at ${Math.floor(c.t / 60)}:${String(Math.floor(c.t % 60)).padStart(2, '0')}`;
+    const pool = this.P.CALLOUTS[kind];
+    const when = this.P.T.when(`${Math.floor(c.t / 60)}:${String(Math.floor(c.t % 60)).padStart(2, '0')}`);
     const who = kind === 'ez' || kind === 'stealMiss' || kind === 'fbWrong' || kind === 'longMiss' || kind === 'shortMiss'
       ? this.rng.chance(0.4) ? this.regular('rival') : this.regular(this.rng.pick(['memer', 'doomer', 'casual'] as Persona[]), c.ch.name)
       : this.rng.chance(0.35) ? this.crowd() : this.regular(this.rng.pick(['memer', 'superfan', 'wholesome', 'analyst'] as Persona[]), c.ch.name);
@@ -462,7 +469,7 @@ export class ChatBrain {
     }
     // the pile-on
     if (this.rng.chance(0.5)) {
-      const pile = this.f(['@{user} KEKW', '@{user} LMAO', 'chat remembers @{user}', '@{user} ICANT', 'clip @{user}’s message', '@{user} the internet never forgets'], { user: c.ch.name });
+      const pile = this.f(this.P.T.pileOn, { user: c.ch.name });
       if (pile) this.post(this.crowd(), pile, delay + this.rng.range(1, 3), {}, 1);
     }
   }
@@ -479,9 +486,10 @@ export class ChatBrain {
   private sniff(ch: Chatter, text: string) {
     if (ch.bot || ch.mod || ch.gm || this.sim.winner !== null) return;
     const lead = this.lead();
-    if (lead <= -1500 && /\b(gg( go next)?|ff ?(15)?|it.?s over|uninstall)\b/i.test(text) && ch.who !== 'rival') this.claim('gg', ch, text);
-    else if (lead >= 2000 && /\b(ez|easy|free win)\b/i.test(text) && ch.who !== 'rival') this.claim('ez', ch, text);
-    else if (/\bsteal|stolen\b/i.test(text) && this.baronLive()) this.claim('steal', ch, text);
+    const sn = this.P.sniff;
+    if (lead <= -1500 && sn.gg.test(text) && ch.who !== 'rival') this.claim('gg', ch, text);
+    else if (lead >= 2000 && sn.ez.test(text) && ch.who !== 'rival') this.claim('ez', ch, text);
+    else if (sn.steal.test(text) && this.baronLive()) this.claim('steal', ch, text);
   }
   private baronLive() { return this.sim.objectives.some((o) => (o.kind === 'baron' || o.kind === 'elder') && o.alive && o.attackers.size > 0); }
 
@@ -503,9 +511,9 @@ export class ChatBrain {
       }
       if (this.sim.t >= p.lockAt || this.sim.winner !== null) {
         p.state = 'locked';
-        this.notice('poll', `Prediction locked: ${p.title}`, 0.2, `${this.teams[0].short} ${Math.round(this.pollPct(0))}% · ${this.teams[1].short} ${Math.round(this.pollPct(1))}%`);
+        this.notice('poll', this.P.T.pollLocked(p.title), 0.2, `${this.teams[0].short} ${Math.round(this.pollPct(0))}% · ${this.teams[1].short} ${Math.round(this.pollPct(1))}%`);
         const bettors = this.roster.filter((c) => c.pred !== undefined);
-        for (let i = 0; i < Math.min(2, bettors.length); i++) { const t = this.f(POLL.locked); if (t) this.post(this.rng.pick(bettors), t, 1 + i * 2, {}, 1); }
+        for (let i = 0; i < Math.min(2, bettors.length); i++) { const t = this.f(this.P.POLL.locked); if (t) this.post(this.rng.pick(bettors), t, 1 + i * 2, {}, 1); }
       }
     }
     if (p.state !== 'done' && this.sim.winner !== null) {
@@ -513,11 +521,11 @@ export class ChatBrain {
       p.winner = this.sim.winner;
       const w = p.winner, l = (1 - w) as 0 | 1;
       const pool = p.pts[w] + p.pts[l];
-      this.notice('poll', `Prediction result: ${this.teams[w].short} won!`, 3, `${p.users[w].toLocaleString('en-US')} users won ${fmtPts(pool)} channel points · ${p.users[l].toLocaleString('en-US')} users lost it all`);
+      this.notice('poll', this.P.T.pollResult(this.teams[w].short), 3, this.P.T.pollResultText(p.users[w], p.users[l], fmtPts(pool)));
       const bettors = this.roster.filter((c) => c.pred !== undefined);
       let d = 5;
       for (const c of this.rng.shuffle(bettors).slice(0, 4)) {
-        const t = this.f(c.pred === w ? POLL.won : POLL.lost, { pts: fmtPts(Math.exp(this.rng.normal(9, 1))) });
+        const t = this.f(c.pred === w ? this.P.POLL.won : this.P.POLL.lost, { pts: fmtPts(Math.exp(this.rng.normal(9, 1))) });
         if (t) this.post(c, t, d, {}, 2);
         d += this.rng.range(1.2, 3);
       }
@@ -544,7 +552,7 @@ export class ChatBrain {
     const p = this.poll;
     if (!p || p.state !== 'open') return;
     const pts = Math.max(500, Math.round(Math.exp(this.rng.normal(9.2, 1.2)) / 100) * 100);
-    const t = this.f(POLL.bet, { team: this.teams[side].short, pts: fmtPts(pts) });
+    const t = this.f(this.P.POLL.bet, { team: this.teams[side].short, pts: fmtPts(pts) });
     if (!t) return;
     this.post(ch, t, delay, {}, 1, { onRelease: () => { ch.pred = side; if (p.state === 'open') { p.pts[side] += pts; p.users[side]++; } } });
     this.pollUserBets++;
@@ -566,17 +574,17 @@ export class ChatBrain {
     for (const c of odd) this.say('anomaly_start', { player: c.input.name }, 1, undefined, 3, true);
     // backseat drafting
     for (let i = 0, d = 2; i < this.rng.int(1, 3); i++, d += this.rng.range(2, 5)) {
-      const t = this.f(DRAFT_TAKES);
+      const t = this.f(this.P.DRAFT_TAKES);
       const ch = this.regular(this.rng.pick(['backseat', 'analyst', 'memer', 'rival', 'doomer'] as Persona[]));
       if (!t) continue;
       this.post(ch, t, d, {}, 1);
-      if (this.rng.chance(0.35)) { const x = this.f(BACKSEAT_REPLIES, { user: ch.name }); if (x) this.post(this.anyone(ch.name), x, d + this.rng.range(1.5, 3), { reply: { to: ch.name, text: t } }, 1); }
+      if (this.rng.chance(0.35)) { const x = this.f(this.P.BACKSEAT_REPLIES, { user: ch.name }); if (x) this.post(this.anyone(ch.name), x, d + this.rng.range(1.5, 3), { reply: { to: ch.name, text: t } }, 1); }
     }
     // chat reads the draft: weird, signature and counter picks
     this.pickTalk();
     // predictions people will be held to
     let d = 3;
-    for (const pr of this.rng.shuffle([...PREDICT]).slice(0, this.rng.int(2, 4))) {
+    for (const pr of this.rng.shuffle([...this.P.PREDICT]).slice(0, this.rng.int(2, 4))) {
       const ch = pr.kind === 'rivalWin' ? this.regular('rival') : this.regular(this.rng.pick(['superfan', 'memer', 'analyst', 'doomer', 'casual'] as Persona[]));
       const text = this.f([pr.text]);
       if (!text) continue;
@@ -585,8 +593,10 @@ export class ChatBrain {
       d += this.rng.range(1.5, 4);
     }
     // the channel-points prediction
-    this.poll = { title: this.setup.bestOf > 1 ? `Who wins game ${this.setup.gameNo}?` : 'Who wins?', pts: [0, 0], users: [0, 0], state: 'open', lockAt: 600, winner: null, frac: 0 };
-    this.notice('poll', `Prediction started: ${this.poll.title}`, 1.5, 'Locks at 10:00 game time. Good luck!', this.nightbot);
+    this.poll = { title: this.P.T.pollTitle(this.setup.bestOf, this.setup.gameNo), pts: [0, 0], users: [0, 0], state: 'open', lockAt: 600, winner: null, frac: 0 };
+    const [pt, ptext] = this.P.T.pollStart(this.poll.title);
+    this.notice('poll', pt, 1.5, ptext, this.P.platform === 'youtube' ? this.elements : this.nightbot);
+    if (this.P.T.startSystem && this.meta.viewers > 30_000 && this.rng.chance(0.6)) this.notice(undefined, this.P.T.startSystem, 0.5, '', null, 'system');
     for (let i = 0; i < 3; i++) { const ch = this.regular(this.rng.pick(['superfan', 'memer', 'casual', 'rival', 'doomer'] as Persona[])); this.bet(ch, this.betSide(ch), 4 + i * 3 + this.rng.range(0, 3)); }
     this.nextScene = this.now + 6000;
     this.nextNotice = this.now + this.rng.range(8, 20) * 1000;
@@ -614,14 +624,14 @@ export class ChatBrain {
     const notes = headlineNotes(r, this.rng.int(3, 5));
     for (const n of notes) {
       const cat = n.kind === 'troll' && this.rng.chance(0.5) ? (n.side === this.us ? 'pick_troll_us' : 'pick_troll_them') : `pick_${n.kind}`;
-      const pool = LINES[cat] ?? LINES[`pick_${n.kind}`];
+      const pool = this.P.LINES[cat] ?? this.P.LINES[`pick_${n.kind}`];
       const ch = this.regular(this.pickPersona(n));
       const text = this.f(pool, { ...n.ctx, me: this.setup.me });
       if (!text) continue;
       this.post(ch, text, d + this.rng.range(0, 1.5), {}, 2);
       // the weird ones always start a little argument
       if (WEIRD.has(n.kind) || n.kind === 'troll') {
-        for (let i = 0, k = this.rng.int(1, 3); i < k; i++) { const x = this.f(LINES.pick_reply, { user: ch.name }); if (x) this.post(this.anyone(ch.name), x, d + 2 + i * this.rng.range(1, 2.2), { reply: { to: ch.name, text } }, 1); }
+        for (let i = 0, k = this.rng.int(1, 3); i < k; i++) { const x = this.f(this.P.LINES.pick_reply, { user: ch.name }); if (x) this.post(this.anyone(ch.name), x, d + 2 + i * this.rng.range(1, 2.2), { reply: { to: ch.name, text } }, 1); }
         if (n.kind === 'troll') this.say(cat, { ...n.ctx, me: this.setup.me }, 2, undefined, d + 3);
       }
       d += this.rng.range(3, 6);
@@ -690,7 +700,7 @@ export class ChatBrain {
         this.setMood(mine ? 'hype' : 'sad', 8);
         // a "washed" player answers his critic
         const killer = this.champ(e.killer)?.input.name;
-        if (killer) this.resolve('washed', 'washed', (c) => c.data?.player === killer, 1, HOT_DEFEND, { player: killer });
+        if (killer) this.resolve('washed', 'washed', (c) => c.data?.player === killer, 1, this.P.HOT_DEFEND, { player: killer });
         if (mine) this.resolve('rivalTaunt', 'rivalQuiet', () => this.rng.chance(0.5), 1);
         // multi-kills: the same killer again within 10 seconds
         if (e.killer !== undefined) {
@@ -704,7 +714,7 @@ export class ChatBrain {
             if (n === 5) { this.startWave(mine ? 'penta' : 'ace_them', ctx, 1); this.resolve('penta', 'penta', () => true, 2); this.excited(30); this.setMood(mine ? 'hype' : 'sad', 20); }
             else if (n === 4) { this.startWave(mine ? 'quadra' : 'multi_them', ctx, 0.8); this.excited(25); }
             else if (n === 3) { this.startWave(mine ? 'outplay' : 'multi_them', ctx, 0.6); this.excited(12); }
-            if (n >= 3 && mine && this.rng.chance(0.5)) this.post(this.speaker(), this.rng.pick(SMASH), 0.8 * this.ds(), { tone: 'hype' }, 2);
+            if (n >= 3 && mine && this.rng.chance(0.5)) this.post(this.speaker(), this.rng.pick(this.P.SMASH), 0.8 * this.ds(), { tone: 'hype' }, 2);
             if (n >= 4) this.say(mine ? 'spam_hype' : 'spam_sad', {}, 2, mine ? 'hype' : 'sad', 1.2);
           }
         }
@@ -712,6 +722,8 @@ export class ChatBrain {
         const kf = this.flagOf(e.killer), vf = this.flagOf(e.victim);
         if (kf && kf.kind !== 'drop' && this.rng.chance(0.65)) this.say(kf.kind === 'edited' ? 'edited_kill' : kf.kind === 'possessed' ? 'possessed_kill' : 'anomaly_kill', { ...ctx, delta: kf.delta }, 1, undefined, 1.5, true);
         if (vf && vf.kind !== 'drop' && this.rng.chance(0.45)) this.say('anomaly_death', ctx, 1, undefined, 1.8);
+        const vc = this.champ(e.victim);
+        if (vc && vc.deaths >= 3 && vc.kills <= 1 && this.rng.chance(vc.deaths >= 5 ? 0.7 : 0.4)) this.say('feeder', { player: vc.input.name, k: vc.kills, d: vc.deaths, a: vc.assists }, vc.deaths >= 5 ? 2 : 1, undefined, 1.5);
         if (this.setup.lore && e.side !== undefined && this.teams[e.side].short === this.setup.lore.lpl && this.rng.chance(0.25)) this.say('lore_kill_lpl', {}, 1, 'lore', 2);
         this.pickReact(e);
         break;
@@ -747,7 +759,7 @@ export class ChatBrain {
         this.say(mine ? 'steal_us' : 'steal_them', ctx, 3, mine ? 'hype' : 'sad', 0.4, true);
         this.startWave(mine ? 'steal_us' : 'steal_them', ctx, 1);
         this.resolve('steal', 'steal', () => true, 2);
-        this.post(this.speaker(), this.rng.pick(SMASH), 0.6 * this.ds(), { tone: mine ? 'hype' : 'sad' }, 2);
+        this.post(this.speaker(), this.rng.pick(this.P.SMASH), 0.6 * this.ds(), { tone: mine ? 'hype' : 'sad' }, 2);
         this.excited(25); this.setMood(mine ? 'laugh' : 'sad', 15);
         break;
       }
@@ -777,7 +789,7 @@ export class ChatBrain {
 
   private ggCall(delay: number) {
     const ch = this.regular('doomer');
-    const text = this.f(GG_CALLS);
+    const text = this.f(this.P.GG_CALLS);
     if (text) this.postClaim(ch, text, delay * this.ds(), 'gg', undefined, 2);
   }
 
@@ -789,13 +801,13 @@ export class ChatBrain {
     if (this.maxLead >= 4000 && lead <= -1000) {
       this.say('throw', {}, 2, 'sad', 0.4, true); this.maxLead = lead; this.excited(15);
       this.startWave('throw', {}, 0.8); this.setMood('laugh', 15);
-      this.resolve('ez', 'ez', () => true, 2, CALLOUTS.ezBack);
-      this.resolve('throwCall', 'throwCall', () => true, 1, ['told you all', 'i hate being right', 'Aware i warned you']);
+      this.resolve('ez', 'ez', () => true, 2, this.P.CALLOUTS.ezBack);
+      this.resolve('throwCall', 'throwCall', () => true, 1, this.P.T.toldYou);
     }
     if (this.minLead <= -4000 && lead >= 1000) {
       this.say('comeback', {}, 2, 'hype', 0.4, true); this.minLead = lead; this.excited(15);
       this.startWave('comeback', {}, 0.9); this.setMood('hype', 15);
-      this.resolve('gg', 'gg', () => true, 3, CALLOUTS.ggBack);
+      this.resolve('gg', 'gg', () => true, 3, this.P.CALLOUTS.ggBack);
     }
     if (Math.abs(lead) >= 5000 && sim.t - this.leadSaid > 240) {
       this.say(lead > 0 ? 'lead_us' : 'lead_them', { gold: `${(Math.abs(lead) / 1000).toFixed(1)}k` });
@@ -809,11 +821,11 @@ export class ChatBrain {
       const open = (k: string) => this.claims.filter((c) => !c.done && c.kind === k).length;
       if (lead <= -2500 && open('gg') < 3 && this.rng.chance(0.3 * share + 0.08)) this.ggCall(1);
       else if (lead >= 3000 && open('ez') < 2 && this.rng.chance(0.2 * share + 0.05)) {
-        const ch = this.regular('superfan'), text = this.f(EZ_CALLS);
+        const ch = this.regular('superfan'), text = this.f(this.P.EZ_CALLS);
         if (text) this.postClaim(ch, text, 1, 'ez');
       }
       if (lead >= 4000 && open('throwCall') < 1 && this.rng.chance(0.2 * share + 0.04)) {
-        const ch = this.regular('doomer'), text = this.f(THROW_CALLS);
+        const ch = this.regular('doomer'), text = this.f(this.P.THROW_CALLS);
         if (text) this.postClaim(ch, text, 3, 'throwCall');
       }
     }
@@ -830,14 +842,14 @@ export class ChatBrain {
       if (this.objSeen.has(key)) continue;
       this.objSeen.add(key);
       const big = o.kind !== 'dragon';
-      const obj = o.kind === 'baron' ? 'Baron' : o.kind === 'elder' ? 'Elder' : 'drake';
+      const obj = this.P.T.obj(o.kind);
       const taker = this.teams[o.lastHitSide].short;
       const stealer = sim.champs.find((c) => c.side !== o.lastHitSide && c.role === 'jungle')?.input.name;
-      if (big || this.rng.chance(0.4)) { const t = this.f(BARON_START, { obj, taker }); if (t) this.post(this.speaker(), t, 0.3, {}, 2); }
+      if (big || this.rng.chance(0.4)) { const t = this.f(this.P.BARON_START, { obj, taker }); if (t) this.post(this.speaker(), t, 0.3, {}, 2); }
       if (big && this.rng.chance(0.7)) this.setMood('scared', 10);
       if (this.rng.chance(big ? 0.75 : 0.25)) {
         const ch = this.regular(this.rng.pick(['memer', 'casual', 'doomer', 'analyst', 'superfan'] as Persona[]));
-        const text = this.f(STEAL_CALLS, { stealer });
+        const text = this.f(this.P.STEAL_CALLS, { stealer });
         if (text) this.postClaim(ch, text, this.rng.range(0.8, 2.2) * this.ds(), 'steal', undefined, 2);
       }
     }
@@ -852,15 +864,15 @@ export class ChatBrain {
       if ((both || inhibs) && sim.t - this.raceSaid > 90) {
         this.raceSaid = sim.t;
         this.startWave('baserace', {}, 0.9); this.excited(25); this.setMood('scared', 15);
-        for (let i = 0; i < 2; i++) { const t = this.f(NEXUS_LINES.race); if (t) this.post(this.speaker(), t, 0.5 + i * 1.2, {}, 2); }
+        for (let i = 0; i < 2; i++) { const t = this.f(this.P.NEXUS_LINES.race); if (t) this.post(this.speaker(), t, 0.5 + i * 1.2, {}, 2); }
       } else if (sim.t - this.nexusHitAt[them] < 4 && sim.t - this.endSaid > 60) {
         this.endSaid = sim.t;
         this.startWave('end_us', {}, 0.6);
-        const t = this.f(NEXUS_LINES.end); if (t) this.post(this.speaker(), t, 0.4, {}, 2);
+        const t = this.f(this.P.NEXUS_LINES.end); if (t) this.post(this.speaker(), t, 0.4, {}, 2);
       } else if (sim.t - this.nexusHitAt[us] < 4 && sim.t - this.defendSaid > 60) {
         this.defendSaid = sim.t;
         this.startWave('defend', {}, 0.6); this.setMood('scared', 12);
-        const t = this.f(NEXUS_LINES.defend); if (t) this.post(this.speaker(), t, 0.4, {}, 2);
+        const t = this.f(this.P.NEXUS_LINES.defend); if (t) this.post(this.speaker(), t, 0.4, {}, 2);
       }
     }
     // the end
@@ -879,8 +891,8 @@ export class ChatBrain {
       if (leg && won && leg.mine + 1 >= leg.need) this.say(leg.win, {}, 3, 'hype', 1.5, true);
       else if (leg && !won && leg.theirs + 1 >= leg.need) this.say(leg.loss, {}, 3, 'sad', 1.5, true);
       this.pickVerdict(sim.winner);
-      if (won) { this.resolve('gg', 'gg', () => true, 2, CALLOUTS.ggBack); this.resolve('rivalWin', 'rivalWin', () => true, 2); }
-      else this.resolve('ez', 'ez', () => true, 2, CALLOUTS.ezBack);
+      if (won) { this.resolve('gg', 'gg', () => true, 2, this.P.CALLOUTS.ggBack); this.resolve('rivalWin', 'rivalWin', () => true, 2); }
+      else this.resolve('ez', 'ez', () => true, 2, this.P.CALLOUTS.ezBack);
       if (sim.t < 28 * 60) this.resolve('long', 'longMiss', () => this.rng.chance(0.7), 1);
       if (won && sim.t < 28 * 60) this.resolve('short', 'short', () => true, 1);
       else this.resolve('short', 'shortMiss', () => this.rng.chance(0.7), 1);
@@ -898,12 +910,12 @@ export class ChatBrain {
     if (paused) lambda = 0.5;
     else if (sim.winner !== null) lambda = Math.max(0.25, 2.2 * Math.exp(-(this.now - this.endAt) / 30000));
     else lambda = (0.9 + this.excite / 35) * Math.min(1.9, 1 + 0.2 * Math.log2(Math.max(1, this.rate))) * Math.max(0.7, Math.min(1.3, Math.log10(Math.max(1000, this.meta.viewers)) / 4.5));
-    lambda *= share;
+    lambda *= share * this.P.pace.ambient;
     if (paused) lambda = Math.max(lambda, 0.25);
     if (!(this.rng.next() < lambda * dt)) return;
     const ctxNow = this.ctx();
     if (paused) {
-      const t = this.f(PAUSE);
+      const t = this.f(this.P.PAUSE);
       if (t) this.post(this.anyone(), t, 0, {}, 1);
       if (!this.pauseWaved && this.pausedFor > 5) { this.pauseWaved = true; this.startWave('pause', {}, 0.3); }
       return;
@@ -912,7 +924,7 @@ export class ChatBrain {
     if (sim.winner !== null) {
       const won = sim.winner === this.us;
       const r = this.rng.next();
-      if (r < 0.45) { const t = this.f(POSTGAME); if (t) this.post(this.anyone(), t, 0, {}, 1); }
+      if (r < 0.45) { const t = this.f(this.P.POSTGAME); if (t) this.post(this.anyone(), t, 0, {}, 1); }
       else if (r < 0.7) this.personaSay(won ? 'win' : 'loss', {}, 1, 0);
       else this.post(this.anyone(), this.emoteSpam(won ? 'hype' : 'sad'), 0, {}, 1);
       return;
@@ -925,32 +937,33 @@ export class ChatBrain {
       ['diff', ctxNow.diffrole || Math.abs(lead) >= 2000 ? 0.8 : 0], ['farm', quiet && mins < 26 ? 1.8 : 0.15], ['food', quiet ? 0.9 : 0.15],
       ['lead', Math.abs(lead) >= 2500 ? 0.8 : 0], ['pasta', 0.25],
     ];
-    const kind = this.rng.weighted(opts, (o) => o[1])[0];
+    const mix = this.P.mix;
+    const kind = this.rng.weighted(opts, (o) => o[1] * (mix?.[o[0]] ?? 1))[0];
     const who = this.speaker();
     let text: string | null = null, ch: Chatter = who;
     switch (kind) {
-      case 'phase': text = this.f(LINES[mins < 14 ? 'idle_early' : mins < 28 ? 'idle_mid' : 'idle_late']); break;
+      case 'phase': text = this.f(this.P.LINES[mins < 14 ? 'idle_early' : mins < 28 ? 'idle_mid' : 'idle_late']); break;
       case 'persona': {
-        const p = this.rng.weighted(PERSONAS.filter((x) => PERSONA_IDLE[x].length), (x) => ({ superfan: 3, memer: 3, analyst: 1.5, doomer: 1.4, casual: 1.6, backseat: 1.2, wholesome: 1, timezone: 0.6, regionwar: 0.8, lurker: 0.3, rival: 1.6 } as Record<string, number>)[x] ?? 1);
+        const p = this.rng.weighted(PERSONAS.filter((x) => this.P.PERSONA_IDLE[x].length), (x) => ({ superfan: 3, memer: 3, analyst: 1.5, doomer: 1.4, casual: 1.6, backseat: 1.2, wholesome: 1, timezone: 0.6, regionwar: 0.8, lurker: 0.3, rival: 1.6 } as Record<string, number>)[x] ?? 1);
         ch = this.regular(p);
-        text = this.f(PERSONA_IDLE[p]);
+        text = this.f(this.P.PERSONA_IDLE[p]);
         break;
       }
-      case 'meme': ch = this.rng.chance(0.5) ? this.regular('memer') : who; text = this.f(MEMES); break;
+      case 'meme': ch = this.rng.chance(0.5) ? this.regular('memer') : who; text = this.f(this.P.MEMES); break;
       case 'emote': ch = this.rng.chance(0.5) ? this.regular('spammer') : who; text = this.emoteSpam(this.now < this.moodUntil ? this.mood : quiet ? 'bored' : 'neutral'); break;
-      case 'smash': text = this.rng.pick(SMASH); break;
-      case 'diff': ch = this.rng.chance(0.5) ? this.regular(this.rng.pick(['memer', 'analyst', 'rival', 'superfan'] as Persona[])) : who; text = this.f(DIFF_LINES); break;
-      case 'farm': text = this.f(FARM); break;
-      case 'food': text = this.f(FOOD); break;
+      case 'smash': text = this.rng.pick(this.P.SMASH); break;
+      case 'diff': ch = this.rng.chance(0.5) ? this.regular(this.rng.pick(['memer', 'analyst', 'rival', 'superfan'] as Persona[])) : who; text = this.f(this.P.DIFF_LINES); break;
+      case 'farm': text = this.f(this.P.FARM); break;
+      case 'food': text = this.f(this.P.FOOD); break;
       case 'lead': this.personaSay(lead > 0 ? 'ahead' : 'behind', {}, 1, 0); return;
-      case 'pasta': ch = this.regular('copypasta'); text = this.f(COPYPASTAS); break;
+      case 'pasta': ch = this.regular('copypasta'); text = this.f(this.P.COPYPASTAS); break;
     }
     if (text) this.post(ch, text, 0, {}, 1);
   }
   private emoteSpam(mood: keyof typeof EMOTE_MOOD): string {
-    const pool = EMOTE_MOOD[mood] ?? EMOTE_MOOD.neutral;
+    const pool = this.P.EMOTE_MOOD[mood] ?? this.P.EMOTE_MOOD.neutral;
     const e = this.rng.pick(pool);
-    const n = this.rng.weighted([1, 2, 3, 4, 6], (x) => ({ 1: 4, 2: 2.5, 3: 2, 4: 1, 6: 0.5 } as Record<number, number>)[x]);
+    const n = this.rng.chance(1 - this.P.repeat) ? 1 : this.rng.weighted([1, 2, 3, 4, 6], (x) => ({ 1: 4, 2: 2.5, 3: 2, 4: 1, 6: 0.5 } as Record<number, number>)[x]);
     return Array.from({ length: n }, () => (this.rng.chance(0.15) ? this.rng.pick(pool) : e)).join(' ');
   }
 
@@ -970,21 +983,21 @@ export class ChatBrain {
     switch (kind) {
       case 'argue': {
         const riv = this.regular('rival'), fan = this.regular('superfan');
-        const a = this.f(ARGUE.open);
+        const a = this.f(this.P.ARGUE.open);
         if (!a) return;
         this.postClaim(riv, a, 0, 'rivalTaunt');
         let d = r.range(2, 4);
-        const b = this.f(ARGUE.reply, { user: riv.name });
+        const b = this.f(this.P.ARGUE.reply, { user: riv.name });
         if (b) this.post(fan, b, d, { reply: { to: riv.name, text: a } }, 1);
-        if (r.chance(0.65)) { d += r.range(2, 4); const c = this.f(ARGUE.back, { user: fan.name }); if (c) this.post(riv, c, d, { reply: { to: fan.name, text: b ?? '' } }, 1); }
-        if (r.chance(0.4)) { d += r.range(1.5, 3); const c = this.f(ARGUE.last, { user: riv.name }); if (c) this.post(fan, c, d, {}, 1); }
-        if (r.chance(0.55)) { d += r.range(1, 3); const c = this.f(ARGUE.neutral); if (c) this.post(r.chance(0.5) ? this.regular('wholesome') : this.anyone(), c, d, {}, 1); }
-        if (r.chance(0.12)) { const m = this.f(MOD_LINES); if (m) this.post(r.pick(this.mods), m, d + 2, {}, 2); }
+        if (r.chance(0.65)) { d += r.range(2, 4); const c = this.f(this.P.ARGUE.back, { user: fan.name }); if (c) this.post(riv, c, d, { reply: { to: fan.name, text: b ?? '' } }, 1); }
+        if (r.chance(0.4)) { d += r.range(1.5, 3); const c = this.f(this.P.ARGUE.last, { user: riv.name }); if (c) this.post(fan, c, d, {}, 1); }
+        if (r.chance(0.55)) { d += r.range(1, 3); const c = this.f(this.P.ARGUE.neutral); if (c) this.post(r.chance(0.5) ? this.regular('wholesome') : this.anyone(), c, d, {}, 1); }
+        if (r.chance(0.12)) { const m = this.f(this.P.MOD_LINES); if (m) this.post(r.pick(this.mods), m, d + 2, {}, 2); }
         break;
       }
       case 'vsOne': {
         const guy = r.chance(0.5) ? this.crowd() : this.regular(r.pick(['memer', 'regionwar', 'doomer', 'rival', 'backseat'] as Persona[]));
-        const take = r.pick(HOT_TAKES);
+        const take = r.pick(this.P.HOT_TAKES);
         const text = this.f([take.text]);
         if (!text) return;
         const key = /^\{(\w+)\}/.exec(take.text)?.[1];
@@ -993,30 +1006,30 @@ export class ChatBrain {
         let d = r.range(1.2, 2.5);
         const n = r.int(4, 7);
         for (let i = 0; i < n; i++) {
-          const t = this.f(ROASTS, { user: guy.name });
+          const t = this.f(this.P.ROASTS, { user: guy.name });
           if (t) this.post(this.anyone(guy.name), t, d, { reply: { to: guy.name, text } }, 1);
           d += r.range(0.4, 1.4);
         }
-        if (r.chance(0.6)) { const t = this.f(HOT_DEFEND); if (t) this.post(guy, t, d + r.range(1, 2.5), {}, 1); }
-        if (r.chance(0.35)) this.post(this.anyone(guy.name), `chat vs @${guy.name} 1v${r.int(500, 9000)}`, d + r.range(2, 4), {}, 1);
+        if (r.chance(0.6)) { const t = this.f(this.P.HOT_DEFEND); if (t) this.post(guy, t, d + r.range(1, 2.5), {}, 1); }
+        if (r.chance(0.35)) { const t = this.f([this.P.T.chatVs], { user: guy.name, n: r.int(500, 9000) }); if (t) this.post(this.anyone(guy.name), t, d + r.range(2, 4), {}, 1); }
         break;
       }
       case 'backseat': {
         const b = this.regular('backseat');
-        const t = this.f(PERSONA_IDLE.backseat);
+        const t = this.f(this.P.PERSONA_IDLE.backseat);
         if (!t) return;
         this.post(b, t, 0, {}, 1);
         let d = r.range(1.5, 3);
         for (let i = 0, n = r.int(2, 4); i < n; i++) {
-          const x = this.f(BACKSEAT_REPLIES, { user: b.name });
+          const x = this.f(this.P.BACKSEAT_REPLIES, { user: b.name });
           if (x) this.post(this.anyone(b.name), x, d, { reply: { to: b.name, text: t } }, 1);
           d += r.range(0.8, 2);
         }
-        if (r.chance(0.45)) { const x = this.f(BACKSEAT_BACK); if (x) this.post(b, x, d + 1.5, {}, 1); }
+        if (r.chance(0.45)) { const x = this.f(this.P.BACKSEAT_BACK); if (x) this.post(b, x, d + 1.5, {}, 1); }
         break;
       }
       case 'qa': case 'latejoin': {
-        const topic = kind === 'latejoin' ? QA[0] : r.pick(QA);
+        const topic = kind === 'latejoin' ? this.P.QA[0] : r.pick(this.P.QA);
         const asker = kind === 'latejoin' || r.chance(0.4) ? this.crowd() : this.regular('casual');
         const q = this.f(topic.q);
         if (!q) return;
@@ -1028,55 +1041,55 @@ export class ChatBrain {
           if (a) this.post(who, a, d, { reply: { to: asker.name, text: q } }, 1);
           d += r.range(1, 3);
         }
-        if (r.chance(0.25)) this.post(this.anyone(asker.name), this.f(['@{user} first time watching? KEKW', '@{user} welcome to league', '@{user} it’s always like this'], { user: asker.name }) ?? '', d + 1, {}, 1);
+        if (r.chance(0.25)) this.post(this.anyone(asker.name), this.f(this.P.T.lateJoin, { user: asker.name }) ?? '', d + 1, {}, 1);
         break;
       }
       case 'timezone': {
         const tz = this.regular('timezone');
-        const t = this.f(PERSONA_IDLE.timezone);
+        const t = this.f(this.P.PERSONA_IDLE.timezone);
         if (!t) return;
         this.post(tz, t, 0, {}, 1);
         for (let i = 0, n = r.int(1, 2), d = r.range(2, 4); i < n; i++, d += r.range(1.5, 3)) {
-          const x = this.f(TIMEZONE_REPLIES, { user: tz.name });
+          const x = this.f(this.P.TIMEZONE_REPLIES, { user: tz.name });
           if (x) this.post(this.anyone(tz.name), x, d, { reply: { to: tz.name, text: t } }, 1);
         }
         break;
       }
       case 'pasta': {
         const p = this.regular('copypasta');
-        const t = this.f(COPYPASTAS);
+        const t = this.f(this.P.COPYPASTAS);
         if (!t) return;
         this.post(p, t, 0, {}, 1);
         let d = r.range(1, 2.5);
         for (let i = 0, n = r.int(1, 4); i < n; i++) { this.post(this.crowd(), t, d, {}, 1); d += r.range(0.5, 1.6); }
-        for (let i = 0, n = r.int(1, 2); i < n; i++) { const x = this.f(PASTA_REACT); if (x) this.post(this.anyone(), x, d, {}, 1); d += r.range(1, 2); }
-        if (r.chance(0.25)) { const m = this.f(['chat, enough copypasta for a minute KEKW', 'ok that’s enough pasta', 'pasta limit reached Stare']); if (m) this.post(r.pick(this.mods), m, d + 1, {}, 2); }
+        for (let i = 0, n = r.int(1, 2); i < n; i++) { const x = this.f(this.P.PASTA_REACT); if (x) this.post(this.anyone(), x, d, {}, 1); d += r.range(1, 2); }
+        if (r.chance(0.25)) { const m = this.f(this.P.T.pastaMod); if (m) this.post(r.pick(this.mods), m, d + 1, {}, 2); }
         break;
       }
       case 'first': {
         const ch: Chatter = r.chance(0.5) ? this.regular('lurker') : this.crowd();
         if (ch.spoke || this.firstSeen.has(ch.name)) return;
         this.firstSeen.add(ch.name);
-        const t = this.f(FIRST_TIME);
+        const t = this.f(this.P.FIRST_TIME);
         if (!t) return;
         this.post(ch, t, 0, { first: true }, 1);
         for (let i = 0, n = r.int(1, 2), d = r.range(1.5, 3); i < n; i++, d += r.range(1, 2)) {
-          const x = this.f(WELCOME, { user: ch.name });
+          const x = this.f(this.P.WELCOME, { user: ch.name });
           if (x) this.post(this.anyone(ch.name), x, d, { reply: { to: ch.name, text: t } }, 1);
         }
         break;
       }
       case 'command': {
-        const cmd = r.pick(Object.keys(COMMANDS));
+        const cmd = r.pick(Object.keys(this.P.COMMANDS));
         if (cmd === '!predict' && !this.poll) return;
         const ch = this.anyone();
         this.post(ch, cmd, 0, {}, 1);
-        const reply = this.f(COMMANDS[cmd], { user: ch.name });
+        const reply = this.f(this.P.COMMANDS[cmd], { user: ch.name });
         if (reply) this.post(this.nightbot, cmd === '!lurk' ? reply : `@${ch.name} ${reply}`, r.range(0.6, 1.4), {}, 3);
         break;
       }
       case 'timeout': {
-        const bait = r.pick(TIMEOUT_BAIT);
+        const bait = r.pick(this.P.TIMEOUT_BAIT);
         const ch = this.crowd();
         const t = this.f([bait.text]);
         if (!t) return;
@@ -1085,10 +1098,10 @@ export class ChatBrain {
       }
       case 'region': {
         const a = this.regular('regionwar');
-        const t = this.f(PERSONA_IDLE.regionwar);
+        const t = this.f(this.P.PERSONA_IDLE.regionwar);
         if (!t) return;
         this.post(a, t, 0, {}, 1);
-        const x = this.f(REGION_REPLIES, { user: a.name });
+        const x = this.f(this.P.REGION_REPLIES, { user: a.name });
         if (x) this.post(this.anyone(a.name), x, r.range(2, 4), { reply: { to: a.name, text: t } }, 1);
         break;
       }
@@ -1105,12 +1118,18 @@ export class ChatBrain {
   private timeout(ch: Chatter, id: number, reason: string) {
     const secs = this.rng.pick([10, 10, 30, 60]);
     const at = this.rng.range(1, 2.6);
-    this.enqueue({ at: this.now + at * 1000, pri: 3, ch: null, msg: { kind: 'system', notice: 'timeout', title: `${ch.name} has been timed out for ${secs} seconds.`, text: reason }, simAt: this.sim.t, onRelease: () => { this.deleted.push(id); for (const h of this.history) if (h.ch === ch) this.deleted.push(h.id); ch.timedOutUntil = this.now + secs * 1000; } });
+    const warn = this.P.T.warn;
+    if (warn) {
+      this.post(this.nightbot, warn(ch.name, reason), at, {}, 3, { onRelease: () => { this.deleted.push(id); ch.timedOutUntil = this.now + secs * 1000; } });
+      if (this.rng.chance(0.4)) { const t = this.f(this.P.AFTER_TIMEOUT, { user: ch.name }); if (t) this.post(this.anyone(ch.name), t, at + this.rng.range(0.6, 1.5), {}, 1); }
+      return;
+    }
+    this.enqueue({ at: this.now + at * 1000, pri: 3, ch: null, msg: { kind: 'system', notice: 'timeout', title: this.P.T.timeout(ch.name, secs), text: reason }, simAt: this.sim.t, onRelease: () => { this.deleted.push(id); for (const h of this.history) if (h.ch === ch) this.deleted.push(h.id); ch.timedOutUntil = this.now + secs * 1000; } });
     let d = at + this.rng.range(0.6, 1.5);
-    for (let i = 0, n = this.rng.int(1, 3); i < n; i++) { const t = this.f(AFTER_TIMEOUT, { user: ch.name }); if (t) this.post(this.anyone(ch.name), t, d, {}, 1); d += this.rng.range(0.5, 1.5); }
+    for (let i = 0, n = this.rng.int(1, 3); i < n; i++) { const t = this.f(this.P.AFTER_TIMEOUT, { user: ch.name }); if (t) this.post(this.anyone(ch.name), t, d, {}, 1); d += this.rng.range(0.5, 1.5); }
     if (this.rng.chance(0.3)) this.startWave('timeout', {}, 0.2);
     if (secs <= 30 && this.rng.chance(0.7)) {
-      const t = this.f(BACK_FROM_TIMEOUT);
+      const t = this.f(this.P.BACK_FROM_TIMEOUT);
       if (t) this.post(ch, t, at + secs + this.rng.range(1, 4), {}, 1);
     }
   }
@@ -1118,38 +1137,41 @@ export class ChatBrain {
   // ------------------------------------------------------------------ notices: subs, gifts, bits, raids, bots
   private notices() {
     if (this.now >= this.nextNotice) {
-      this.nextNotice = this.now + this.rng.range(16, 42) * 1000 / (0.7 + this.excite / 100);
+      this.nextNotice = this.now + this.rng.range(...this.P.pace.notices) * 1000 / (0.7 + this.excite / 100);
       const r = this.rng.next();
       if (r < 0.38) {
         const ch = this.rng.chance(0.6) ? this.regular(this.rng.pick(['superfan', 'memer', 'analyst', 'doomer', 'wholesome', 'copypasta'] as Persona[])) : this.crowd();
         ch.sub = Math.max(2, ch.sub + 1);
-        const msg = this.f(SUB_MSGS, { months: ch.sub });
-        this.notice('sub', `${ch.name} subscribed at Tier 1. They’ve subscribed for ${ch.sub} months!`, 0, msg ?? '', ch);
+        const msg = this.f(this.P.SUB_MSGS, { months: ch.sub });
+        this.notice('sub', this.P.T.subRenew(ch.name, ch.sub), 0, msg ?? '', ch);
       } else if (r < 0.55) {
         const ch = this.crowd();
         ch.sub = 1;
-        this.notice('sub', `${ch.name} subscribed ${this.rng.chance(0.4) ? 'with Prime' : 'at Tier 1'}.`, 0, '', ch);
-        if (this.rng.chance(0.4)) this.post(this.anyone(ch.name), `welcome to the club @${ch.name} peepoClap`, 2, {}, 1);
+        this.notice('sub', this.P.T.subNew(ch.name, this.rng.chance(0.4)), 0, '', ch);
+        if (this.rng.chance(0.4)) { const t = this.f([this.P.T.subWelcome], { user: ch.name }); if (t) this.post(this.anyone(ch.name), t, 2, {}, 1); }
       } else if (r < 0.78) {
+        // Twitch bits / a YouTube Super Chat
         const ch = this.rng.chance(0.5) ? this.regular('superfan') : this.crowd();
-        const bits = this.rng.pick([100, 100, 200, 500, 1000, 1000, 2500, 5000, 10000]);
-        ch.bits = Math.max(ch.bits ?? 0, bits >= 1000 ? 1000 : 100);
-        const msg = this.f(BITS_MSGS) ?? 'Pog';
-        this.notice('bits', `${ch.name} cheered ${bits.toLocaleString('en-US')} bits`, 0, `Cheer${bits} ${msg}`, ch);
-        if (bits >= 1000) this.post(this.anyone(ch.name), `@${ch.name} W bits`, 2, {}, 1);
+        const amounts = this.P.T.bitsAmounts;
+        const amt = this.rng.pick(amounts);
+        const big = amt >= amounts[Math.floor(amounts.length * 0.6)];
+        if (this.P.platform === 'twitch') ch.bits = Math.max(ch.bits ?? 0, big ? 1000 : 100);
+        const msg = this.f(this.P.BITS_MSGS) ?? 'Pog';
+        this.enqueue({ at: this.now, pri: 3, ch, msg: { kind: 'notice', notice: 'bits', title: this.P.T.bits(ch.name, amt), text: this.P.T.bitsText(amt, msg), amount: amt }, simAt: this.sim.t });
+        if (big) { const t = this.f([this.P.T.bitsReply], { user: ch.name }); if (t) this.post(this.anyone(ch.name), t, 2, {}, 1); }
       } else this.giftBomb(this.rng.pick([1, 1, 5, 5, 10, 20, 50]));
     }
-    // a raid, once in a while
-    if (!this.raidDone && this.sim.t >= this.raidAt && this.sim.winner === null) {
+    // a raid, once in a while (Twitch)
+    if (this.P.raids && !this.raidDone && this.sim.t >= this.raidAt && this.sim.winner === null) {
       this.raidDone = true;
       if (this.rng.chance(0.5)) {
-        const raider = this.rng.pick(RAIDERS), n = Math.round(Math.max(40, Math.min(60000, this.meta.viewers * this.rng.range(0.008, 0.05))) / 10) * 10;
-        this.notice('raid', `${raider} is raiding with a party of ${n.toLocaleString('en-US')}.`, 0, '', null);
+        const raider = this.rng.pick(this.P.RAIDERS), n = Math.round(Math.max(40, Math.min(60000, this.meta.viewers * this.rng.range(0.008, 0.05))) / 10) * 10;
+        this.notice('raid', this.P.T.raid(raider, n), 0, '', null);
         this.viewersBoost += n;
         this.startWave('raid', { raider, RAIDER: raider.toUpperCase() }, Math.min(1, 0.3 + n / Math.max(1, this.meta.viewers) * 12));
-        const w = this.f(RAID_WELCOME, { raider }); if (w) this.post(this.rng.pick(this.mods), w, 1.5, {}, 3);
+        const w = this.f(this.P.RAID_WELCOME, { raider }); if (w) this.post(this.rng.pick(this.mods), w, 1.5, {}, 3);
         for (let i = 0, d = 3; i < this.rng.int(3, 6); i++, d += this.rng.range(1, 3)) {
-          const t = this.f(RAID_CHAT, { raider, RAIDER: raider.toUpperCase() });
+          const t = this.f(this.P.RAID_CHAT, { raider, RAIDER: raider.toUpperCase() });
           if (t) this.post(this.crowd(), t, d, {}, 1);
         }
       }
@@ -1157,12 +1179,14 @@ export class ChatBrain {
     // Nightbot and the mods
     if (this.now >= this.nextBot) {
       this.nextBot = this.now + this.rng.range(80, 150) * 1000;
-      const t = this.f(NIGHTBOT_REMINDERS);
-      if (t) this.post(this.nightbot, t, 0, {}, 3);
+      // YouTube: the channel's own account takes turns with Nightbot (subscribe reminders, the caster on the mic)
+      const own = this.P.CHANNEL_LINES?.length && this.rng.chance(0.5);
+      const t = this.f(own ? this.P.CHANNEL_LINES : this.P.NIGHTBOT_REMINDERS);
+      if (t) this.post(own ? this.elements : this.nightbot, t, 0, {}, 3);
     }
     if (this.now >= this.nextMod) {
       this.nextMod = this.now + this.rng.range(90, 200) * 1000;
-      const t = this.f(MOD_LINES);
+      const t = this.f(this.P.MOD_LINES);
       if (t) this.post(this.rng.pick(this.mods), t, 0, {}, 2);
     }
   }
@@ -1173,14 +1197,15 @@ export class ChatBrain {
     if (n === 1) {
       const to = this.crowd();
       to.sub = Math.max(1, to.sub);
-      this.notice('gift', `${ch.name} gifted a Tier 1 sub to ${to.name}!`, 0, '', ch);
-      this.post(to, `thanks for the sub @${ch.name}!`, 2.5, {}, 1);
+      this.notice('gift', this.P.T.giftTo(ch.name, to.name), 0, '', ch);
+      const t = this.f([this.P.T.giftOne], { user: ch.name });
+      if (t) this.post(to, t, 2.5, {}, 1);
       return;
     }
-    this.notice('gift', `${ch.name} is gifting ${n} Tier 1 Subs to the community!`, 0, `They’ve gifted a total of ${n + this.rng.int(0, 300)} in the channel!`, ch);
+    this.notice('gift', this.P.T.giftN(ch.name, n), 0, this.P.T.giftNText(n + this.rng.int(0, 300)), ch);
     if (n >= 10) this.startWave('gift', {}, Math.min(1, n / 50));
     for (let i = 0, d = 2; i < Math.min(3, 1 + Math.floor(n / 5)); i++, d += this.rng.range(0.8, 2)) {
-      const t = this.f(GIFT_THANKS, { user: ch.name });
+      const t = this.f(this.P.GIFT_THANKS, { user: ch.name });
       if (t) this.post(this.crowd(), t, d, {}, 1);
     }
   }
@@ -1206,15 +1231,15 @@ export class ChatBrain {
     this.enqueue({ at: this.now, pri: 4, ch: this.gm, msg: { kind: 'msg', text: t, self: true }, simAt: this.sim.t });
     const low = t.toLowerCase();
     const short = String(this.base.short).toLowerCase();
-    const pool = /\bff\b|surrender/.test(low) ? GM_REPLIES.ff : /\bgg\b/.test(low) ? GM_REPLIES.gg : low.includes(short) ? GM_REPLIES.team
-      : /\?$/.test(low) ? GM_REPLIES.question : /^(hi|hello|hey|yo)\b/.test(low) ? GM_REPLIES.hi : GM_REPLIES.any;
+    const pool = /\bff\b|surrender/.test(low) ? this.P.GM_REPLIES.ff : /\bgg\b/.test(low) ? this.P.GM_REPLIES.gg : low.includes(short) ? this.P.GM_REPLIES.team
+      : /\?$/.test(low) ? this.P.GM_REPLIES.question : /^(hi|hello|hey|yo)\b/.test(low) ? this.P.GM_REPLIES.hi : this.P.GM_REPLIES.any;
     let d = this.rng.range(1.2, 2.5);
     for (let i = 0, n = this.rng.int(1, 3); i < n; i++) {
-      const x = this.f(i === 0 ? pool : GM_REPLIES.any, { me: this.gm.name });
+      const x = this.f(i === 0 ? pool : this.P.GM_REPLIES.any, { me: this.gm.name });
       if (x) this.post(this.anyone(), x, d, { reply: { to: this.gm.name, text: t } }, 3);
       d += this.rng.range(0.8, 2.2);
     }
-    if (this.rng.chance(0.4)) this.post(this.anyone(), 'GM IN CHAT Pog', d, {}, 2);
+    if (this.rng.chance(0.4)) this.post(this.anyone(), this.P.T.gmInChat, d, {}, 2);
   }
 
   // ------------------------------------------------------------------ the clock
@@ -1263,7 +1288,7 @@ export class ChatBrain {
       hype: Math.round(this.excite),
       viewers: roundViewers(base * drift * fade),
       poll: this.pollView(),
-      combo: w && w.count >= 3 && now < w.until + 1800 ? { token: w.token, count: w.count, tone: w.tone, live: now < w.until, key: w.seq } : null,
+      combo: this.P.combo && w && w.count >= 3 && now < w.until + 1800 ? { token: w.token, count: w.count, tone: w.tone, live: now < w.until, key: w.seq } : null,
     };
     _setMeta({ live: true, hype: this.meta.hype, viewers: this.meta.viewers, gameTime: sim.t, wave: w && now < w.until ? w.token : null });
     const deleted = this.deleted;
@@ -1274,7 +1299,8 @@ export class ChatBrain {
   /** Release due lines under the rate cap (token bucket), drop stale backlog. */
   private release(dt: number): ChatOut[] {
     const waveOn = !!this.wave && this.now < this.wave.until + 500;
-    const rate = waveOn ? 15 : 5 + this.excite / 20;
+    const pace = this.P.pace;
+    const rate = waveOn ? pace.wave : pace.base + this.excite / pace.excite;
     this.tokens = Math.min(rate * 0.7 + 1, this.tokens + rate * dt);
     const out: ChatOut[] = [];
     const keep: Pending[] = [];

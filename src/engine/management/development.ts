@@ -12,6 +12,7 @@ import { staffBonus } from '../season/prep';
 import { addNews, addInbox } from './news';
 import { trainingMult, applyTrainingFocus, learnMult } from './traitEffects';
 import { scrimTrainingMult, shootPenalty } from './contentFx';
+import { applyLessons } from './analysis';
 
 export type TrainingIntensity = 'light' | 'balanced' | 'intense';
 export interface TrainingPlan { intensity: TrainingIntensity; scrims: number; soloq: number; vod: number; rest: number }
@@ -89,6 +90,7 @@ function weekPlan(state: GameState, team: Team, p: Player, plan: TrainingPlan, c
   };
   if (p.trainingFocus && p.trainingFocus !== 'champion') weights[p.trainingFocus] = (weights[p.trainingFocus] ?? 0) + 60;
   applyTrainingFocus(p, weights); // VOD Addict, Solo Queue Warrior, smarts…
+  if (!aiClub) applyLessons(state, p, weights); // lessons from post-game VOD reviews (analysis.ts)
   const total = Object.values(weights).reduce((a, b) => a + (b ?? 0), 0) || 1;
   return { growth, weights, total, curve };
 }

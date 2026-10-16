@@ -39,6 +39,7 @@ export interface SimOptions {
   sidePick?: 0 | 1;
   debug?: boolean;       // record the decision log (live matches); off for background sims
   destiny?: 0 | 1;       // lore rules: this side can't lose (its players rise to it, its Nexus won't fall)
+  analyze?: boolean;     // run the match analyst (analysis.ts): the post-game breakdown in MatchResult.analysis
 }
 
 /** Decision log: why players and teams do what they do (live viewer + scripts/debug/log.ts). */
@@ -305,6 +306,8 @@ export interface MatchResult {
   mvp: number;          // champion idx
   firstBlood?: Side;
   firstTower?: Side;
+  /** The analyst's breakdown (opts.analyze). */
+  analysis?: import('./analysis').GameAnalysis;
 }
 
 export type ChampionLike = Champion;

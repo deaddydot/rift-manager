@@ -1,5 +1,6 @@
 // Series simulation: Fearless draft across games, full engine or fast statistical sim,
 // and recording results into fixtures, players and teams.
+import { saveAnalysis } from '../management/analysis';
 import type { GameState, MatchFixture, SeriesGame, GamePlayerLine, Role, Team, Player } from '../types';
 import { masteryGain, MASTERY_UNKNOWN } from '../mastery';
 import { destinySide } from './lore';
@@ -190,19 +191,25 @@ export function playNextGame(state: GameState, s: SeriesContext, rng: RNG, full:
   const big = isBigMatch(state, f);
   let game: SeriesGame;
   let d: DraftState;
+  let res: MatchResult | undefined;
+  const userGame = blueId === state.userTeamId || redId === state.userTeamId;
   if (preset) {
     d = preset.draft;
+    res = preset.result;
     game = preset.result ? fromMatchResult(preset.result, blue, red, d) : quickSim(state, blue, red, d, rng, big);
   } else if (full) {
     d = newDraft(draftTeam(state, blue), draftTeam(state, red), f.fearless === false ? [] : [...s.locked]);
     runAIDraft(d, rng, state.championPower);
-    const sim = new MatchSim(simTeam(state, blue, draftPicks(d, 0)), simTeam(state, red, draftPicks(d, 1)), { seed: rng.int(1, 2 ** 31), bigMatch: big, destiny: destinySide(state, blue, red) ?? undefined });
-    game = fromMatchResult(sim.runToEnd(), blue, red, d);
+    const sim = new MatchSim(simTeam(state, blue, draftPicks(d, 0)), simTeam(state, red, draftPicks(d, 1)), { seed: rng.int(1, 2 ** 31), bigMatch: big, destiny: destinySide(state, blue, red) ?? undefined, analyze: userGame });
+    res = sim.runToEnd();
+    game = fromMatchResult(res, blue, red, d);
   } else {
     d = quickDraft(draftTeam(state, blue), draftTeam(state, red), f.fearless === false ? new Set() : s.locked, rng, state.championPower);
     game = quickSim(state, blue, red, d, rng, big);
   }
   s.games.push(game);
+  // the coaching staff's breakdown of the user's games (management/analysis.ts)
+  if (userGame && res?.analysis) saveAnalysis(state, f, s.games.length, res.analysis, blueId, redId, res.players.map((p) => p.playerId));
   for (const side of [0, 1] as const) for (const a of picksOf(d, side)) if (a.champion) s.locked.add(a.champion);
   // loser of the game picks side next game (takes blue)
   const loser = game.winner === blueId ? redId : blueId;
