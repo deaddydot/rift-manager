@@ -183,6 +183,15 @@ export function ping(kind: PingKind, pan = 0, vol = 1) {
   }
 }
 
+/** A phone ringing somewhere near the caster's mic (the Vietnamese chat's "alo" moment): a short, quiet two-ring
+ *  marimba motif, off to one side. */
+export function phoneRing() {
+  const motif = [1319, 1047, 1175, 1568, 1319, 1047];
+  for (let ring = 0; ring < 2; ring++) {
+    motif.forEach((f, i) => tone(f, 0.16, { type: 'triangle', vol: 0.09, at: ring * 1.25 + i * 0.11, pan: 0.55 }));
+  }
+}
+
 export type Sting = 'killUs' | 'killThem' | 'firstBlood' | 'shutdown' | 'multi' | 'ace' | 'aceThem' | 'dragon' | 'baron' | 'elder' | 'herald' | 'steal' | 'tower' | 'towerLost' | 'inhib' | 'nexus' | 'victory' | 'defeat' | 'ult';
 /** Kill / objective / structure stingers. `n` = multi-kill size, `good` = good for the user's team. */
 export function sting(kind: Sting, o: { pan?: number; vol?: number; n?: number } = {}) {

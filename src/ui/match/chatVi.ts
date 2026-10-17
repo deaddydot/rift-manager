@@ -7,6 +7,8 @@
 // the other Vietnamese teams and other regions, time-of-day talk (watching at breakfast / at work), English
 // loanwords (gg, troll, ez, wtf), moderators posting subscribe reminders and Nightbot spam warnings.
 // Kept PG-13: the real chat swears a lot; here only the mild "vl" / "vãi" survive, and nothing about anyone's body.
+// A second study (a Hoàng Luân watch-along of a cup final, 5.3k messages, 2026-10-17) added the game-reading
+// "moments" (MOMENT_LINES below; when they fire: chatMoments.ts). Betting talk from that chat was left out.
 import type { ChatPack } from './chatPack';
 import { EN_PACK } from './chatPack';
 import type { Persona } from './chatMemes';
@@ -42,7 +44,7 @@ const PERSONA_NAMES: Record<Persona, string[]> = {
 
 // ------------------------------------------------------------------ event lines (same categories as CHAT)
 const LINES: Record<string, string[]> = {
-  start: ['vào rồi ae', 'điểm danh', 'trận này ai thắng ae', 'cố lên {short}', '{SHORT} {SHORT}', 'ván {gameno} rồi', 'chuẩn bị bữa sáng xong rồi đây', 'nay anh Luân bình luận à', 'bắt đầu rồi', 'hóng quá'],
+  start: ['vào rồi ae', 'điểm danh', 'trận này ai thắng ae', 'cố lên {short}', '{SHORT} {SHORT}', 'ván {gameno} rồi', 'chuẩn bị {meal} xong rồi đây', 'nay anh Luân bình luận à', 'bắt đầu rồi', 'hóng quá'],
   idle_early: ['lane êm quá', 'farm farm farm', 'chưa ai đánh ai', '{ourjg} đi đâu rồi', 'đầu trận chán thế', 'cắm mắt đi', 'chờ giao tranh', '{star} farm đẹp', 'vội gì ae', 'chill', 'cs mid ai hơn ae', 'đi rừng 2 bên ngủ à'],
   idle_mid: ['sắp có biến', 'rồng lên rồi kìa', 'tầm này phải có giao tranh', '{leader} đang hơn', 'chia lẻ đi', 'bắt lẻ được rồi', 'đẩy đường dưới đi', 'mắt đâu hết rồi', 'game này căng', 'baron sắp lên'],
   idle_late: ['ai giao tranh hỏng là thua', 'một pha là kết thúc', 'run tay quá', 'đứng ngoài baron làm gì', 'cẩn thận bị bắt', '{mins} phút rồi', 'game dài quá', 'đừng chia lẻ nữa', 'chờ một pha thôi'],
@@ -67,8 +69,8 @@ const LINES: Record<string, string[]> = {
   elder_them: ['chạy đi', 'toang', 'Elder bên kia rồi', 'thủ không nổi'],
   baron_us: ['baron ngon', 'có baron rồi', 'đẩy đi', 'baron về', 'lấy baron đẹp'],
   baron_them: ['mất baron', 'toang', 'thủ nhà đi', 'cho baron à', 'baron free vậy'],
-  steal_us: ['CƯỚP', '{player} CƯỚP', 'ĐỈNH', 'cướp ngon :)))', 'trời ơi cướp', 'tâm lý quá'],
-  steal_them: ['???', 'bị cướp', 'cay vl', 'trừng phạt kiểu gì vậy', 'trời ơi'],
+  steal_us: ['CƯỚP', '{player} CƯỚP', 'ĐỈNH', 'cướp ngon :)))', 'trời ơi cướp', 'tâm lý quá', 'phép', 'phép ác', 'phépppp'],
+  steal_them: ['???', 'bị cướp', 'cay vl', 'trừng phạt kiểu gì vậy', 'trời ơi', 'phép à', 'phép thật'],
   minor_obj: ['lấy {obj}', '{obj} ngon', 'ok {obj}'],
   tower_us: ['trụ ngon', 'thêm trụ', 'đẩy tiếp', 'ăn trụ'],
   tower_them: ['mất trụ', 'trụ đâu', 'lại mất trụ'],
@@ -82,7 +84,7 @@ const LINES: Record<string, string[]> = {
   big_ult: ['chiêu cuối đẹp', 'dame ghê', 'combo ác', '{player} ác', 'nổ tung', 'dame to thế', 'out trình'],
   lead_us: ['{short} hơn {gold}', 'cầm chắc rồi', 'đừng ném nha', 'hơn {gold} vàng rồi'],
   lead_them: ['thua {gold} vàng rồi', 'khó quá', 'còn cứu không ae', 'cố lên'],
-  comeback: ['LẬT KÈO', 'CÒN CỨU', 'trở lại rồi', 'tin được không', 'đỉnh'],
+  comeback: ['LẬT KÈO', 'CÒN CỨU', 'trở lại rồi', 'tin được không', 'đỉnh', 'phép', 'pháp sư ra tay', 'anh em tin pháp sư'],
   throw: ['ném rồi', ':)))', 'troll', 'NÉM', 'lại ném', 'hết thuốc chữa', 'ai cho ném vậy'],
   long_game: ['{mins} phút rồi', 'game dài quá', 'mệt quá', 'ăn trưa luôn', 'bao giờ mới end'],
   win: ['gg', 'GG', 'hay', 'quá hay', '{SHORT} VÔ ĐỊCH', 'siuuuu', 'đỉnh', 'gg ez', 'thắng rồi ae', 'tự hào'],
@@ -116,7 +118,109 @@ const LINES: Record<string, string[]> = {
   pickmid_counter_good: ['khắc chế có khác', 'thắng lane ngon'],
   pickend_weird_win: ['pick lạ vẫn thắng', '{champ} gánh team'],
   pickend_weird_loss: ['tại pick {champ}', 'bp thua từ đầu'],
+  ...MOMENT_LINES(),
 };
+
+// ------------------------------------------------------------------ moments (chatMoments.ts): the second stream study
+// (a Hoàng Luân watch-along of a cup final, 5.3k messages, 2026-10-17). Side-neutral unless the key says _us/_them.
+function MOMENT_LINES(): Record<string, string[]> {
+  return {
+    // the stream and the draft, before the first fight
+    start_tech: ['nét quá', 'nét căng', 'mượt', 'hôm nay nét ghê', 'có ai lag không', '4k nét căng', 'giật thế ae', 'f5 cái là mượt'],
+    draft_music: ['nhạc ban pick xập xình thế', 'nhạc cấm chọn như phim cổ trang', 'nhạc ban pick vua chúa vl', 'nhạc hay', 'quả nhạc ác', 'nhạc như final battle'],
+    pick_oh: ['ôi {champ}', '{champ} à', '{champ} thì có lẽ nào', '{champ} thì cook luôn', '{player} {champ} kìa', 'lại {champ}'],
+    pick_old: ['{champ} tướng 2000 năm', '{champ} tướng cổ đại', 'ai còn chơi {champ} nữa', '{champ}, tướng từ thời ông bà'],
+    pick_ask: ['{champ} {role} được không nhỉ', '{champ} đi {role} ổn không ae', 'giờ {champ} {role} được à', '{champ} {role} lạ thế'],
+    name_match: ['nhân tướng hợp nhất', '{player} đánh {champ}, nhân tướng hợp nhất', 'nghe tên biết tướng tủ', '{player} đánh {nick} :)))', 'nhân tướng hợp nhất có khác'],
+    series_predict: ['{need}-0 nhanh gọn', '{need}-1 thôi ae', 'tin tôi {need}-1', '{need}-{needm1} mới hay', '{bo} ván đê', 'phải {need}-{needm1} chứ', 'ván {gameno} rồi, {series}'],
+    crowd_hear: ['fan nhiệt quá', 'la ác', 'hú hét ác :))', 'hét khàn tiếng', 'khán giả {city} nhiệt thật', 'ban tổ chức thuê ác phết', 'chỉ ồn được lúc đầu thôi', 'tranh thủ hét đi'],
+    // the gold clock: the minute and the gap, said out loud as a stomp grows
+    gap_clock: ['{mins}p gap {gold}', '{mins}p {gold} tiền', '{mins}p mà {gold} rồi', '{mins}p out {gold} tiền', 'phút {mins} hơn {gold}', '{mins}p gap {gold} chơi gì nữa', '{mins}p {gold} vàng 😑', '{leader} hơn {gold} ở phút {mins}', 'đánh 1 hồi gap {gold} :)))'],
+    gap_paradox: ['{kl}-{kw} mà gap {gold}', 'hơn mạng thua tiền', '{kl}-{kw} mà thua {gold} tiền', 'bằng mạng mà thua {gold}', 'ăn mạng mà vẫn thua tiền :)))', 'farm chill chill gap {gold}', 'hơn mạng thua tiền khác gì thua'],
+    cs_gap_jungle: ['{name} vô gia cư rồi', 'rừng thua {n} lính', '{name} bị cướp sạch rừng', 'rừng ở nhà', '{name} vô gia cư', 'rừng out {n} cs'],
+    cs_gap: ['{role} thua {n} lính', '{role} out {n} cs', '{name} mất {n} lính rồi', '{role} gap {n} cs', 'lính {a}/{b} thì gãy', '{name} farm hụt {n} lính'],
+    lvl_gap: ['{role} out {n} cấp', '{name} thua {n} level', '{role} out {n} lv', 'thua {n} cấp đánh gì'],
+    tube: ['rút ống thở {role}', 'rút ống thở {name}', 'liệm', 'cứu {pun}', 'tội {name}', '{name} ơi', 'xong {role} rồi', '{role} nổ rồi', 'ai cứu {name} với'],
+    lane_boom: ['nổ {lane}', 'nổ {lane} rồi', '{lane} nổ', 'gãy {lane}', 'nổ sớm', 'nổ {lane} luôn r', 'gãy 2 đường luôn à'],
+    self_destruct: ['tự hủy', '{loser} tự hủy', 'lao vào ?', 'tự hủy luôn', 'đang hơn mà lao vào làm gì', 'hơn tiền mà tự hủy'],
+    // ironic hope: the side that is losing wins one fight
+    hope: ['vô địch rồi', 'vô địch r', '{seriesHope} còn nguyên', 'sống lại rồi', 'game sống rồi', 'niềm vui đã quay trở lại', 'có hope rồi', 'đừng là hồi quang phản chiếu nha', 'gieo cho tí hy vọng', '{trail} sống rồi', 'liên minh được cứu', 'lật kèo đi {trail}', 'hope về'],
+    hope_dashed: ['chưa vui được bao nhiêu', 'vui được 30 giây', 'fake comeback', 'hồi quang phản chiếu thật', 'thôi xong', 'lại về như cũ', 'tưởng thế nào', 'rồi {lead3}', 'vừa sống đã chết'],
+    alive: ['ván danh dự', 'game danh dự', 'có ván danh dự rồi', 'game sống thêm 1 tiếng', 'game sống thêm 20 năm', 'reverse sweep còn nguyên', '{seriesHope} còn nguyên nha kênh chat', 'giữ khách thành công', 'chưa được đi ngủ đâu', 'ván {next} đây rồi'],
+    // what it took to kill the fed carry; the shutdown bounty counted
+    cost_count: ['{u} ulti {fl} flash', 'tốn {u} chiêu cuối {fl} tốc biến', 'thả sạch chiêu mới chết', 'dồn full skill mới chết', '1 tỷ tài nguyên bỏ ra', '{u}R {fl} fl', 'trâu đánh lâu cũng chết'],
+    shutdown_count: ['{bounty} vàng', '{bounty} ngon', 'shutdown {bounty}', 'gần {bountyR} vàng', 'cho {victim} shutdown kk', '{bounty} vàng cho {killer}', '{bounty} ngon z'],
+    // big fights
+    wipe: ['ảo thuật', 'bốc hơi', 'magic', 'ảo thuật thật', 'mất tiêu', 'vãi đạn', 'hú hú hú hú', 'nhảy múa giữa bầy sói', 'ảo thật đấy', 'há há há há'],
+    burst: ['{victim} chết trong {secs}s', '{victim} bốc hơi trong {secs}s', 'chạm nhẹ là {victim} bốc hơi', '{secs}s là xong {victim}', 'vl {secs}s', 'combo {secs}s bốc hơi'],
+    no_dmg: ['đẹp nhưng no dame', 'đẹp quá nhưng dmg đâu', 'hay nhưng no dame', 'đẹp thôi', 'no dame', 'uh hay lắm', 'nà ná na', 'đẹp mà không có dame'],
+    greedy: ['tham', 'tham lam', 'tham 1 mạng', 'ẩu quá', 'tưởng ngon', 'non', 'tham quá {victim} ơi', 'đi đâu một mình', 'farm một mình làm gì', 'tham là chết', 'thấy rồi vẫn farm?'],
+    // the scapegoat: one player having an awful game
+    scapegoat: ['{victim} tội đồ', 'report {role}', '{role} đừng báo nữa', '{victim} {k}/{d} chơi kiểu gì', 'nhắm mắt lại với {victim} thì hơn', 'đừng nhìn {victim}, cứu không nổi đâu', '{victim} ơi là {victim}', 'kiếp {role}', '{victim} liệt chuột à', 'tech pause cho {victim} thay chuột đi', '{victim} điệp viên à'],
+    advice_adc: ['ad ôm trụ đi', 'AD ÔM TRỤ ĐI', 'ôm trụ đi {victim}', 'ad giữ vị trí đi em', 'ad farm thôi đừng đánh', 'ôm trụ thôi'],
+    advice_top: ['top farm đi', 'ôm trụ đi {victim}', 'top đừng đánh nữa'],
+    advice_mid: ['mid đừng đi một mình', '{victim} cắm mắt đi'],
+    advice_jungle: ['farm đi {victim} ơi', 'làm gì đó đi {victim}', '{victim} đi rừng đi'],
+    advice_support: ['sp đừng đi trước nữa', '{victim} cắm mắt thôi'],
+    defend_player: ['chê gì {victim} nhỉ', 'bị dive 1 mình thì chịu', '{victim} bị bỏ rơi thôi', 'không phải lỗi {victim}', 'để {victim} yên', 'chưa thấy {victim} bị đánh 3 à'],
+    balance: ['{victim} chết 1 thì {killer} trả 1 cho cân', '{killer} gánh còng lưng', '{killer} cứu {team}', 'mỗi khi {victim} chết thì hãy nhìn {killer}'],
+    // the tank on the other side
+    tank_late: ['tí late ai giết {champ}?', 'late ai dame {champ}???', '{champ} bất tử rồi', 'ai cản {champ} đây', '{champ} 1 tỷ máu', '{champ} trâu ác', 'lấy đâu ra dame hạ {champ}'],
+    tank_reply: ['@{user} bắt carry là được, lo gì {champ}', '@{user} kệ {champ} đánh 4 thằng còn lại', '@{user} chịu', '@{user} hỏi câu này mấy lần rồi', '@{user} ai đi bắn {champ} làm gì'],
+    // scaling champions counted out loud, the late-game clock
+    stacks: ['{player} {n} {unit} rồi', '{mins}p {n} {unit}', '{n} {unit} rồi ae ơi', '{champ} {n} {unit}', '{n} {unit} mà chưa gánh nổi', '{mins}p mới {n} {unit} thì khó'],
+    late_clock: ['{m}p thua dưới {n}k thì {late} win', 'kéo tới {m}p là {late} win', 'qua phút {m} là {late} lụm', '{late} cố kéo late', '{late} câu late đi', 'đội hình {late} late mạnh lắm', 'kéo được {m}p là khỏe', '{late} cầm cự đi'],
+    late_rebut: ['{mins}p gap {gold} mà còn đòi late', 'late gì nổi mà late', 'thua {gold} thì late kiểu gì', 'vấn đề là sao late?'],
+    // the coach (the user) and the draft
+    coach_blame: ['lạy cụ ban pick', 'hlv ban pick kiểu gì vậy', 'pick thua cả {n} đường', 'cấm chọn cho top thua, rừng thua, bot thua', 'thua từ ban pick', 'out ban pick', '@{me} sếp ơi ban pick lại đi', 'đổi hlv đi', 'ai pick đội hình này vậy', 'pick đội hình 5 người thua'],
+    coach_praise: ['hlv đọc bài quá chuẩn', 'ban pick thắng rồi', 'bp quá hay', '@{me} sếp đọc bài ghê', 'thắng từ ban pick', '{n} đường đều hơn, bp đỉnh', 'thầy {me} cao tay'],
+    coach_blame_end: ['tại ban pick', 'hlv phải chịu trách nhiệm', 'pick đội hình đó thì thua là đúng', '@{me} sếp xem lại bp đi', 'thua từ lúc cấm chọn rồi'],
+    role_gap: ['{role} gap', '{role} gap nặng quá', '{role} diff', '{ROLE} GAP', '{role} gap ác v'],
+    // when it's over and the leader won't end; style for a clean sweep
+    mercy: ['/ff', 'ff cho nhanh', 'end đi cho đỡ đau', 'end nhanh bớt đau khổ', 'trao cúp luôn đi', 'chấm dứt nỗi đau đi', 'gg cho nhanh', '{trail} ff đi', 'ff save time'],
+    drag: ['end game điiii', 'lẹ lẹ đi', 'bố đánh con mà cũng câu được {mins}p', 'nhây quá', 'đánh chill chill quá', 'hành hạ à', 'dồn lên end đi {leader}', 'end đi cho em đi ngủ', 'đánh rén thế'],
+    style_win: ['cú quét thanh lịch', 'quét kiểu đàn ông', 'naisu gemu', 'nice game', 'sạch sẽ gọn gàng', '{winner} đánh như dạy', 'niceu gameu'],
+    sweep_slang: ['{need} nho', '{need} trắng', '{need} chày nhanh gọn', '{need} đinh', '{need}-0 rồi', '{need}-0 nhanh gọn nghỉ sớm'],
+    sweep_beg: ['giữ khách đi {leader}', 'nhường 1 ván đi', 'game tình thương đi', '{bo} ván cho hấp dẫn', 'cho có ván {next} đi', 'diễn một ván đi mấy anh', 'đánh lỏng tay giữ khách coi', 'làm ơn thắng 1 game lấy danh dự đi {trail}', '{gold} thôi cố lên {trail}', 'gỡ đi {trail}'],
+    bed: ['{need}-0 lẹ cho anh Lu đi ngủ', '{need}-0 đi ngủ', 'cho ae ngủ sớm', 'kiểu này off sớm', 'mấy giờ anh ngủ', 'tắm xong ăn nhẹ rồi ngủ thôi', 'mai còn đi làm', 'thức thông luôn', '{vnhour}h rồi ae', '{leader} thương ae cho ngủ sớm'],
+    // the caster desk
+    desk_flat: ['anh Lu xuống giọng rồi', 'BLV hết nhiệt rồi', 'xìu quá', 'anh Lu hết muốn bình luận', 'nghe giọng là biết {trail} thua', 'BLV chán luôn', 'bình luận đi anh ơi'],
+    desk_hot: ['anh Lu gào ác', 'BLV nhiệt lại rồi', 'giọng lên rồi', 'a Lu sắp khùng rồi', 'BLV la to ác', 'BLV sống lại rồi', 'bình luận ác =))'],
+    desk_curse: ['vừa khen xong', 'anh Lu khen là chết', 'lời nguyền BLV', 'khen kìa :)))', 'đừng khen nữa anh ơi', 'khen là toang', 'a Lu chê nó giùm em', 'đã bảo đừng khen'],
+    desk_praise_seen: ['khen kìa', 'anh Lu khen rồi', 'thôi xong được khen rồi', 'khen là chết đấy', 'khen ác'],
+    desk_agree: ['fact', 'chuẩn a', 'rõ ràng', 'chuẩn luôn', 'fact real', 'đúng', 'nói chuẩn', 'factos'],
+    desk_jinx: ['anh im lặng đi', 'chưa mà anh', 'đừng nói trước anh ơi', 'nói trước bước không qua', 'anh Lu đừng nói nữa'],
+    desk_bias: ['kênh trung lập ???', 'kênh "trung" lập :)))', '{vnteam} thắng thì mic to', 'BLV công tâm :))', 'trung lập ghê', '{vnteam} lợi thế là BLV la to liền'],
+    // the arena
+    library: ['thư viện', 'thư viện rồi', 'sân khấu thành thư viện', 'thư viện {city}', 'im ắng quá', 'khán giả về hết rồi à', 'nể mặt chủ nhà tí đi {leader}', 'không nể mặt chủ nhà', 'thư viện đúng nghĩa'],
+    library_open: ['thư viện đóng cửa', 'hết thư viện rồi', 'khán giả sống lại rồi', 'la to ác', 'đấy phải cổ vũ thế chứ', 'thư viện có sức sống lại rồi'],
+    // puns, nicknames, lore
+    pun_kill: ['{kpun} ác', '{kpun}!!!', 'hay {kpun}', '{kpun} kìa', '{kpun} quá hay'],
+    pun_death: ['cứu {vpun}', '-1 {vnick}', '{vpun} ơi', 'tội {vpun}'],
+    contract_year: ['{player} bật chế độ chuyển nhượng', '{player} đánh vì bảng lương {year1}', '{player} từ từ thôi lương cao quá rồi', '{player} deal lương đây', 'hết hợp đồng có khác', '{player} lên giá', 'giải này {player} bật chế độ chuyển nhượng'],
+    incident: ['{player} {champ} incident', 'nhớ vụ {player} {champ} không ae', 'lại {player} {champ}', '{champ} incident lần 2'],
+    // after the game: the scoreboard read aloud; after the series: the cup, the auction, the rumours
+    dmg_chart: ['check dame đi', '{dname} {dmg}k dame', '{adc} dame ngang sp ???', '{dname} {dmg}k dame gánh còng lưng', 'dame {dname} khủng', '{lowname} {lowdmg}k dame :)))', '{adc} {adcdmg}k dame thôi à'],
+    trophy: ['{prize} ngon', '{prize} ấm rồi', 'tiền thưởng {prize}', 'cầm cúp cầm tiền về thôi', '{winner} VÔ ĐỊCH', 'chúc mừng {winner}', '{prize} chia 5 cũng ngon'],
+    king: ['vua {cup}', 'ông vua {cup}', 'bố {cup}', 'b2b champion', '{kn} năm liên tiếp', 'bảo vệ ngôi vương', '{winner} = Sevilla, ông vua {cup}', '{winner} xin cái {kn1}-peat {cup}'],
+    ceremony: ['không ăn mừng à :))', 'nâng cúp đi', 'cúp đẹp phết', '{mvp} fmvp', 'đưa cái fmvp cho {mvp}', 'cao to ghê'],
+    who_need: ['who need {ex}', 'ai cần {ex}', 'không có {ex} vẫn vô địch', '{ex} chắc đang xem', 'em {ex} ơi đừng khóc', 'Who need {ex} :)))'],
+    thank_you: ['thank you {winner} {year}', 'đội hình này năm sau còn không ae', '{mvp} lên giá rồi', 'giải cuối trước khi tan rã', 'giữ đội hình đi {winner}', '{winner} tan rã à'],
+    fake_quote: ['{player} say: {oldteam} là đội nào?', '{player}: mấy anh {oldteam} thấy chưa', '{player} vô địch nhớ cảm ơn {oldteam} đã thả nha', '{player} say: ai chê tôi đâu rồi', '{player}: {oldteam} dám chê tôi 🐧'],
+    auction: ['mua hết', 'đánh không lại thì mua', 'nếu không thắng được họ hãy mua họ', '{mvp} lên giá rồi', '{mvp} deal lương ác', '{vnclub} {mvp} here we go', '{vnclub} cần anh {mvp}', 'mùa chuyển nhượng tới rồi', '{mvp} hàng hot năm sau', 'mua hết cho tao', 'tiền nhiều gom hết luôn'],
+    rumour: ['NÓNG: {club} đàm phán với {mvp}', 'nghe đồn {mvp} sang {club}', 'NÓNG: {mvp} rời {team}?', 'nghe nói {club} mua {mvp}', 'bom tấn: {club} {mvp}'],
+    rumour_reply: ['toàn fake news', 'cứ tung tin bừa thôi', 'tin shock thôi ai cần thật hay giả', 'nguồn đâu', 'đúng thì nổ sai thì tung tin khác'],
+    // the off-mic phone (rare): the "alo" flood, then everyone checking their own phone
+    alo_after: ['tưởng điện thoại mình', 'giật mình', 'tưởng của mình', 'hết hồn tưởng ai gọi', 'đứng dậy tìm điện thoại luôn', 'ai gọi vậy anh Lu', '{oppShort} gọi à', '{star} calling', 'sếp gọi', 'alo anh Lu à', 'Alo Lu à em? Em đừng có chối :))', 'tưởng vợ gọi', 'nhà cái gọi :)))'],
+    close_call: ['{name} 5 máu', 'tí thì tèo', 'thoát trong gang tấc', 'còn 1 tí máu', '{name} sống dai thế', 'chưa chết', '{name} 5 hp', 'không chết', 'suýt'],
+    cam: ['cam anh ơi', 'đổi cam a ơi', 'chỉnh cam anh ơi', 'cam đâu', 'Chỉnh lại cam đi😡', 'hạ cam xíu anh ui', 'đánh nhau kìa cam ơi'],
+    vip: ['vip', 'vip pro', 'đại gia', 'xin vía', 'bá khí quá', 'đẳng cấp', 'xin vía đại gia'],
+    // talking to the caster, between the plays
+    to_caster: ['anh Lu ơi trận này ai thắng', 'a Lu có mệt không', 'anh Lu cổ vũ đội nào vậy', 'anh Lu ăn {meal} chưa', 'anh Lu dự đoán đi', 'a lu nay giọng khàn thế', 'anh Lu có tuổi rồi thông cảm', 'anh Lu làm phép đi', 'anh Lu ơi khen {short} nhiều vào', 'anh Lu bình luận hết {bo} ván cho em nha'],
+    member_chant: ['{SHORTX}{SHORTX}{SHORTX}{SHORTX}', '{STARX}{STARX}{STARX}', '{SHORTX}{SHORTX}{SHORTX}', '{SHORTX}CKTG{year}{SHORTX}'],
+    post_series: ['tối nay ai đánh vậy ae', 'mùa chuyển nhượng năm nay căng', '{mvp} năm sau đi đâu', 'LCK vẫn là bố', 'LPL năm nay đuối', 'nhạc hay', 'lại cái nhạc này', 'ngủ thôi ae', 'hẹn ae trận sau', '{vnclub} mua {mvp} đi'],
+  };
+}
 
 // ------------------------------------------------------------------ personas
 const PERSONA_IDLE: Record<Persona, string[]> = {
@@ -124,14 +228,14 @@ const PERSONA_IDLE: Record<Persona, string[]> = {
   rival: ['{oppShort} thắng chắc', '{short} gà', 'bên {oppShort} ổn hơn', '{oppstar} > {star}', 'chờ {oppShort} lật kèo', '{oppShort} vô địch'],
   analyst: ['{diffrole} đang lệch {diffgold}', 'đội hình {short} mạnh về cuối', 'cần mắt khu baron', 'giao tranh sau 25p mới là chính', '{short} chơi chậm quá', 'kiểm soát rồng tốt đấy', 'cs của {star} {starcs}'],
   doomer: ['kiểu gì cũng thua', 'toang', 'lại như mọi khi', 'không tin nổi nữa', 'đừng hy vọng', 'tim tôi yếu lắm'],
-  memer: [':)))', 'tình người ở đâu', 'về nhà ăn cơm đi các em', 'siuuuu', 'đi học đi', 'nằm ngửa', 'bữa sáng hôm nay ngon', 'phim hành động', '🐧'],
+  memer: [':)))', 'tình người ở đâu', 'về nhà ăn cơm đi các em', 'siuuuu', 'đi học đi', 'nằm ngửa', '{meal} hôm nay ngon', 'phim hành động', '🐧'],
   copypasta: ['WE ARE VCS 🇻🇳🇻🇳🇻🇳', '{SHORT} VÔ ĐỊCH {SHORT} VÔ ĐỊCH {SHORT} VÔ ĐỊCH', 'Việt Nam vô địch 🇻🇳🇻🇳'],
   casual: ['trận này đội nào VN vậy', 'ai đang hơn ae', 'mới vào, tỉ số sao rồi', 'baron để làm gì vậy', 'game này mấy ván ae', 'bên nào là {short}'],
   backseat: ['sao không lấy trụ', 'cắm mắt đi trời', 'lên {item} đi', 'đi rừng làm gì vậy', 'chia lẻ ngu thế', 'về nhà mua đồ đi', 'phải đánh rồng chứ'],
   spammer: ['?', '???', ':)))', '?????', ':))))))', 'gg', '🔥'],
   wholesome: ['cố lên các em', 'thắng thua không quan trọng', 'văn minh nha mọi người', 'chúc 2 đội thi đấu tốt', 'tự hào về các em'],
-  timezone: ['vừa ăn sáng vừa xem', 'đang trên công ty xem lén', 'ai xem lúc {hour}h sáng điểm danh', 'trốn học xem đây', 'bên {city} xem nè ae', 'chưa ngủ luôn'],
-  regionwar: ['VCS > {region2}', '{region2} có gì đâu', 'Việt Nam phải vào vòng trong', 'LCK vẫn là nhất', 'VCS đâu thua ai', '{region2} gà'],
+  timezone: ['vừa ăn {meal} vừa xem', 'đang trên công ty xem lén', 'ai xem lúc {vnhour}h điểm danh', 'trốn học xem đây', 'bên {city} xem nè ae', 'buổi {daypart} xem LoL là nhất'],
+  regionwar: ['VCS > {region2}', '{region2} có gì đâu', 'Việt Nam phải vào vòng trong', 'LCK vẫn là nhất', 'VCS đâu thua ai', '{region2} gà', 'LCK và phần còn lại', 'LCK vẫn là bố của LPL', 'LPL năm nay đuối quá', 'khu vực nào cứ mạnh nhất lịch sử là auto lỏ', 'năm nay của {region2}'],
   lurker: ['hay', 'ok', '👀', 'xem tiếp'],
 };
 const PERSONA_REACT: ChatPack['PERSONA_REACT'] = {
@@ -139,7 +243,7 @@ const PERSONA_REACT: ChatPack['PERSONA_REACT'] = {
   rival: { good: ['ăn may', 'chờ xem', 'chưa xong đâu'], bad: ['{oppShort} đỉnh', 'thấy chưa', ':)))'], bigGood: ['gặp may thôi'], bigBad: ['{oppShort} quá mạnh', 'nói rồi mà'], ahead: ['chưa end mà'], behind: ['{oppShort} cầm chắc'], win: ['ăn may'], loss: ['{OPPSHORT} VÔ ĐỊCH', 'gg ez'] },
   doomer: { good: ['được 1 pha thôi', 'tí lại ném'], bad: ['đã bảo rồi', 'toang', 'thua thôi'], bigGood: ['ồ'], bigBad: ['hết cứu', 'tắt live đi ngủ'], ahead: ['kiểu gì cũng ném'], behind: ['gg', 'thua rồi'], win: ['không tin nổi'], loss: ['quen rồi', 'đã bảo mà'] },
   analyst: { good: ['giao tranh chuẩn', 'vị trí đẹp'], bad: ['đứng sai vị trí', 'thiếu mắt'], bigGood: ['điều phối quá tốt'], bigBad: ['giao tranh hỏng', 'sai lầm lớn'], ahead: ['nên chơi chậm lại'], behind: ['cần bắt lẻ'], win: ['xứng đáng'], loss: ['thua từ bp'] },
-  memer: { good: [':)))', 'tình người ở đâu', 'siuuu'], bad: [':)))', 'đi học rồi', '🥀'], bigGood: ['🔥🔥🔥', 'xem phim hành động'], bigBad: ['😭', 'nằm ngửa'], ahead: ['bón hành'], behind: ['ăn hành'], win: ['siuuuuuu', 'bữa sáng ngon'], loss: ['🥀', 'về bằng đường hàng không'] },
+  memer: { good: [':)))', 'tình người ở đâu', 'siuuu'], bad: [':)))', 'đi học rồi', '🥀'], bigGood: ['🔥🔥🔥', 'xem phim hành động'], bigBad: ['😭', 'nằm ngửa'], ahead: ['bón hành'], behind: ['ăn hành'], win: ['siuuuuuu', '{meal} ngon'], loss: ['🥀', 'về bằng đường hàng không'] },
   backseat: { good: ['cuối cùng cũng đánh'], bad: ['đã bảo cắm mắt', 'không về nhà', 'lên đồ sai'], bigGood: ['thấy chưa'], bigBad: ['nói mãi không nghe'], ahead: ['lấy baron đi'], behind: ['phải chia lẻ'], win: ['nghe tôi là thắng'], loss: ['lỗi bp'] },
   wholesome: { good: ['hay quá'], bad: ['không sao'], bigGood: ['tuyệt vời'], bigBad: ['cố lên các em'], ahead: ['tiếp tục nhé'], behind: ['bình tĩnh'], win: ['chúc mừng'], loss: ['vẫn tự hào'] },
 };
@@ -174,6 +278,22 @@ const WAVES: ChatPack['WAVES'] = {
   gift: { tokens: ['đại gia', 'cảm ơn'], size: [4, 8], pri: 2 },
   raid: { tokens: [], size: [0, 0], pri: 0 },
   copypasta: { tokens: [], size: [0, 0], pri: 0 },
+  // chatMoments.ts
+  hope: { tokens: ['vô địch rồi', '{seriesHope} còn nguyên', 'sống rồi', 'hayyyy', 'vô địch r'], tone: 'hype', size: [12, 24], pri: 4 },
+  wipe: { tokens: ['ảo thuật', 'bốc hơi', 'hú hú hú', 'magic'], size: [10, 20], pri: 4 },
+  no_dmg: { tokens: ['đẹp nhưng no dame', 'no dame', 'đẹp thôi'], size: [8, 16], pri: 3 },
+  tham: { tokens: ['tham', 'tham lam', 'ẩu'], size: [5, 10], pri: 2 },
+  advice: { tokens: ['ad ôm trụ đi', 'ôm trụ đi', 'AD ÔM TRỤ'], size: [6, 12], pri: 2 },
+  role_gap: { tokens: ['{role} gap', '{role} diff'], size: [4, 8], pri: 2 },
+  alo: { tokens: ['alo', 'alo alo', 'Alo??', 'alo vũ à vũ', 'aloooo'], size: [30, 48], pri: 5 },
+  crowd: { tokens: ['{chant}', '{chant2}'], size: [6, 12], pri: 2 },
+  library: { tokens: ['thư viện', 'thư viện {city}', 'im ắng quá'], tone: 'sad', size: [6, 12], pri: 3 },
+  vip: { tokens: ['vip', 'xin vía', 'đại gia'], size: [5, 10], pri: 2 },
+  mercy: { tokens: ['/ff', 'gg', 'end đi'], tone: 'sad', size: [8, 14], pri: 3 },
+  vua: { tokens: ['vua {cup}', 'ông vua {cup}', '{winner}'], tone: 'hype', size: [16, 28], pri: 5 },
+  echo: { tokens: [], size: [8, 16], pri: 3 },
+  cam: { tokens: ['cam anh ơi', 'đổi cam', 'cam đâu', 'chỉnh cam anh ơi'], size: [6, 12], pri: 3 },
+  auction: { tokens: [], size: [12, 24], pri: 3 },
 };
 
 export const VI_PACK: ChatPack = {
@@ -181,16 +301,16 @@ export const VI_PACK: ChatPack = {
   LINES, USERS, PERSONA_NAMES, PERSONA_IDLE, PERSONA_REACT, WAVES,
   COPYPASTAS: [
     'WE ARE VCS 🇻🇳🇻🇳🇻🇳', '{SHORT} VÔ ĐỊCH {SHORT} VÔ ĐỊCH {SHORT} VÔ ĐỊCH', 'Việt Nam vô địch 🇻🇳🇻🇳🇻🇳',
-    'ai xem {short} thắng thì điểm danh 🙋', 'cả nước đang nhìn {short} 🇻🇳', 'thắng ván này là mình bao cả lớp ăn sáng',
+    'ai xem {short} thắng thì điểm danh 🙋', 'cả nước đang nhìn {short} 🇻🇳', 'thắng ván này là mình bao cả lớp {meal}',
   ],
   MEMES: [
-    'tình người ở đâu', 'về bằng đường hàng không', 'bón hành', 'out trình', 'nằm ngửa', 'đi học đi các em', 'bữa sáng hôm nay ngon',
-    'siuuuu', 'phim hành động buổi sáng', 'ai cho phép vậy', 'tướng lỗi à', 'kiểu này thì chịu', 'bất lực :)))', '🐧',
+    'tình người ở đâu', 'về bằng đường hàng không', 'bón hành', 'out trình', 'nằm ngửa', 'đi học đi các em', '{meal} hôm nay ngon',
+    'siuuuu', 'phim hành động buổi {daypart}', 'ai cho phép vậy', 'tướng lỗi à', 'kiểu này thì chịu', 'bất lực :)))', '🐧',
   ],
   SMASH: ['aaaaaaaa', 'ÁAAAAAA', 'trời ơiiiii', 'đỉnh caoooo', 'WTFFFF', 'hayyyyyy', 'siuuuuuuuuu'],
   DIFF_LINES: ['{diffname} lệch {diffgold} rồi', '{diffrole} {diffside} hơn hẳn', '{diffrole} chênh lệch quá', '{diffname} đang gánh'],
   FARM: ['farm farm', 'cs đẹp', '{star} {starcspm} cs/phút', 'farm như máy'],
-  FOOD: ['đang ăn phở xem', 'bánh mì + LoL = buổi sáng hoàn hảo', 'trà đá đâu ae', 'ăn sáng chưa ae', 'cà phê sữa đá với {short}'],
+  FOOD: ['đang ăn {meal} xem', '{meal} + LoL = hoàn hảo', 'trà đá đâu ae', 'ăn {meal} chưa ae', 'cà phê sữa đá với {short}', 'vừa ăn {meal} vừa xem {short}'],
   PAUSE: ['pause à?', 'lỗi gì vậy ae', 'đứng hình', 'pause lâu thế', 'kỹ thuật lại lỗi', 'tranh thủ đi vệ sinh'],
   EMOTE_MOOD: {
     hype: ['🔥', '🔥🔥', 'đỉnh', 'hay', 'ác', '👏👏', 'siuuu', '😍'],
@@ -212,7 +332,7 @@ export const VI_PACK: ChatPack = {
     neutral: ['thôi 2 ông cãi nhau làm gì', 'xem game đi ae', 'văn minh lên nào', 'cãi nhau còn hay hơn xem game', 'bình tĩnh ae', 'hoà bình đi'],
   },
   HOT_TAKES: [{ text: '{star} hết thời rồi', kind: 'washed' }, { text: '{ourjg} đi rừng như bot', kind: 'washed' }, { text: '{short} không vô địch nổi đâu' }, { text: '{oppstar} là tuyển thủ hay nhất trận này' }, { text: 'BLV hôm nay thiên vị quá' }],
-  ROASTS: ['@{user} xem game lần đầu à', '@{user} :)))', '@{user} bạn rank gì', '@{user} out', '@{user} tỉnh lại đi', '@{user} nói câu nào sai câu đó', '@{user} xoá đi kẻo muộn'],
+  ROASTS: ['@{user} xem game lần đầu à', '@{user} :)))', '@{user} bạn rank gì', '@{user} out', '@{user} tỉnh lại đi', '@{user} nói câu nào sai câu đó', '@{user} xoá đi kẻo muộn', '@{user} tù ngay', '@{user} gáy quá mang nhục'],
   HOT_DEFEND: ['tôi nói sai à', 'chờ xem', 'sự thật mất lòng', 'cứ chửi đi'],
   BACKSEAT_REPLIES: ['@{user} vào rank test đi rồi nói', '@{user} bạn rank gì', '@{user} coach tại gia', '@{user} nói dễ lắm', '@{user} sắt đoàn mà chỉ đạo'],
   BACKSEAT_BACK: ['tôi kim cương đấy', 'nói thật mà cũng bị chửi', 'ok tôi im', 'ai thấy cũng thế thôi'],
@@ -221,7 +341,7 @@ export const VI_PACK: ChatPack = {
     { q: ['BLV hôm nay là ai thế', 'ai bình luận vậy ae'], a: ['@{user} anh Luân đó bạn', '@{user} anh Hoàng Luân', '@{user} nghe giọng là biết'] },
     { q: ['baron để làm gì vậy', 'sao ai cũng sợ baron'], a: ['@{user} lính to đẩy trụ', '@{user} lấy baron là đẩy nhà', '@{user} baron mạnh lắm bạn'] },
     { q: ['bo mấy vậy ae', 'trận này mấy ván'], a: ['@{user} bo{bo} nha', '@{user} bo{bo}, đang ván {gameno}'] },
-    { q: ['what time is it in vietnam?', 'what is time'], a: ['@{user} {hour} AM bro', '@{user} morning here', '@{user} breakfast time :)))'] },
+    { q: ['what time is it in vietnam?', 'what is time'], a: ['@{user} {vnhour}h here bro', '@{user} it’s {vnhour}:00 in VN', '@{user} {meal} time :)))'] },
   ],
   TIMEZONE_REPLIES: ['@{user} điểm danh', '@{user} sếp đứng sau lưng đấy', '@{user} tôi cũng thế', '@{user} cẩn thận bị bắt', '@{user} đi học đi em'],
   FIRST_TIME: ['lần đầu xem VCS, hay quá', 'chào cả nhà', 'mới xem LoL, hay ghê', 'lần đầu vào live'],
@@ -266,7 +386,7 @@ export const VI_PACK: ChatPack = {
   BOTS: { nightbot: 'Nightbot', elements: 'RiftTV Việt Nam' },
   MOD_NAMES: ['mod.tuananh', 'qtv_linh', 'kiemduyet_khoa', 'mod_vcs_minh', 'quantri_hai', 'mod.thao'],
   NIGHTBOT_REMINDERS: ['Hãy bình luận văn minh, tôn trọng tuyển thủ và khán giả.', 'Không spam, không spoil từ luồng khác.', 'Trận đấu: {a} vs {b} · {comp}', 'Gõ !tiso để xem tỉ số.'],
-  CHANNEL_LINES: ['Đừng quên đăng ký kênh và bấm chuông để không bỏ lỡ trận đấu nào nha mọi người', 'Cùng cổ vũ văn minh cho các đội tuyển nhé!', 'Trận đấu đang được bình luận bởi BLV Hoàng Luân 🎙'],
+  CHANNEL_LINES: ['Đừng quên đăng ký kênh và bấm chuông để không bỏ lỡ trận đấu nào nha mọi người', 'Cùng cổ vũ văn minh cho các đội tuyển nhé!', 'Trận đấu đang được bình luận bởi BLV Hoàng Luân 🎙', 'Anh em xem stream nhớ nhấn like giúp Lu nha!', 'Tham gia nhóm Facebook của kênh để cập nhật lịch thi đấu nhé', 'Đăng ký hội viên để xem lại livestream và được +5 giây 😎'],
   COMMANDS: {
     '!tiso': ['{a} {ka} – {kb} {b} · phút {mins} · {leader} +{gold}'],
     '!patch': ['Phiên bản {patch}.'],
@@ -285,7 +405,7 @@ export const VI_PACK: ChatPack = {
   AFTER_TIMEOUT: ['bay màu', 'o7', 'tạm biệt {user}', 'mod nhanh ghê', ':)))', 'đáng đời'],
   BACK_FROM_TIMEOUT: ['tôi trở lại rồi', 'oan quá', 'ok xin lỗi', 'tôi đã nói gì sai'],
   RAIDERS: [], RAID_CHAT: [], RAID_WELCOME: [],
-  SUB_MSGS: ['{SHORT} CỐ LÊN', 'ủng hộ VCS', '{months} tháng rồi vẫn ở đây', 'yêu kênh', 'xem mọi trận của {short}'],
+  SUB_MSGS: ['{SHORT} CỐ LÊN', 'ủng hộ VCS', '{months} tháng rồi vẫn ở đây', 'yêu kênh', 'xem mọi trận của {short}', 'thế mà cũng {months} tháng làm chữ xanh rồi', '{months} tháng chữ xanh', 'gia hạn để còn xem anh Lu'],
   BITS_MSGS: ['Cố lên {short}!!!', 'Mời anh Luân ly cà phê', '{star} gánh team nha', 'Chúc 2 đội thi đấu hết mình', 'VCS vô địch 🇻🇳', 'Ván này thắng nhé', 'Một chút cho anh em BLV'],
   GIFT_THANKS: ['cảm ơn @{user} nha', '@{user} đại gia', '@{user} chất', 'cảm ơn đại gia'],
   POLL: {
@@ -302,8 +422,8 @@ export const VI_PACK: ChatPack = {
     question: ['@{me} sếp hỏi thì ai trả lời', '@{me} hỏi coach đi sếp'],
     hi: ['@{me} chào sếp', '@{me} hello sếp'],
   },
-  POSTGAME: ['trận này hay', '{mvp} mvp', 'ván sau mấy giờ ae', 'về ngủ thôi', 'anh Luân bình luận cháy quá', 'gg', 'tự hào', 'hẹn ván sau', 'BLV được nghỉ rồi :)))'],
-  REGION_REPLIES: ['@{user} tỉnh lại đi bạn', '@{user} đồng ý', '@{user} nói chuẩn', '@{user} :)))'],
+  POSTGAME: ['trận này hay', '{mvp} mvp', 'ván sau mấy giờ ae', 'về ngủ thôi', 'anh Luân bình luận cháy quá', 'gg', 'tự hào', 'hẹn ván sau', 'BLV được nghỉ rồi :)))', 'nhạc hay', 'nhạc ác', 'lại cái nhạc này', 'nhạc gì vậy ae', 'check dame đi ae'],
+  REGION_REPLIES: ['@{user} tỉnh lại đi bạn', '@{user} đồng ý', '@{user} nói chuẩn', '@{user} :)))', '@{user} fact', '@{user} {region2} có cúp đâu mà nói', '@{user} đặt câu hỏi thể hiện luôn trình độ'],
   DRAFT_TAKES: ['bp ảo quá', 'đội hình {short} late mạnh', 'cấm sai rồi', 'pick {starchamp} cho {star} ngon', 'đội hình này giao tranh tốt', 'bp thua rồi'],
   T: {
     ...EN_PACK.T,
@@ -324,7 +444,7 @@ export const VI_PACK: ChatPack = {
     pollResult: (w) => `Kết quả: ${w} thắng!`,
     pollResultText: (won, lost) => `${won.toLocaleString('vi-VN')} người đoán đúng · ${lost.toLocaleString('vi-VN')} người đoán sai`,
     subRenew: (name, m) => `${name} · Thành viên được ${m} tháng`,
-    subNew: (name) => `Chào mừng ${name} đến với hội viên!`,
+    subNew: (name) => `${name} · Welcome to Kim Cương!`,
     bits: (name, n) => `${name} · ₫${n.toLocaleString('vi-VN')}`,
     bitsText: (_n, msg) => msg,
     bitsAmounts: [20_000, 20_000, 50_000, 50_000, 100_000, 100_000, 200_000, 500_000, 1_000_000],

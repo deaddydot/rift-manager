@@ -53,7 +53,14 @@ Saves are stored in your browser (IndexedDB, gzip-compressed) and can be exporte
 - **Stream chat**: a Twitch-style English chat, or a Vietnamese YouTube live chat when the Hoàng Luân desk casts
   (`src/ui/match/chatVi.ts`, studied from a real Vietnamese LoL broadcast chat: short reactions, `:)))` and `???` floods,
   gg / siuuu waves, feeding scores counted out loud, Super Chats in ₫, memberships, Nightbot warnings, the pace of
-  ~1.5 messages/s in game and ~3/s at the end). Language packs: `src/ui/match/chatPack.ts`.
+  ~1.5 messages/s in game and ~3/s at the end). Language packs: `src/ui/match/chatPack.ts`. A second study (a Hoàng
+  Luân watch-along of a cup final, 5.3k messages) taught it to read the game the way that chat does
+  (`src/ui/match/chatMoments.ts`): the gold gap by the minute, lane CS / level gaps, blaming the coach's draft, ironic
+  "vô địch rồi" when the losing side wins a fight, shutdown gold and the spells it took, the 0/5 scapegoat, scaling
+  champions' stacks, the arena going quiet, echoes and puns on what the caster says (and his curse when he praises
+  someone), champion nicknames and lore, puns on handles, begging for one game in a sweep, bedtime at night, and
+  after a series the trophy, prize money, the MVP auction ("GAM Raptor"), rumours and "who need {ex-player}". World
+  facts come from the save (`chatWorld.ts`); tables in `chatViLore.ts`. Check: `npx tsx scripts/debug/chat.ts`.
 - **Pro draft** with Fearless and an AI drafter that weighs player comfort, real 2026 pro meta and comp balance, plus
   a live composition checklist for both teams (Hard CC, Engage, Disengage, Poke, Waveclear, Tank, Physical / Magical /
   Utility damage — `src/engine/draft/checklist.ts`) that the AI drafter also uses.

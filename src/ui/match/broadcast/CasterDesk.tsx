@@ -7,7 +7,7 @@ import type { MatchSim } from '../../../engine/sim/engine';
 import type { Team } from '../../../engine/types';
 import { useStore } from '../../../store/game';
 import { useSession } from '../session';
-import { getChatMeta } from '../chatFeed';
+import { getChatMeta, _pushDesk } from '../chatFeed';
 import { buildBroadcastCtx } from './context';
 import { Commentary, pickDesk, type SubLine } from './commentary';
 import { CASTERS, type DeskDef } from './castersData';
@@ -48,7 +48,7 @@ function CasterDesk({ sim, teams, userSide, width, compact = false }: Props) {
     setCur(null); setPrev(null);
     const id = window.setInterval(() => {
       const l = eng.tick(performance.now());
-      if (l) { setPrev(eng.previous); setCur(l); }
+      if (l) { setPrev(eng.previous); setCur(l); _pushDesk({ text: l.text, cat: l.cat, lang: l.lang, pri: l.pri, t: l.t }); }
     }, 160);
     return () => window.clearInterval(id);
   }, [sim, mode, userSide]);

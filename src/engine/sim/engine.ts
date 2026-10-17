@@ -1206,7 +1206,7 @@ export class MatchSim {
     }
     const kName = killer ? `${killer.input.name} (${killer.champ.name})` : 'Executed';
     const text = `${kName} ${killer ? 'killed' : ''} ${victim.input.name} (${victim.champ.name})${fb}${shut ? ' — SHUTDOWN' : ''}`.replace('Executed  ', 'Executed: ');
-    this.event(fb ? 'firstBlood' : 'kill', text, killerSide, { killer: killer?.idx, victim: victim.idx, assists: assisters.map((a) => a.idx), pos: { ...victim.pos }, important: !!fb || shut });
+    this.event(fb ? 'firstBlood' : 'kill', text, killerSide, { killer: killer?.idx, victim: victim.idx, assists: assisters.map((a) => a.idx), pos: { ...victim.pos }, important: !!fb || shut, bounty: Math.round(bounty) });
     victim.lastDamagedBy.clear();
     // ace / multi-kill detection
     this.recentKills.push({ t, side: killerSide });

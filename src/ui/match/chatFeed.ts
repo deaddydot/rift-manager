@@ -71,4 +71,17 @@ export function _recordLine(l: FeedLine): void {
   for (const cb of subs) { try { cb(l); } catch { /* a bad subscriber must not break the chat */ } }
 }
 export function _setMeta(m: ChatMeta): void { meta = m; }
-export function _resetFeed(): void { recent.length = 0; inbox = []; meta = { live: false, hype: 0, viewers: 0, gameTime: 0, wave: null }; }
+export function _resetFeed(): void { recent.length = 0; inbox = []; desk = []; meta = { live: false, hype: 0, viewers: 0, gameTime: 0, wave: null }; }
+
+// ---- the caster desk → the chat: what the casters just said (CasterDesk.tsx pushes, chatBrain.ts drains), so chat
+// can echo a phrase, notice the caster praising someone (and jinxing him), agree with a take, or hear him yell
+export interface DeskLine { text: string; cat: string; lang: 'en' | 'vi'; pri: number; t: number }
+let desk: DeskLine[] = [];
+export function _pushDesk(l: DeskLine): void { desk.push(l); if (desk.length > 12) desk.splice(0, desk.length - 12); }
+export function _drainDesk(): DeskLine[] { if (!desk.length) return desk; const out = desk; desk = []; return out; }
+
+// ---- the match camera → the chat (LiveMatch.tsx sets it every frame): a fight off-screen gets "cam anh ơi"
+export interface ChatView { cx: number; cy: number; zoom: number }
+let view: ChatView | null = null;
+export function _setChatView(v: ChatView | null): void { view = v; }
+export function _getChatView(): ChatView | null { return view; }

@@ -255,6 +255,8 @@ export interface GameEvent {
   assists?: number[];
   pos?: Vec;
   important?: boolean;
+  /** kills: the gold the kill paid (shutdowns included), for the chat / casters */
+  bounty?: number;
 }
 
 export interface TeamRuntime {

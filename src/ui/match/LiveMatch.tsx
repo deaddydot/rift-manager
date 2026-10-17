@@ -16,7 +16,7 @@ import { useCasterPrefs, subtitleHeight } from './broadcast/prefs';
 import { displayItems } from '../../engine/sim/champstats';
 import BroadcastHud, { hudHeight } from './BroadcastHud';
 import { useFakerMode } from '../cheats';
-import { pushChatLine } from './chatFeed';
+import { pushChatLine, _setChatView } from './chatFeed';
 import { MatchAudio, SHOUT_PING } from '../audio/matchAudio';
 import SoundToggle from '../audio/SoundToggle';
 
@@ -154,6 +154,7 @@ export default function LiveMatch({ sim, teams, userSide, onFinished }: { sim: M
       const alpha = Math.max(0, Math.min(1, 1 - (sim.t - simTimeRef.current) / sim.dt));
       const cam = camRef.current!;
       audio.tick(now, pausedRef.current ? 0 : speedRef.current, cam.cur);
+      _setChatView(cam.cur);
       const cv = canvasRef.current;
       if (cv) {
         // keep the backing store at CSS size × devicePixelRatio (handles resizes and moving between screens)

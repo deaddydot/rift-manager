@@ -12,6 +12,7 @@ import { ChatBrain, managerHandle, readSetup, type Badge, type BrainMeta, type C
 import { _resetFeed, _setMeta, getChatMeta } from './chatFeed';
 import { fmtViewers } from './broadcast/audience';
 import { useCasterPrefs } from './broadcast/prefs';
+import { phoneRing } from '../audio/sound';
 
 const MAX_LINES = 150;
 const MAX_HELD = 300;
@@ -45,7 +46,7 @@ function LiveChat({ sim, teams, userSide, collapsed = false, onToggle }: Props) 
     setLines([]); heldRef.current = []; setHeld(0);
     setLang(brain.meta.lang);
     if (import.meta.env.DEV) (window as unknown as { __chat?: ChatBrain }).__chat = brain; // dev-only: poke the chat from the console
-    let lastMeta = '';
+    let lastMeta = '', lastCue = 0;
     const id = window.setInterval(() => {
       const { out, deleted } = brain.tick(performance.now());
       if (deleted.length) {
@@ -63,6 +64,8 @@ function LiveChat({ sim, teams, userSide, collapsed = false, onToggle }: Props) 
         } else setLines((prev) => { const n = prev.concat(out); return n.length > MAX_LINES ? n.slice(-MAX_LINES) : n; });
       }
       const m = brain.meta;
+      // a sound the chat reacts to (the phone ringing near the caster's mic → "alo" ×40)
+      if (m.cue && m.cue.id !== lastCue) { lastCue = m.cue.id; if (m.cue.kind === 'phone') phoneRing(); }
       const key = `${m.hype}|${m.viewers}|${m.combo?.key}:${m.combo?.count}:${m.combo?.live}|${m.poll?.state}:${m.poll?.opts[0].pts}:${m.poll?.opts[1].pts}:${Math.ceil(m.poll?.lockIn ?? 0)}`;
       if (key !== lastMeta) { lastMeta = key; setMeta(m); }
     }, TICK_MS);
