@@ -109,6 +109,13 @@ Saves are stored in your browser (IndexedDB, gzip-compressed) and can be exporte
   you won or lost, a gold graph with every mistake, player scores and the plays to show off. "Review with the team"
   turns the mistakes into two weeks of focused training. The analyst only observes: games play out exactly the same
   with it on.
+- **Sound** (`src/ui/audio/`; Settings → Sound, 🔊 in the draft and match viewer): the League client's champ
+  select sounds (bundled in `public/audio/cs`). Every pick and ban plays the champion's own voice line, and every
+  ultimate the caster's signature sound (both streamed from CommunityDragon). Match pings and stingers are made for
+  this game: kills, first blood, multi-kills, aces, shutdowns, dragons, Baron, steals, towers, the Nexus, the
+  win/loss. Your team pings like a real one, and the pings show on the map: danger on ganks, enemy missing,
+  on-my-way, assist, objective calls, retreat, and your shout buttons. Sounds are panned to where they happen and
+  thinned out at high speed.
 - **Editor**: create custom players, teams and staff (portraits/logos uploaded from your computer), edit anyone
   (including coaches, analysts and other staff), and keep a reusable custom library.
 

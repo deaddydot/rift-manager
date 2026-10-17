@@ -6,6 +6,7 @@ import { Panel, Modal, Pill, TeamLogo, Empty, fmtDate } from '../components/kit'
 // the AI chat isn't part of the online build (the literal env check lets the bundler drop it)
 const AiChatSettings = import.meta.env.VITE_HOSTED !== '1' ? lazy(() => import('../match/aiChat/AiChatSettings')) : null;
 import CasterSettings from '../match/broadcast/CasterSettings';
+import SoundSettings from '../audio/SoundSettings';
 import { armSecret } from '../cheats';
 
 type Confirm = { title: string; body: ReactNode; actions: { label: string; cls?: string; fn: () => void | Promise<void> }[] } | null;
@@ -185,6 +186,10 @@ export default function Settings(_props: { id?: string; tab?: string; kind?: str
           <CasterSettings />
         </Panel>
 
+        <Panel title="Sound">
+          <SoundSettings />
+        </Panel>
+
         <Panel title="Preferences">
           <div className="space-y-4">
             <Toggle label="Auto-save" desc="Save automatically after every Continue (when the simulation stops)." value={state.settings.autoSave} onChange={(v) => set('autoSave', v)} />
@@ -213,7 +218,7 @@ export default function Settings(_props: { id?: string; tab?: string; kind?: str
           <Credit name="Liquipedia" license="CC BY-SA 3.0" href="https://liquipedia.net/leagueoflegends">A few player portraits Leaguepedia had no photo of (only where the real name matched).</Credit>
           <Credit name="Riot Data Dragon" license="Riot Games static data" href="https://developer.riotgames.com/docs/lol#data-dragon">Champion, ability and item metadata, icons and splash assets.</Credit>
           <Credit name="Meraki Analytics" license="Community dataset" href="https://github.com/meraki-analytics/lolstaticdata">Detailed champion ability values: damage scalings, cooldowns, crowd control.</Credit>
-          <Credit name="CommunityDragon" license="Community CDN" href="https://www.communitydragon.org">Additional game assets and map data used by the match viewer.</Credit>
+          <Credit name="CommunityDragon" license="Community CDN" href="https://www.communitydragon.org">Additional game assets and map data used by the match viewer; the League client's champ select sounds, champion voice lines and signature sounds.</Credit>
         </div>
         <div className="text-[11px] text-dim mt-4 border-t hairline pt-3">
           {/* easter egg (ui/cheats.ts): click the name, then type the word */}

@@ -1,4 +1,6 @@
-import { Fragment, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { Fragment, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { draftSound, champVoice, preloadDraft, useSoundPrefs } from '../audio/sound';
+import SoundToggle from '../audio/SoundToggle';
 import { gd } from '../../data/gamedata';
 import { useGame } from '../../store/game';
 import { DRAFT_ORDER, applyAction, aiChoose, taken, picksOf, bansOf, openRoles, pickValue, comfort, metaScore, currentTurn, type DraftState } from '../../engine/draft/draft';
@@ -35,17 +37,47 @@ export default function DraftView({ draft, userSide, onDone, gameNo }: { draft: 
   const blocked = useMemo(() => taken(draft), [draft.step]); // eslint-disable-line react-hooks/exhaustive-deps
   const teams = [state.teams[draft.teams[0].teamId], state.teams[draft.teams[1].teamId]];
 
-  // AI acts on its turns
+  // AI acts on its turns (a little slower with sound on, so the voice lines don't trip over each other)
+  const soundOn = useSoundPrefs((x) => x.on);
   useEffect(() => {
-    if (draft.done) { const t = setTimeout(onDone, 900); return () => clearTimeout(t); }
+    if (draft.done) { const t = setTimeout(onDone, soundOn ? 1600 : 900); return () => clearTimeout(t); }
     if (turn.side === userSide && !auto) return;
     const t = setTimeout(() => {
       const ch = aiChoose(draft, rng, state.championPower);
       applyAction(draft, ch.champion, ch.role);
       force((x) => x + 1);
-    }, 650);
+    }, soundOn ? 1150 : 650);
     return () => clearTimeout(t);
   });
+
+  // champ select sounds: phase intros, "your pick / ban", every ban and pick with the champion's voice line
+  const heard = useRef(-1);
+  useEffect(() => {
+    if (heard.current === draft.step) return;
+    const prev = heard.current;
+    heard.current = draft.step;
+    if (prev === -1) { preloadDraft(); if (draft.step === 0) draftSound('banIntro', 0.8); }
+    else {
+      const a = draft.actions[draft.step - 1];
+      if (a?.champion) {
+        if (a.type === 'ban') { draftSound(a.side === userSide ? 'banUs' : 'banThem', 0.75); champVoice(a.champion, 'ban', 0.25); }
+        else {
+          const first = draft.actions.filter((x) => x.type === 'pick').length === 1;
+          draftSound(first ? (a.side === 0 ? 'firstLeft' : 'firstRight') : a.side === 0 ? 'pickLeft' : 'pickRight', 0.85);
+          champVoice(a.champion, 'pick', 0.2);
+        }
+      }
+      if (draft.done) return;
+      if (a && turn.type !== a.type) setTimeout(() => draftSound(turn.type === 'pick' ? 'pickIntro' : 'banIntro', 0.7), 500);
+    }
+    if (!draft.done && turn.side === userSide && !auto) setTimeout(() => draftSound(turn.type === 'ban' ? 'yourBan' : 'yourPick', 0.6), prev === -1 ? 900 : 750);
+  });
+  const lastHover = useRef(0);
+  useEffect(() => {
+    if (!hover || performance.now() - lastHover.current < 70) return;
+    lastHover.current = performance.now();
+    draftSound('gridHover', 0.3);
+  }, [hover]);
 
   const roles = openRoles(draft, userSide);
   const shownSide: 0 | 1 = viewSide === 'us' ? userSide : oppSide;
@@ -98,6 +130,7 @@ export default function DraftView({ draft, userSide, onDone, gameNo }: { draft: 
       r = suggestions.find((s) => s.id === id)?.role ?? (viewSide === 'us' ? info.get(id)?.role : undefined) ?? autoRole(draft, userSide, id);
       if (!roles.includes(r)) r = autoRole(draft, userSide, id);
     }
+    draftSound(turn.type === 'ban' ? 'banClick' : 'lockIn', 0.6);
     applyAction(draft, id, turn.type === 'pick' ? r : undefined);
     if (viewSide === 'us') setViewRole(null);
     force((x) => x + 1);
@@ -130,6 +163,7 @@ export default function DraftView({ draft, userSide, onDone, gameNo }: { draft: 
         <div className="text-sm text-muted">{draft.unavailable.size ? `Fearless: ${draft.unavailable.size} champions locked from earlier games` : 'Fearless draft'}</div>
         {!draft.done && <div className={`font-display text-xl font-bold ${myTurn ? 'text-gold2 pulse-gold px-3 rounded' : 'text-muted'}`}>{myTurn ? `Your ${turn.type}` : `${teams[turn.side].short} ${turn.type}ing…`} <span className="text-sm text-dim">({draft.step + 1}/20)</span></div>}
         {draft.done && <div className="font-display text-xl text-win">Draft complete</div>}
+        <SoundToggle />
       </div>
 
       <div className="grid grid-cols-[260px_1fr_260px] gap-3">

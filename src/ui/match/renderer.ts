@@ -21,6 +21,35 @@ export interface RenderOpts {
   view?: View;
   /** Draw the minimap inset (with the visible rectangle) while zoomed in. */
   minimap?: boolean;
+  /** Team pings to show (audio/matchAudio.ts): age 0..1 over their life. */
+  pings?: { pos: Vec; kind: string; age: number }[];
+}
+
+const PING_STYLE: Record<string, [string, string]> = {
+  danger: ['#ef4444', '!'], missing: ['#facc15', '?'], onmyway: ['#38bdf8', '➜'], assist: ['#f97316', '⚔'], retreat: ['#facc15', '↩'],
+  push: ['#a855f7', '▲'], objective: ['#a855f7', '◎'], vision: ['#22c55e', '◉'],
+};
+/** A map ping: two expanding rings and the ping's glyph, fading out. */
+function drawPings(ctx: CanvasRenderingContext2D, pings: NonNullable<RenderOpts['pings']>, S: number, sc: number) {
+  for (const p of pings) {
+    const [col, glyph] = PING_STYLE[p.kind] ?? PING_STYLE.assist;
+    const [x, y] = P(p.pos, S);
+    const a = Math.max(0, 1 - p.age);
+    ctx.save();
+    for (const k of [0, 0.35]) {
+      const f = (p.age * 2.2 + k) % 1;
+      ctx.globalAlpha = a * (1 - f) * 0.9;
+      ctx.strokeStyle = col; ctx.lineWidth = 2 * sc;
+      ctx.beginPath(); ctx.arc(x, y, (6 + f * 22) * sc, 0, Math.PI * 2); ctx.stroke();
+    }
+    const pop = p.age < 0.12 ? 0.6 + p.age / 0.12 * 0.4 : 1;
+    ctx.globalAlpha = Math.min(1, a * 1.4);
+    ctx.fillStyle = 'rgba(2,6,23,0.85)'; ctx.beginPath(); ctx.arc(x, y - 16 * sc, 8 * sc * pop, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = col; ctx.lineWidth = 1.5 * sc; ctx.stroke();
+    ctx.fillStyle = col; ctx.font = `bold ${10 * sc * pop}px Inter, sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(glyph, x, y - 15.5 * sc);
+    ctx.restore();
+  }
 }
 
 /** Game coords → map pixels for a whole-map canvas of S px. A camera is applied as a canvas transform on top. */
@@ -277,6 +306,7 @@ export function renderMatch(ctx: CanvasRenderingContext2D, sim: MatchSim, o: Ren
     }
   }
   drawFloaters(ctx, sim, S, sc, seen);
+  if (o.pings?.length) drawPings(ctx, o.pings, S, sc);
   ctx.restore();
   if (o.minimap && o.view && minimapAlpha(o.view.zoom) > 0) drawMinimap(ctx, sim, S, o.view, o);
 }
@@ -303,6 +333,15 @@ function drawMinimap(ctx: CanvasRenderingContext2D, sim: MatchSim, S: number, v:
     ctx.fillStyle = TEAM_COLORS[c.side]; ctx.fill();
     ctx.lineWidth = o.selected === c.idx ? 1.6 : 0.8; ctx.strokeStyle = o.selected === c.idx ? '#fde047' : '#0b1220'; ctx.stroke();
   }
+  // pings on the minimap too (they may be off the zoomed-in view)
+  for (const p of o.pings ?? []) {
+    const [px, py] = m(p.pos);
+    const [col] = PING_STYLE[p.kind] ?? PING_STYLE.assist;
+    ctx.globalAlpha = minimapAlpha(v.zoom) * Math.max(0, 1 - p.age);
+    ctx.strokeStyle = col; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.arc(px, py, 3 + (p.age * 3 % 1) * 6, 0, Math.PI * 2); ctx.stroke();
+  }
+  ctx.globalAlpha = minimapAlpha(v.zoom);
   const half = MAP_SIZE / (2 * v.zoom);
   const [rx0, ry0] = m({ x: v.cx - half, y: v.cy + half }), [rx1, ry1] = m({ x: v.cx + half, y: v.cy - half });
   ctx.fillStyle = 'rgba(240,230,210,0.08)'; ctx.fillRect(rx0, ry0, rx1 - rx0, ry1 - ry0);

@@ -17,6 +17,8 @@ import { displayItems } from '../../engine/sim/champstats';
 import BroadcastHud, { hudHeight } from './BroadcastHud';
 import { useFakerMode } from '../cheats';
 import { pushChatLine } from './chatFeed';
+import { MatchAudio, SHOUT_PING } from '../audio/matchAudio';
+import SoundToggle from '../audio/SoundToggle';
 
 /** What chat says when the cheat kicks in (a few of these, in random order). */
 const THROW_CHAT: { text: string; persona: string }[] = [
@@ -94,6 +96,7 @@ export default function LiveMatch({ sim, teams, userSide, onFinished }: { sim: M
   const bigRef = useRef(big); bigRef.current = big;
   const prevRef = useRef(new Map<number, Vec>());
   const simTimeRef = useRef(sim.t);
+  const audioRef = useRef<MatchAudio | null>(null);
 
   // ---- layout: the biggest map square that fits between the team columns (normal: also the window height;
   // theater: the stage height), whether the chat column fits beside the stream, and the chat's height
@@ -135,6 +138,8 @@ export default function LiveMatch({ sim, teams, userSide, onFinished }: { sim: M
     if (import.meta.env.DEV) (window as unknown as { __sim?: MatchSim; __cam?: Camera }).__sim = sim; // dev-only: inspect the live sim from the console
     if (import.meta.env.DEV) (window as unknown as { __cam?: Camera }).__cam = camRef.current!;
     let raf = 0, last = performance.now(), uiTick = 0;
+    const audio = new MatchAudio(sim, userSide); // match sounds and team pings (audio/matchAudio.ts)
+    audioRef.current = audio;
     const loop = (now: number) => {
       const dt = Math.min(0.5, (now - last) / 1000);
       last = now;
@@ -148,6 +153,7 @@ export default function LiveMatch({ sim, teams, userSide, onFinished }: { sim: M
       }
       const alpha = Math.max(0, Math.min(1, 1 - (sim.t - simTimeRef.current) / sim.dt));
       const cam = camRef.current!;
+      audio.tick(now, pausedRef.current ? 0 : speedRef.current, cam.cur);
       const cv = canvasRef.current;
       if (cv) {
         // keep the backing store at CSS size × devicePixelRatio (handles resizes and moving between screens)
@@ -159,15 +165,15 @@ export default function LiveMatch({ sim, teams, userSide, onFinished }: { sim: M
         cam.update(Math.min(dt, 0.25), sim, { S, speed: speedRef.current, selected: selRef.current, prev: prevRef.current, alpha, nowReal: now / 1000, fog: fogRef.current });
         const ctx = cv.getContext('2d')!;
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        renderMatch(ctx, sim, { size: S, prev: prevRef.current, alpha, fog: fogRef.current, selected: selRef.current, showWards: true, view: cam.cur, minimap: true });
+        renderMatch(ctx, sim, { size: S, prev: prevRef.current, alpha, fog: fogRef.current, selected: selRef.current, showWards: true, view: cam.cur, minimap: true, pings: audio.pings.map((p) => ({ pos: p.pos, kind: p.kind, age: (now - p.at) / 2600 })) });
         paintIndicator(indRef.current, cam);
       }
       if (now - uiTick > 250) { uiTick = now; setTick((x) => x + 1); }
       raf = requestAnimationFrame(loop);
     };
     raf = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(raf);
-  }, [sim]);
+    return () => { cancelAnimationFrame(raf); audioRef.current = null; };
+  }, [sim, userSide]);
 
   // ---- canvas input: wheel / pinch zoom at the cursor, drag to pan, click to select, minimap, double-click reset
   useEffect(() => {
@@ -408,6 +414,7 @@ export default function LiveMatch({ sim, teams, userSide, onFinished }: { sim: M
     if (id === 'group') tac.playstyle = 'teamfight';
     if (id === 'split') tac.playstyle = 'splitpush';
     if (id === 'vision') tac.visionFocus = Math.min(95, tac.visionFocus + 25);
+    audioRef.current?.userPing(SHOUT_PING[id] ?? 'assist', performance.now(), camRef.current!.cur); // the team hears it
     setShout(id);
     setTimeout(() => setShout(null), 2500);
   };
@@ -437,6 +444,7 @@ export default function LiveMatch({ sim, teams, userSide, onFinished }: { sim: M
     <div className="flex items-center gap-1.5 flex-wrap justify-center">
       <button className={`btn ${btnSm}`} title="Pause / play (Space)" onClick={() => setPaused(!paused)}>{big ? (paused ? '▶' : '❚❚') : paused ? '▶ Play' : '❚❚ Pause'}</button>
       <div className="flex gap-1">{SPEEDS.map((s) => <button key={s} className={`btn py-1! px-1.5! text-xs! ${speed === s ? 'btn-gold' : ''}`} onClick={() => setSpeed(s)}>{s}×</button>)}</div>
+      <SoundToggle />
       <button className={`btn ${btnSm}`} title="Skip to the result" onClick={skip} disabled={sim.winner !== null}>{big ? '⏭' : 'Skip to result ⏭'}</button>
       <select className="input py-1! text-xs!" title="Whose vision to show (fog of war)" value={fog === null ? 'all' : String(fog)} onChange={(e) => setFog(e.target.value === 'all' ? null : (Number(e.target.value) as 0 | 1))}>
         <option value="all">{big ? 'Spectator' : 'Spectator (full vision)'}</option><option value="0">{teams[0].short} vision</option><option value="1">{teams[1].short} vision</option>
